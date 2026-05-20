@@ -39,7 +39,6 @@
       overflow-x: hidden;
     }
 
-    /* ── TEXTURE ─────────────────────────── */
     body::after {
       content: '';
       position: fixed;
@@ -49,12 +48,11 @@
       z-index: 9999;
     }
 
-    /* ── SCROLLBAR ─────────────────────────────── */
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
-    /* ── NAVBAR ────────────────────────────────── */
+    /* ── NAVBAR ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -170,7 +168,7 @@
     .mobile-menu a:last-child { border-bottom: none; color: var(--accent); }
     .mobile-menu a:hover { color: var(--txt); }
 
-    /* ── HERO ──────────────────────────────────── */
+    /* ── HERO ── */
     #home {
       min-height: 100svh;
       display: flex;
@@ -179,8 +177,6 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* ── HERO GRID BACKGROUND ───────────────────── */
     #hero-grid {
       position: absolute;
       inset: 0;
@@ -188,8 +184,6 @@
       pointer-events: none;
       overflow: hidden;
     }
-
-    /* Grid lines — fades toward left & bottom edges */
     #hero-grid::before {
       content: '';
       position: absolute;
@@ -201,8 +195,6 @@
       -webkit-mask-image: radial-gradient(ellipse 90% 90% at 72% 38%, black 10%, rgba(0,0,0,0.6) 45%, transparent 75%);
       mask-image: radial-gradient(ellipse 90% 90% at 72% 38%, black 10%, rgba(0,0,0,0.6) 45%, transparent 75%);
     }
-
-    /* Dot highlights at grid intersections */
     #hero-grid::after {
       content: '';
       position: absolute;
@@ -213,13 +205,10 @@
       mask-image: radial-gradient(ellipse 55% 55% at 72% 38%, black 0%, transparent 70%);
       animation: grid-dots-pulse 5s ease-in-out infinite alternate;
     }
-
     @keyframes grid-dots-pulse {
       0%   { opacity: 0.4; }
       100% { opacity: 1; }
     }
-
-    /* Glow blob 1 — primary lime, drifts slowly */
     .grid-glow-a {
       position: absolute;
       width: 680px; height: 480px;
@@ -229,8 +218,6 @@
       filter: blur(40px);
       animation: glow-a 9s ease-in-out infinite alternate;
     }
-
-    /* Glow blob 2 — secondary accent, slower */
     .grid-glow-b {
       position: absolute;
       width: 440px; height: 320px;
@@ -240,8 +227,6 @@
       filter: blur(55px);
       animation: glow-b 13s ease-in-out infinite alternate;
     }
-
-    /* Glow blob 3 — wide soft sweep */
     .grid-glow-c {
       position: absolute;
       width: 800px; height: 500px;
@@ -251,7 +236,6 @@
       filter: blur(70px);
       animation: glow-c 7s ease-in-out infinite alternate;
     }
-
     @keyframes glow-a {
       0%   { transform: translate(0, 0) scale(1);    opacity: 0.75; }
       40%  { transform: translate(-35px, 28px) scale(1.08); opacity: 1; }
@@ -266,7 +250,6 @@
       0%   { transform: translate(0, 0) scale(1);    opacity: 0.6; }
       100% { transform: translate(-25px, 35px) scale(1.06); opacity: 1; }
     }
-
     .hero-glow-1 {
       position: absolute;
       width: 700px; height: 700px;
@@ -328,11 +311,7 @@
       color: var(--txt);
       margin-bottom: .5rem;
     }
-    .hero-name em {
-      font-style: italic;
-      color: var(--accent);
-      font-weight: 300;
-    }
+    .hero-name em { font-style: italic; color: var(--accent); font-weight: 300; }
     .hero-role {
       font-size: clamp(.95rem, 1.8vw, 1.15rem);
       color: var(--txt-2);
@@ -355,11 +334,7 @@
       line-height: 1.8;
       margin-bottom: 2.5rem;
     }
-    .hero-actions {
-      display: flex;
-      gap: .9rem;
-      flex-wrap: wrap;
-    }
+    .hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; }
     .btn-p {
       background: var(--accent);
       color: #080808;
@@ -395,7 +370,6 @@
     }
     .btn-s:hover { border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.04); transform: translateY(-2px); }
 
-    /* Hero Photo */
     .hero-photo-wrap {
       position: relative;
       width: 260px;
@@ -431,10 +405,8 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-    /* ── Change to webp ── */
     .hero-photo {
-      width: 260px;
-      height: 260px;
+      width: 260px; height: 260px;
       border-radius: 50%;
       object-fit: cover;
       object-position: center 10%;
@@ -444,7 +416,7 @@
     }
     .hero-photo:hover { filter: grayscale(0) contrast(1); }
 
-    /* ── STATS ─────────────────────────────────── */
+    /* ── STATS ── */
     .stats-bar {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -459,11 +431,7 @@
       flex-wrap: wrap;
       gap: 2rem;
     }
-    .stat-divider {
-      width: 1px;
-      height: 40px;
-      background: var(--border);
-    }
+    .stat-divider { width: 1px; height: 40px; background: var(--border); }
     .stat-item { text-align: center; }
     .stat-num {
       font-family: var(--display);
@@ -473,14 +441,9 @@
       line-height: 1;
       display: block;
     }
-    .stat-lbl {
-      font-size: .75rem;
-      color: var(--txt-2);
-      letter-spacing: .06em;
-      margin-top: .2rem;
-    }
+    .stat-lbl { font-size: .75rem; color: var(--txt-2); letter-spacing: .06em; margin-top: .2rem; }
 
-    /* ── SECTIONS COMMON ───────────────────────── */
+    /* ── SECTIONS COMMON ── */
     section { padding: 6.5rem 2rem; }
     .sec-in { max-width: var(--mw); margin: 0 auto; }
     .sec-lbl {
@@ -499,14 +462,9 @@
       letter-spacing: -.01em;
       color: var(--txt);
     }
-    .sec-sub {
-      font-size: .95rem;
-      color: var(--txt-2);
-      line-height: 1.75;
-      margin-top: .75rem;
-    }
+    .sec-sub { font-size: .95rem; color: var(--txt-2); line-height: 1.75; margin-top: .75rem; }
 
-    /* ── ABOUT ─────────────────────────────────── */
+    /* ── ABOUT ── */
     #about { background: var(--surface); }
     .about-grid {
       display: grid;
@@ -515,28 +473,11 @@
       align-items: start;
       margin-top: 3.5rem;
     }
-    .about-text p {
-      color: var(--txt-2);
-      line-height: 1.85;
-      margin-bottom: 1.25rem;
-      font-size: .95rem;
-    }
+    .about-text p { color: var(--txt-2); line-height: 1.85; margin-bottom: 1.25rem; font-size: .95rem; }
     .about-text p strong { color: var(--txt); font-weight: 500; }
-    .skills-wrap {
-      margin-top: 2rem;
-    }
-    .skills-lbl {
-      font-size: .7rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--txt-3);
-      margin-bottom: .85rem;
-    }
-    .skills-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .45rem;
-    }
+    .skills-wrap { margin-top: 2rem; }
+    .skills-lbl { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--txt-3); margin-bottom: .85rem; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: .45rem; }
     .skill-tag {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -548,7 +489,6 @@
       cursor: default;
     }
     .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
-
     .about-card {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -557,13 +497,7 @@
       position: sticky;
       top: calc(var(--nh) + 1.5rem);
     }
-    .card-inner-lbl {
-      font-size: .68rem;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--txt-3);
-      margin-bottom: 1.2rem;
-    }
+    .card-inner-lbl { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 1.2rem; }
     .info-row {
       display: flex;
       justify-content: space-between;
@@ -578,17 +512,10 @@
     .info-v { color: var(--txt); text-align: right; font-weight: 400; }
     .info-v a { color: var(--accent); text-decoration: none; transition: opacity .2s; }
     .info-v a:hover { opacity: .7; }
-    .hire-btn {
-      display: flex;
-      margin-top: 1.5rem;
-    }
-    .hire-btn a {
-      flex: 1;
-      text-align: center;
-      justify-content: center;
-    }
+    .hire-btn { display: flex; margin-top: 1.5rem; }
+    .hire-btn a { flex: 1; text-align: center; justify-content: center; }
 
-    /* ── WORK ──────────────────────────────────── */
+    /* ── WORK ── */
     .work-head {
       display: flex;
       justify-content: space-between;
@@ -611,20 +538,12 @@
       transition: border-color .2s, gap .2s;
     }
     .behance-link:hover { border-color: var(--accent); gap: .65rem; }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 1.1rem;
-    }
-
-    /* GoPay = full-width hero. All others = equal halves 2x2 */
+    .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.1rem; }
     .project-card:nth-child(1) { grid-column: span 12; }
     .project-card:nth-child(2) { grid-column: span 6; }
     .project-card:nth-child(3) { grid-column: span 6; }
     .project-card:nth-child(4) { grid-column: span 6; }
     .project-card:nth-child(5) { grid-column: span 6; }
-
     .project-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -634,27 +553,14 @@
       cursor: pointer;
     }
     .project-card:hover { border-color: rgba(201,255,71,.3); transform: translateY(-5px); }
-
-    .card-thumb {
-      position: relative;
-      overflow: hidden;
-    }
-    /* GoPay = panoramic hero. All others = equal 16/9 */
+    .card-thumb { position: relative; overflow: hidden; }
     .project-card:nth-child(1) .card-thumb { aspect-ratio: 21/8; }
     .project-card:nth-child(2) .card-thumb,
     .project-card:nth-child(3) .card-thumb,
     .project-card:nth-child(4) .card-thumb,
     .project-card:nth-child(5) .card-thumb { aspect-ratio: 16/9; }
-
-    .card-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform .6s ease;
-    }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
     .project-card:hover .card-thumb img { transform: scale(1.05); }
-
     .card-hover-layer {
       position: absolute;
       inset: 0;
@@ -677,21 +583,9 @@
       transition: opacity .2s;
     }
     .card-cta:hover { opacity: .85; }
-
-    .card-body {
-      padding: 1.1rem 1.3rem 1.35rem;
-    }
-    .card-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: .45rem;
-    }
-    .card-year {
-      font-size: .7rem;
-      color: var(--txt-3);
-      letter-spacing: .04em;
-    }
+    .card-body { padding: 1.1rem 1.3rem 1.35rem; }
+    .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .45rem; }
+    .card-year { font-size: .7rem; color: var(--txt-3); letter-spacing: .04em; }
     .card-tag {
       font-size: .68rem;
       color: var(--accent);
@@ -701,26 +595,9 @@
       border-radius: 100px;
       letter-spacing: .04em;
     }
-    .card-title {
-      font-family: var(--display);
-      font-size: 1.3rem;
-      font-weight: 500;
-      color: var(--txt);
-      line-height: 1.25;
-      margin-bottom: .35rem;
-    }
-    .card-desc {
-      font-size: .78rem;
-      color: var(--txt-2);
-      line-height: 1.65;
-    }
-
-    /* ── BEHANCE CTA ───────────────────────────── */
-    .behance-cta-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 3rem;
-    }
+    .card-title { font-family: var(--display); font-size: 1.3rem; font-weight: 500; color: var(--txt); line-height: 1.25; margin-bottom: .35rem; }
+    .card-desc { font-size: .78rem; color: var(--txt-2); line-height: 1.65; }
+    .behance-cta-wrap { display: flex; justify-content: center; margin-top: 3rem; }
     .behance-cta-btn {
       display: inline-flex;
       align-items: center;
@@ -736,15 +613,9 @@
       letter-spacing: .02em;
       transition: background .25s, border-color .25s, gap .25s, transform .25s;
     }
-    .behance-cta-btn:hover {
-      background: var(--accent-dim);
-      border-color: var(--accent);
-      gap: .75rem;
-      transform: translateY(-2px);
-    }
-    .behance-cta-btn svg { flex-shrink: 0; }
+    .behance-cta-btn:hover { background: var(--accent-dim); border-color: var(--accent); gap: .75rem; transform: translateY(-2px); }
 
-    /* ── EXPERIENCE ────────────────────────────── */
+    /* ── EXPERIENCE ── */
     #experience { background: var(--surface); }
     .exp-list { margin-top: 3.5rem; }
     .exp-item {
@@ -755,46 +626,74 @@
       border-bottom: 1px solid var(--border);
     }
     .exp-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .exp-period {
-      font-size: .78rem;
-      color: var(--txt-3);
-      letter-spacing: .04em;
-      padding-top: .2rem;
-      line-height: 1.5;
-    }
-    .exp-role {
-      font-size: 1.02rem;
-      font-weight: 500;
-      color: var(--txt);
-      margin-bottom: .15rem;
-    }
-    .exp-company {
-      font-size: .83rem;
-      color: var(--accent);
-      font-weight: 400;
-      margin-bottom: .9rem;
-    }
-    .exp-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-    }
-    .exp-bullets li {
-      font-size: .83rem;
-      color: var(--txt-2);
-      padding-left: 1.1rem;
-      position: relative;
-      line-height: 1.65;
-    }
-    .exp-bullets li::before {
-      content: '–';
-      position: absolute;
-      left: 0;
-      color: var(--txt-3);
-    }
+    .exp-period { font-size: .78rem; color: var(--txt-3); letter-spacing: .04em; padding-top: .2rem; line-height: 1.5; }
+    .exp-role { font-size: 1.02rem; font-weight: 500; color: var(--txt); margin-bottom: .15rem; }
+    .exp-company { font-size: .83rem; color: var(--accent); font-weight: 400; margin-bottom: .9rem; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+    .exp-bullets li { font-size: .83rem; color: var(--txt-2); padding-left: 1.1rem; position: relative; line-height: 1.65; }
+    .exp-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--txt-3); }
 
-    /* ── CONTACT ───────────────────────────────── */
+    /* ── TESTIMONIAL ── */
+    #testimonial {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: 6.5rem 2rem;
+    }
+    .testi-layout {
+      max-width: var(--mw);
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5rem;
+    }
+    .testi-left { flex: 0 0 auto; max-width: 340px; }
+    .testi-right { flex: 1; }
+    .testi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .testi-quote {
+      font-family: var(--display);
+      font-size: 5rem;
+      line-height: .7;
+      color: var(--accent);
+      opacity: .35;
+      margin-bottom: 1rem;
+    }
+    .testi-body {
+      font-size: .95rem;
+      color: var(--txt-2);
+      line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .testi-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid rgba(201,255,71,.25);
+      color: var(--accent);
+      font-size: .75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .testi-name { font-size: .9rem; font-weight: 500; color: var(--txt); }
+    .testi-role { font-size: .75rem; color: var(--txt-2); margin-top: .1rem; }
+
+    /* ── CONTACT ── */
     #contact { text-align: center; }
     .contact-inner { max-width: 640px; margin: 0 auto; }
     .contact-email-wrap { margin: 2.25rem 0; }
@@ -834,11 +733,8 @@
     .c-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
     .c-link svg { flex-shrink: 0; }
 
-    /* ── FOOTER ────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.6rem 2rem;
-    }
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 1.6rem 2rem; }
     .foot-in {
       max-width: var(--mw);
       margin: 0 auto;
@@ -848,30 +744,18 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-    .foot-copy {
-      font-size: .78rem;
-      color: var(--txt-3);
-    }
+    .foot-copy { font-size: .78rem; color: var(--txt-3); }
     .foot-copy span { color: var(--accent); }
-    .foot-links {
-      display: flex;
-      gap: 1.5rem;
-    }
-    .foot-links a {
-      font-size: .78rem;
-      color: var(--txt-3);
-      text-decoration: none;
-      transition: color .2s;
-    }
+    .foot-links { display: flex; gap: 1.5rem; }
+    .foot-links a { font-size: .78rem; color: var(--txt-3); text-decoration: none; transition: color .2s; }
     .foot-links a:hover { color: var(--txt); }
 
-    /* ── SCROLL TO TOP ──────────────────────────── */
+    /* ── SCROLL TO TOP ── */
     #scrollTop {
       position: fixed;
       bottom: 1.75rem;
       right: 1.75rem;
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       background: var(--accent);
       color: #080808;
       border: none;
@@ -889,61 +773,46 @@
     #scrollTop.show { opacity: 1; transform: translateY(0) scale(1); }
     #scrollTop:hover { transform: translateY(-2px) scale(1.06) !important; }
 
-    /* ── FADE IN ────────────────────────────────── */
-    .fi {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity .75s ease, transform .75s ease;
-    }
+    /* ── FADE IN ── */
+    .fi { opacity: 0; transform: translateY(22px); transition: opacity .75s ease, transform .75s ease; }
     .fi.in { opacity: 1; transform: translateY(0); }
     .fi-d1 { transition-delay: .1s; }
     .fi-d2 { transition-delay: .2s; }
     .fi-d3 { transition-delay: .3s; }
 
-    /* ── RESPONSIVE ─────────────────────────────── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 3rem;
-      }
-      .hero-photo-wrap {
-        order: -1;
-        margin: 0 auto;
-        width: 200px;
-        height: 200px;
-      }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+      .hero-photo-wrap { order: -1; margin: 0 auto; width: 200px; height: 200px; }
       .hero-photo { width: 200px; height: 200px; }
       .hero-badge { margin: 0 auto 1.5rem; }
       .hero-desc { margin-left: auto; margin-right: auto; }
       .hero-actions { justify-content: center; }
-
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .about-card { position: static; }
-
       .exp-item { grid-template-columns: 1fr; gap: .35rem; }
       .exp-period { padding-top: 0; }
-
       .nav-links { display: none; }
       .hamburger { display: flex; }
+
+      /* testimonial: stack vertically, center */
+      .testi-layout { flex-direction: column; align-items: center; text-align: center; gap: 2.5rem; }
+      .testi-left { max-width: 100%; }
+      .testi-author { justify-content: center; }
     }
 
     @media (max-width: 768px) {
       section { padding: 4.5rem 1.25rem; }
-
+      #testimonial { padding: 4.5rem 1.25rem; }
       .project-card:nth-child(1),
       .project-card:nth-child(2),
       .project-card:nth-child(3),
       .project-card:nth-child(4),
       .project-card:nth-child(5) { grid-column: span 12; }
-
       .project-card:nth-child(1) .card-thumb { aspect-ratio: 16/9; }
-
       .stats-inner { justify-content: center; }
       .stat-divider { display: none; }
-
       .work-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
-
       .foot-in { flex-direction: column; align-items: center; text-align: center; }
     }
 
@@ -962,7 +831,6 @@
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo">I8'Knew</a>
-
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
@@ -971,21 +839,19 @@
       <li><a href="https://drive.google.com/file/d/1sGP1ihuEMl8EwHd00n4WguDbNTI5MtSd/view?usp=sharing" target="_blank" rel="noopener">See CV</a></li>
       <li><a href="https://wa.me/6282297154100" class="nav-cta" target="_blank" rel="noopener">Let's Talk</a></li>
     </ul>
-
     <button class="hamburger" id="hamburger" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#home"       onclick="closeMenu()">Home</a>
   <a href="#about"      onclick="closeMenu()">About</a>
   <a href="#work"       onclick="closeMenu()">Work</a>
   <a href="#experience" onclick="closeMenu()">Experience</a>
   <a href="https://drive.google.com/file/d/1sGP1ihuEMl8EwHd00n4WguDbNTI5MtSd/view?usp=sharing" target="_blank" onclick="closeMenu()">See CV</a>
-  <a href="https://wa.me/6282297154100" target="_blank"   onclick="closeMenu()">Let's Talk ↗</a>
+  <a href="https://wa.me/6282297154100" target="_blank" onclick="closeMenu()">Let's Talk ↗</a>
 </div>
 
 
@@ -1004,31 +870,17 @@
         <span class="hero-badge-dot"></span>
         Available for opportunities
       </div>
-
       <h1 class="hero-name">Muhamad<br><em>Ibnu Farizky</em></h1>
-      <p class="hero-role">
-        Product Designer
-        <span></span>
-        UI&thinsp;/&thinsp;UX
-      </p>
-      <p class="hero-desc">
-        Strategic designer with a business background, crafting high-impact digital products that balance user experience with measurable business goals.
-      </p>
-
+      <p class="hero-role">Product Designer <span></span> UI&thinsp;/&thinsp;UX</p>
+      <p class="hero-desc">Strategic designer with a business background, crafting high-impact digital products that balance user experience with measurable business goals.</p>
       <div class="hero-actions">
         <a href="#work" class="btn-p">View Work ↓</a>
         <a href="https://www.linkedin.com/in/muhamad-ibnu-farizky-1b7860193/" target="_blank" rel="noopener" class="btn-s">Get in Touch</a>
       </div>
     </div>
-
     <div class="hero-photo-wrap">
       <div class="photo-ring-2"></div>
       <div class="photo-ring"></div>
-      <!--
-        ═══════════════════════════════════════════════
-       PROFILE PICTURE CHANGE TO -> WEBP
-        ═══════════════════════════════════════════════
-      -->
       <img src="ibnu.webp" alt="Muhamad Ibnu Farizky — Product Designer" class="hero-photo" />
     </div>
   </div>
@@ -1066,19 +918,11 @@
   <div class="sec-in">
     <div class="sec-lbl">About Me</div>
     <h2 class="sec-title">Design that speaks,<br>business that <em style="font-style:italic; color:var(--accent);">converts.</em></h2>
-
     <div class="about-grid fi">
       <div class="about-text">
-        <p>
-          I'm <strong>Ibnu Farizky</strong>, a Product Designer based in Depok with a Marketing Management background from Universitas Pancasila, plus UI/UX Research & Design Bootcamp at Binar Academy. I bridge design thinking with strategic business perspectives to deliver work that's both aesthetic and purposeful.
-        </p>
-        <p>
-          With experience across  B2B E-commerce, I specialize in <strong>Design Systems, UI/UX Audits, and end-to-end product design</strong> — from user research and interviews through to hi-fi prototypes and developer handoff.
-        </p>
-        <p>
-          Previously a UX Facilitator at <strong>Dicoding × Telkom Indonesia</strong>, guiding professionals through Google UX certification, and a Design System intern at <strong>Tokoplas</strong>, where I built 30+ reusable components across two platforms.
-        </p>
-
+        <p>I'm <strong>Ibnu Farizky</strong>, a Product Designer based in Depok with a Marketing Management background from Universitas Pancasila, plus UI/UX Research & Design Bootcamp at Binar Academy. I bridge design thinking with strategic business perspectives to deliver work that's both aesthetic and purposeful.</p>
+        <p>With experience across B2B E-commerce, I specialize in <strong>Design Systems, UI/UX Audits, and end-to-end product design</strong> — from user research and interviews through to hi-fi prototypes and developer handoff.</p>
+        <p>Previously a UX Facilitator at <strong>Dicoding × Telkom Indonesia</strong>, guiding professionals through Google UX certification, and a Design System intern at <strong>Tokoplas</strong>, where I built 30+ reusable components across two platforms.</p>
         <div class="skills-wrap">
           <div class="skills-lbl">Tools & Skills</div>
           <div class="skills-list">
@@ -1098,45 +942,16 @@
           </div>
         </div>
       </div>
-
       <div>
         <div class="about-card">
           <div class="card-inner-lbl">Quick Info</div>
-          <div class="info-row">
-            <span class="info-k">Location</span>
-            <span class="info-v">Depok, Indonesia</span>
-          </div>
-          <div class="info-row">
-            <span class="info-k">Email</span>
-            <span class="info-v">
-              <a href="mailto:farizky.ibnu@gmail.com">farizky.ibnu@gmail.com</a>
-            </span>
-          </div>
-          <div class="info-row">
-            <span class="info-k">WhatsApp</span>
-            <span class="info-v">
-              <a href="https://wa.me/6282297154100" target="_blank" rel="noopener">+62 822-9715-4100</a>
-            </span>
-          </div>
-          <div class="info-row">
-            <span class="info-k">LinkedIn</span>
-            <span class="info-v">
-              <a href="https://www.linkedin.com/in/muhamad-ibnu-farizky-1b7860193/" target="_blank" rel="noopener">muhamad-ibnu-farizky</a>
-            </span>
-          </div>
-          <div class="info-row">
-            <span class="info-k">Behance</span>
-            <span class="info-v">
-              <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener">ibnufarizky</a>
-            </span>
-          </div>
-          <div class="info-row">
-            <span class="info-k">Languages</span>
-            <span class="info-v">Indonesian · English</span>
-          </div>
-          <div class="hire-btn">
-            <a href="mailto:farizky.ibnu@gmail.com" class="btn-p">Hire Me →</a>
-          </div>
+          <div class="info-row"><span class="info-k">Location</span><span class="info-v">Depok, Indonesia</span></div>
+          <div class="info-row"><span class="info-k">Email</span><span class="info-v"><a href="mailto:farizky.ibnu@gmail.com">farizky.ibnu@gmail.com</a></span></div>
+          <div class="info-row"><span class="info-k">WhatsApp</span><span class="info-v"><a href="https://wa.me/6282297154100" target="_blank" rel="noopener">+62 822-9715-4100</a></span></div>
+          <div class="info-row"><span class="info-k">LinkedIn</span><span class="info-v"><a href="https://www.linkedin.com/in/muhamad-ibnu-farizky-1b7860193/" target="_blank" rel="noopener">muhamad-ibnu-farizky</a></span></div>
+          <div class="info-row"><span class="info-k">Behance</span><span class="info-v"><a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener">ibnufarizky</a></span></div>
+          <div class="info-row"><span class="info-k">Languages</span><span class="info-v">Indonesian · English</span></div>
+          <div class="hire-btn"><a href="mailto:farizky.ibnu@gmail.com" class="btn-p">Hire Me →</a></div>
         </div>
       </div>
     </div>
@@ -1152,131 +967,65 @@
         <div class="sec-lbl">Selected Work</div>
         <h2 class="sec-title">Latest<br>Projects.</h2>
       </div>
-      <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-link">
-        View all on Behance →
-      </a>
+      <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-link">View all on Behance →</a>
     </div>
-
     <div class="projects-grid fi">
-
-      <!-- ═══ CARD 1 — GOPAY 2026 ═══ -->
       <div class="project-card">
         <div class="card-thumb">
-          <!--
-            ═══════════════════════════════════════════════
-           CHANGE TO WEBP
-            ═══════════════════════════════════════════════
-          -->
           <img src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
-          <div class="card-hover-layer">
-            <a href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a>
-          </div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
         </div>
         <div class="card-body">
-          <div class="card-meta">
-            <span class="card-year">2026</span>
-            <span class="card-tag">UI/UX Audit</span>
-          </div>
+          <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">UI/UX Audit</span></div>
           <div class="card-title">GoPay - Increase Retention</div>
           <div class="card-desc">A comprehensive UI/UX audit to improve user retention and financial awareness through redesigned flows and interaction patterns.</div>
         </div>
       </div>
-
-      <!-- ═══ CARD 2 — RAVELWARE 2026 ═══ -->
       <div class="project-card">
         <div class="card-thumb">
-          <!--
-            ═══════════════════════════════════════════════
-            CHANGE TO WEBP
-            ═══════════════════════════════════════════════
-          -->
           <img src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
-          <div class="card-hover-layer">
-            <a href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener" class="card-cta">View Case Study →</a>
-          </div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
         </div>
         <div class="card-body">
-          <div class="card-meta">
-            <span class="card-year">2026</span>
-            <span class="card-tag">Dashboard / ERP</span>
-          </div>
+          <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">Dashboard / ERP</span></div>
           <div class="card-title">Ravelware - ERP System</div>
           <div class="card-desc">End-to-end internal ERP dashboard covering stock management, analytics, and business operations.</div>
         </div>
       </div>
-
-      <!-- ═══ CARD 3 — TRENFIX 2026 ═══ -->
       <div class="project-card">
         <div class="card-thumb">
-          <!--
-            ═══════════════════════════════════════════════
-            CHANGE TO WEBP
-            ═══════════════════════════════════════════════
-          -->
           <img src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
-          <div class="card-hover-layer">
-            <a href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a>
-          </div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
         </div>
         <div class="card-body">
-          <div class="card-meta">
-            <span class="card-year">2026</span>
-            <span class="card-tag">Fintech Dashboard</span>
-          </div>
+          <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">Fintech Dashboard</span></div>
           <div class="card-title">Trenfix - Fintech Dashboard</div>
           <div class="card-desc">Financial management software with real-time analytics, cash flow tracking, and budget planning.</div>
         </div>
       </div>
-
-      <!-- ═══ CARD 4 — GOFOOD 2025 ═══ -->
       <div class="project-card">
         <div class="card-thumb">
-          <!--
-            ═══════════════════════════════════════════════
-            CHANGE TO WEBP
-            ═══════════════════════════════════════════════
-          -->
           <img src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
-          <div class="card-hover-layer">
-            <a href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener" class="card-cta">View Case Study →</a>
-          </div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
         </div>
         <div class="card-body">
-          <div class="card-meta">
-            <span class="card-year">2025</span>
-            <span class="card-tag">UI/UX Audit</span>
-          </div>
+          <div class="card-meta"><span class="card-year">2025</span><span class="card-tag">UI/UX Audit</span></div>
           <div class="card-title">GoFood - Boost Retention</div>
           <div class="card-desc">Optimizing flow, gamification, and reducing decision fatigue to meaningfully boost user retention.</div>
         </div>
       </div>
-
-      <!-- ═══ CARD 5 — TOKOPLAS 2024 ═══ -->
       <div class="project-card">
         <div class="card-thumb">
-          <!--
-            ═══════════════════════════════════════════════
-            CHANGE TO WEBP
-            ═══════════════════════════════════════════════
-          -->
           <img src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
-          <div class="card-hover-layer">
-            <a href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a>
-          </div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
         </div>
         <div class="card-body">
-          <div class="card-meta">
-            <span class="card-year">2024</span>
-            <span class="card-tag">Design System</span>
-          </div>
+          <div class="card-meta"><span class="card-year">2024</span><span class="card-tag">Design System</span></div>
           <div class="card-title">Tokoplas - Catalyst Design System</div>
           <div class="card-desc">Built 30+ reusable components across 2 platforms, cutting sprint time and ensuring cross-team consistency.</div>
         </div>
       </div>
-
-    </div><!-- /projects-grid -->
-
-    <!-- Behance CTA -->
+    </div>
     <div class="behance-cta-wrap fi fi-d2">
       <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-cta-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z"/></svg>
@@ -1284,7 +1033,6 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
       </a>
     </div>
-
   </div>
 </section>
 
@@ -1294,9 +1042,7 @@
   <div class="sec-in">
     <div class="sec-lbl">Experience</div>
     <h2 class="sec-title">Where I've been<br>building things.</h2>
-
     <div class="exp-list fi">
-
       <div class="exp-item">
         <div class="exp-period">2024 — 2025</div>
         <div>
@@ -1309,7 +1055,6 @@
           </ul>
         </div>
       </div>
-
       <div class="exp-item">
         <div class="exp-period">2024</div>
         <div>
@@ -1323,7 +1068,6 @@
           </ul>
         </div>
       </div>
-
       <div class="exp-item">
         <div class="exp-period">2024</div>
         <div>
@@ -1336,7 +1080,6 @@
           </ul>
         </div>
       </div>
-
       <div class="exp-item">
         <div class="exp-period">2023</div>
         <div>
@@ -1348,7 +1091,6 @@
           </ul>
         </div>
       </div>
-
       <div class="exp-item">
         <div class="exp-period">2022</div>
         <div>
@@ -1359,8 +1101,31 @@
           </ul>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-    </div><!-- /exp-list -->
+
+<!-- ════════════════════ TESTIMONIAL ════════════════════ -->
+<section id="testimonial">
+  <div class="testi-layout">
+    <div class="testi-left fi">
+      <div class="sec-lbl">Kind Words</div>
+      <h2 class="sec-title">Track <em style="font-style:italic; ">Record.</em></h2>
+    </div>
+    <div class="testi-right fi fi-d1">
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <p class="testi-body">I had the chance to work closely with Ibnu during his internship as a UI/UX intern at Tokoplas. His main role was to assist with UI design and specifically contributing to the initial phase of the company's Design System.  Ibnu approached tasks with positive attitude and calmness, even under pressure, which is a rare and admirable quality. While he was still in the learning phase during his internship, I saw his willingness to improve and adapt.  Ibnu’s ability to take feedback gracefully and his commitment to reworking designs showed his grit and dedication to growth. I wish Ibnu all the best in his career journey and look forward to seeing his future achievements!</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ME</div>
+          <div>
+            <div class="testi-name">Michelle Edithya</div>
+            <div class="testi-role">Mentor · UI/UX Designer ex Tokoplas</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1371,14 +1136,10 @@
     <div class="contact-inner">
       <div class="sec-lbl" style="text-align:center;">Contact</div>
       <h2 class="sec-title" style="text-align:center;">Let's create<br>something great.</h2>
-      <p class="sec-sub" style="text-align:center; margin-left:auto; margin-right:auto;">
-        Open to full-time roles, freelance projects, and design collaborations. I usually respond within 24 hours.
-      </p>
-
+      <p class="sec-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Open to full-time roles, freelance projects, and design collaborations. I usually respond within 24 hours.</p>
       <div class="contact-email-wrap">
         <a href="mailto:farizky.ibnu@gmail.com" class="contact-email">farizky.ibnu@gmail.com</a>
       </div>
-
       <div class="contact-links">
         <a href="https://wa.me/6282297154100" target="_blank" rel="noopener" class="c-link">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -1423,7 +1184,6 @@
 
 
 <script>
-  /* ── Navbar scroll ── */
   const nav = document.getElementById('navbar');
   const scrollBtn = document.getElementById('scrollTop');
   window.addEventListener('scroll', () => {
@@ -1431,7 +1191,6 @@
     scrollBtn.classList.toggle('show', window.scrollY > 500);
   }, { passive: true });
 
-  /* ── Hamburger ── */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   hamburger.addEventListener('click', () => {
@@ -1443,46 +1202,41 @@
     mobileMenu.classList.remove('open');
   }
 
-  /* ── Fade-in on scroll ── */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
 
-  /* ── Stat counter animation ── */
-function animateCounter(el, target, suffix) {
-  const duration = 1800;
-  const start = performance.now();
-  const update = (now) => {
-    const progress = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(ease * target) + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-  };
-  requestAnimationFrame(update);
-}
+  function animateCounter(el, target, suffix) {
+    const duration = 1800;
+    const start = performance.now();
+    const update = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(ease * target) + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+  }
 
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    document.querySelectorAll('.stat-num').forEach(el => {
-      const raw    = el.textContent.trim();
-      const num    = parseInt(raw);
-      const suffix = raw.replace(num, '');
-      animateCounter(el, num, suffix);
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      document.querySelectorAll('.stat-num').forEach(el => {
+        const raw = el.textContent.trim();
+        const num = parseInt(raw);
+        const suffix = raw.replace(num, '');
+        animateCounter(el, num, suffix);
+      });
+      statsObserver.disconnect();
     });
-    statsObserver.disconnect();
-  });
-}, { threshold: 0.5 });
+  }, { threshold: 0.5 });
 
-const statsBar = document.querySelector('.stats-bar');
-if (statsBar) statsObserver.observe(statsBar);
+  const statsBar = document.querySelector('.stats-bar');
+  if (statsBar) statsObserver.observe(statsBar);
 </script>
 
 </body>
-</html> 
+</html>
