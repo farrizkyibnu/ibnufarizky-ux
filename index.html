@@ -1457,6 +1457,35 @@
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
+
+  /* ── Stat counter animation ── */
+function animateCounter(el, target, suffix) {
+  const duration = 1800;
+  const start = performance.now();
+  const update = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target) + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    document.querySelectorAll('.stat-num').forEach(el => {
+      const raw    = el.textContent.trim();
+      const num    = parseInt(raw);
+      const suffix = raw.replace(num, '');
+      animateCounter(el, num, suffix);
+    });
+    statsObserver.disconnect();
+  });
+}, { threshold: 0.5 });
+
+const statsBar = document.querySelector('.stats-bar');
+if (statsBar) statsObserver.observe(statsBar);
 </script>
 
 </body>
