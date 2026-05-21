@@ -623,7 +623,7 @@
       grid-template-columns: 160px 1fr;
       gap: 3rem;
       padding: 2rem 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 0px solid var(--border);
     }
     .exp-item:last-child { border-bottom: none; padding-bottom: 0; }
     .exp-period { font-size: .78rem; color: var(--txt-3); letter-spacing: .04em; padding-top: .2rem; line-height: 1.5; }
@@ -795,10 +795,11 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      /* testimonial: stack vertically, center */
-      .testi-layout { flex-direction: column; align-items: center; text-align: left-align; gap: 2.5rem; }
-      .testi-left { max-width: 100%; }
-      .testi-author { justify-content: left; }
+      /* testimonial: stack vertically, */
+      .testi-layout { flex-direction: column; align-items: center; gap: 2.5rem; }
+      .testi-left { max-width: 100%; text-align: center; }
+      .testi-card { text-align: left; }
+      .testi-author { justify-content: flex-start; }
     }
 
     @media (max-width: 768px) {
@@ -1148,7 +1149,7 @@
     <div class="contact-inner">
       <div class="sec-lbl" style="text-align:center;">Contact</div>
       <h2 class="sec-title" style="text-align:center;">Let's create<br>something great.</h2>
-      <p class="sec-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Open to full-time roles, freelance projects, and design collaborations.</p>
+      <p class="sec-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Open to full-time roles, freelance projects, and design collaborations. I usually respond within 24 hours.</p>
       <div class="contact-email-wrap">
         <a href="mailto:farizky.ibnu@gmail.com" class="contact-email">farizky.ibnu@gmail.com</a>
       </div>
