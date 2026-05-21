@@ -7,7 +7,6 @@ Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
 
 - HTML5 & CSS3 (no framework)
 - Vanilla JavaScript
-- Three.js (hero 3D element)
 - Google Fonts — EB Garamond + Poppins
 
 ## Features
