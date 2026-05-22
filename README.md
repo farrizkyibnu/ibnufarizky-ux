@@ -1,6 +1,6 @@
 # ibnufarizky-ux
 
-A personal web portfolio — developed with Claude.  
+A personal web portfolio - Assistes by Claude.  
 Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
 
 ## Stack
