@@ -68,7 +68,7 @@
       border-color: var(--border);
     }
     .nav-inner {
-      max-width: var(--mw);
+      max-width: calc(var(--mw) + 4rem);
       margin: 0 auto;
       height: 100%;
       display: flex;
@@ -927,7 +927,7 @@
       .hero-scroll { display: none; }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
       .nav-inner { padding: 0 1.25rem; }
       :root { --nh: 60px; }
       .hero-name { font-size: 2.6rem; }
