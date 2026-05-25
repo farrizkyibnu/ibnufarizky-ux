@@ -756,6 +756,9 @@
       color: var(--txt-2);
       line-height: 2;
       margin-bottom: 1rem;
+      overflow: hidden;
+      max-height: 80em;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .testi-author {
       display: flex;
@@ -791,18 +794,7 @@
 
     /* read more */
     .testi-body-wrap { position: relative; }
-    .testi-body-wrap.collapsed .testi-body {
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    .testi-body-wrap.expanded .testi-body {
-      display: block;
-      height: auto;
-      overflow: invisible;
-    }
+    .testi-body-wrap.collapsed .testi-body { max-height: 10em; }
     .testi-readmore {
       display: inline-flex;
       align-items: center;
@@ -836,45 +828,7 @@
       text-transform: uppercase;
       padding: .18rem .6rem;
       border-radius: 100px;
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 768px) {
-      /* Ubah grid agar bertumpuk */
-      .exp-item {
-     grid-template-columns: 1fr;
-     gap: 0.5rem;
-     padding: 1.5rem 0;
-     }
-
-     /* Pastikan periode tidak terlalu mencolok */
-     .exp-period {
-     font-size: 0.7rem;
-     margin-bottom: 0.25rem;
-     }
-
-     /* Sesuaikan margin role dan company */
-     .exp-role {
-     font-size: 0.95rem;
-     }
-  
-     .exp-company {
-     margin-bottom: 0.5rem;
-     }
-    }
-
-
-    @media (max-width: 480px) {
-     .hero-name {
-     /* Turunkan ukuran jika masih terasa terlalu besar di layar kecil */
-     font-size: 2.2rem; 
-     line-height: 1.1;
-     }
-
-     .hero-role {
-     font-size: 0.9rem;
-     line-height: 1.4;
-     }
+      flex-shrink: 1;
     }
 
     /* ── CONTACT ── */
@@ -958,43 +912,60 @@
     #scrollTop:hover { transform: translateY(-2px) scale(1.06) !important; }
 
     /* ── CUSTOM CURSOR ── */
+    #cursor-dot {
+      display: none;
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: transform .1s ease, opacity .3s ease;
+      will-change: left, top;
+    }
+    #cursor-ring {
+      display: none;
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(201,255,71,.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width .3s ease, height .3s ease, border-color .3s ease, opacity .3s ease;
+      will-change: left, top;
+    }
     @media (hover: hover) {
-      #cursor-dot,
-      #cursor-ring { display: none !important; }
-      #cursor-dot {
-        position: fixed;
-        width: 8px; height: 8px;
-        background: var(--accent);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 99999;
-        transform: translate(-50%, -50%);
-        transition: transform .1s ease, opacity .3s ease;
-        will-change: left, top;
-      }
-
-      #cursor-ring {
-        position: fixed;
-        width: 36px; height: 36px;
-        border: 1.5px solid rgba(201,255,71,.5);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 99998;
-        transform: translate(-50%, -50%);
-        transition: width .3s ease, height .3s ease, border-color .3s ease, opacity .3s ease;
-        will-change: left, top;
-      }
-
-      /* Hover states */
+      #cursor-dot, #cursor-ring { display: block; }
       body.cursor-hover #cursor-ring {
         width: 56px; height: 56px;
         border-color: var(--accent);
         background: rgba(201,255,71,.06);
       }
-      body.cursor-hover #cursor-dot {
-        transform: translate(-50%, -50%) scale(0);
-      }
+      body.cursor-hover #cursor-dot { transform: translate(-50%, -50%) scale(0); }
     }
+
+    /* ── CARD TILT ── */
+    .testi-card { transition: transform .5s ease, border-color .35s; }
+
+    /* ── CARD SHINE ── */
+    @keyframes card-shine {
+      0%        { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
+      8%, 92%   { opacity: 1; }
+      100%      { transform: translateX(280%) skewX(-15deg); opacity: 0; }
+    }
+    .testi-card::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0;
+      width: 55%;
+      background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.038) 50%, transparent 75%);
+      animation: card-shine 7s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .testi-right .testi-card:last-child::after { animation-delay: 3.5s; }
 
     /* ── FADE IN ── */
     .fi { opacity: 0; transform: translateY(22px); transition: opacity .75s ease, transform .75s ease; }
@@ -1017,8 +988,6 @@
       .exp-period { padding-top: 0; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
-
-      /* testimonial: single col on mobile */
       .testi-right { grid-template-columns: 1fr; }
       .testi-author { justify-content: flex-start; }
       .testi-card-client { order: -1; }
@@ -1027,27 +996,53 @@
     @media (max-width: 768px) {
       section { padding: 4.5rem 1.25rem; }
       #testimonial { padding: 4.5rem 1.25rem; }
+      .nav-inner { padding: 0 1.25rem; }
+      :root { --nh: 60px; }
+      .hero-name { font-size: 2.6rem; }
+      .hero-photo-wrap { width: 160px; height: 160px; }
+      .hero-photo { width: 160px; height: 160px; }
+      .hero-scroll { display: none; }
+      #cursor-dot, #cursor-ring { display: none !important; }
       .project-card:nth-child(1),
       .project-card:nth-child(2),
       .project-card:nth-child(3),
       .project-card:nth-child(4),
       .project-card:nth-child(5) { grid-column: span 12; }
       .project-card:nth-child(1) .card-thumb { aspect-ratio: 16/9; }
-      .stats-inner { justify-content: center; }
+      .stats-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+        gap: 1.75rem 0;
+      }
       .stat-divider { display: none; }
       .work-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .foot-in { flex-direction: column; align-items: center; text-align: center; }
-      #cursor-dot,
-      #cursor-ring { display: none !important; }
-      .hero-scroll { display: none; }
+
+      /* track record cards — tighten on mobile */
+      .testi-card { padding: 1.5rem; }
+      .testi-quote { font-size: 3rem; height: 2.75rem; }
+      .testi-body { font-size: .85rem; line-height: 1.8; }
+      .testi-name { font-size: .82rem; }
+      .testi-role { font-size: .7rem; }
+      .testi-rel-badge { font-size: .58rem; padding: .14rem .5rem; }
+      .testi-role-row { flex-wrap: wrap; gap: .4rem; }
+      .testi-year { font-size: .62rem; top: 1.5rem; right: 1.5rem; }
+      .testi-avatar { width: 36px; height: 36px; font-size: .68rem; flex-shrink: 0; }
+      .testi-readmore { font-size: .72rem; }
     }
 
-    @media (max-width: 768px) {
-      .nav-inner { padding: 0 1.25rem; }
-      :root { --nh: 60px; }
-      .hero-name { font-size: 2.6rem; }
-      .hero-photo-wrap { width: 160px; height: 160px; }
-      .hero-photo { width: 160px; height: 160px; }
+    @media (max-width: 480px) {
+      /* track record — single col, more compact on small phones */
+      .testi-right { grid-template-columns: 1fr; gap: 1rem; }
+      .testi-card { padding: 1.25rem; }
+      .testi-quote { font-size: 2.6rem; height: 2.4rem; }
+      .testi-body { font-size: .82rem; line-height: 1.75; }
+      .testi-name { font-size: .8rem; }
+      .testi-role { font-size: .68rem; }
+      .testi-rel-badge { font-size: .56rem; }
+      .testi-year { top: 1.25rem; right: 1.25rem; }
+      .testi-author { gap: .75rem; }
     }
   </style>
 </head>
@@ -1188,8 +1183,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
       <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z" clip-rule="evenodd" />
     </svg>
-  </a>
-  </svg></a>
+  </a></div>
         </div>
       </div>
     </div>
@@ -1477,6 +1471,7 @@
 
 
 <script>
+  /* ── NAVBAR + SCROLL TOP ── */
   const nav = document.getElementById('navbar');
   const scrollBtn = document.getElementById('scrollTop');
   window.addEventListener('scroll', () => {
@@ -1484,6 +1479,7 @@
     scrollBtn.classList.toggle('show', window.scrollY > 500);
   }, { passive: true });
 
+  /* ── MOBILE MENU ── */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   hamburger.addEventListener('click', () => {
@@ -1495,6 +1491,7 @@
     mobileMenu.classList.remove('open');
   }
 
+  /* ── FADE IN ON SCROLL ── */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
@@ -1502,145 +1499,130 @@
   }, { threshold: 0.08 });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
 
+  /* ── STAT COUNTER ── */
   function animateCounter(el, target, suffix) {
-    const duration = 1800;
-    const start = performance.now();
+    const duration = 1800, start = performance.now();
     const update = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
+      const ease = 1 - Math.pow(1 - Math.min((now - start) / duration, 1), 3);
       el.textContent = Math.floor(ease * target) + suffix;
-      if (progress < 1) requestAnimationFrame(update);
+      if (ease < 1) requestAnimationFrame(update);
     };
     requestAnimationFrame(update);
   }
-
   const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       document.querySelectorAll('.stat-num').forEach(el => {
         const raw = el.textContent.trim();
         const num = parseInt(raw);
-        const suffix = raw.replace(num, '');
-        animateCounter(el, num, suffix);
+        animateCounter(el, num, raw.replace(String(num), ''));
       });
       statsObserver.disconnect();
     });
   }, { threshold: 0.5 });
-
   const statsBar = document.querySelector('.stats-bar');
   if (statsBar) statsObserver.observe(statsBar);
 
-  /* ── CUSTOM CURSOR ── */
-  const dot  = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-
-  if (dot && ring && window.matchMedia('(hover: hover)').matches) {
-    let mouseX = 0, mouseY = 0;
-    let ringX  = 0, ringY  = 0;
-    let rafId;
-
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top  = mouseY + 'px';
-    }, { passive: true });
-
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.left = ringX + 'px';
-      ring.style.top  = ringY + 'px';
-      rafId = requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    /* Hover effect on interactive elements */
-    const hoverTargets = 'a, button, .skill-tag, .project-card, .stat-item, .testi-card';
-    document.querySelectorAll(hoverTargets).forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-
-    /* Hide cursor when leaving window */
-    document.addEventListener('mouseleave', () => {
-      dot.style.opacity  = '0';
-      ring.style.opacity = '0';
-    });
-    document.addEventListener('mouseenter', () => {
-      dot.style.opacity  = '1';
-      ring.style.opacity = '1';
-    });
-  }
-
-  /* ── GLOW PARALLAX ── */
-  const glowA = document.querySelector('.grid-glow-a');
-  const glowB = document.querySelector('.grid-glow-b');
-  const glowC = document.querySelector('.grid-glow-c');
-
-  if (glowA && window.matchMedia('(hover: hover)').matches) {
-    let tAx = 0, tAy = 0, tBx = 0, tBy = 0, tCx = 0, tCy = 0;
-    let cAx = 0, cAy = 0, cBx = 0, cBy = 0, cCx = 0, cCy = 0;
-
-    window.addEventListener('mousemove', e => {
-      const cx = window.innerWidth  / 2;
-      const cy = window.innerHeight / 2;
-      const dx = (e.clientX - cx) / cx;   // -1 → 1
-      const dy = (e.clientY - cy) / cy;
-
-      tAx = dx * -22; tAy = dy * -14;
-      tBx = dx *  14; tBy = dy *  18;
-      tCx = dx * -10; tCy = dy * -24;
-    }, { passive: true });
-
-    (function lerpGlows() {
-      const ease = 0.06;
-      cAx += (tAx - cAx) * ease; cAy += (tAy - cAy) * ease;
-      cBx += (tBx - cBx) * ease; cBy += (tBy - cBy) * ease;
-      cCx += (tCx - cCx) * ease; cCy += (tCy - cCy) * ease;
-
-      glowA.style.setProperty('--tx', cAx.toFixed(2) + 'px');
-      glowA.style.setProperty('--ty', cAy.toFixed(2) + 'px');
-      glowB.style.setProperty('--tx', cBx.toFixed(2) + 'px');
-      glowB.style.setProperty('--ty', cBy.toFixed(2) + 'px');
-      glowC.style.setProperty('--tx', cCx.toFixed(2) + 'px');
-      glowC.style.setProperty('--ty', cCy.toFixed(2) + 'px');
-
-      requestAnimationFrame(lerpGlows);
-    })();
-  }
-
-  /* ── SCROLL INDICATOR AUTO HIDE ── */
+  /* ── HERO SCROLL INDICATOR ── */
   const heroScroll = document.querySelector('.hero-scroll');
   if (heroScroll) {
     window.addEventListener('scroll', () => {
       heroScroll.style.opacity = window.scrollY > 80 ? '0' : '';
-      heroScroll.style.transition = 'opacity 0.4s ease';
     }, { passive: true });
   }
 
-  /* ── READ MORE ── */
+  /* ── READ MORE TOGGLE ── */
   function toggleRead(id, btn) {
     const wrap = document.getElementById(id);
     const collapsed = wrap.classList.toggle('collapsed');
     btn.childNodes[0].textContent = collapsed ? 'Read more' : 'Read less ';
   }
 
-  /* ── MAGNETIC BUTTON ── */  const magnetBtns = document.querySelectorAll('.btn-p, .btn-s, .nav-cta, .hire-btn .btn-p');
-
   if (window.matchMedia('(hover: hover)').matches) {
-    magnetBtns.forEach(btn => {
+    /* ── CUSTOM CURSOR ── */
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top  = mouseY + 'px';
+    }, { passive: true });
+
+    (function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    const hoverTargets = 'a, button, .skill-tag, .project-card, .stat-item, .testi-card';
+    document.querySelectorAll(hoverTargets).forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+    document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+
+    /* ── GLOW PARALLAX ── */
+    const glowA = document.querySelector('.grid-glow-a');
+    const glowB = document.querySelector('.grid-glow-b');
+    const glowC = document.querySelector('.grid-glow-c');
+    if (glowA) {
+      let tAx = 0, tAy = 0, tBx = 0, tBy = 0, tCx = 0, tCy = 0;
+      let cAx = 0, cAy = 0, cBx = 0, cBy = 0, cCx = 0, cCy = 0;
+      window.addEventListener('mousemove', e => {
+        const dx = (e.clientX - window.innerWidth  / 2) / (window.innerWidth  / 2);
+        const dy = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+        tAx = dx * -22; tAy = dy * -14;
+        tBx = dx *  14; tBy = dy *  18;
+        tCx = dx * -10; tCy = dy * -24;
+      }, { passive: true });
+      (function lerpGlows() {
+        const e = 0.06;
+        cAx += (tAx - cAx) * e; cAy += (tAy - cAy) * e;
+        cBx += (tBx - cBx) * e; cBy += (tBy - cBy) * e;
+        cCx += (tCx - cCx) * e; cCy += (tCy - cCy) * e;
+        glowA.style.setProperty('--tx', cAx.toFixed(2) + 'px');
+        glowA.style.setProperty('--ty', cAy.toFixed(2) + 'px');
+        glowB.style.setProperty('--tx', cBx.toFixed(2) + 'px');
+        glowB.style.setProperty('--ty', cBy.toFixed(2) + 'px');
+        glowC.style.setProperty('--tx', cCx.toFixed(2) + 'px');
+        glowC.style.setProperty('--ty', cCy.toFixed(2) + 'px');
+        requestAnimationFrame(lerpGlows);
+      })();
+    }
+
+    /* ── CARD TILT PARALLAX (desktop only) ── */
+    if (window.innerWidth > 960) {
+      document.querySelectorAll('.testi-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transition = 'transform .1s ease, border-color .35s';
+        });
+        card.addEventListener('mousemove', e => {
+          const r  = card.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+          const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+          card.style.transform = `perspective(700px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 4).toFixed(2)}deg) translateY(-4px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transition = 'transform .55s ease, border-color .35s';
+          card.style.transform  = '';
+        });
+      });
+    }
+
+    /* ── MAGNETIC BUTTONS ── */
+    document.querySelectorAll('.btn-p, .btn-s, .nav-cta').forEach(btn => {
       btn.addEventListener('mousemove', e => {
-        const rect   = btn.getBoundingClientRect();
-        const cx     = rect.left + rect.width  / 2;
-        const cy     = rect.top  + rect.height / 2;
-        const dx     = (e.clientX - cx) * 0.35;
-        const dy     = (e.clientY - cy) * 0.35;
+        const r = btn.getBoundingClientRect();
+        const dx = (e.clientX - r.left - r.width  / 2) * 0.35;
+        const dy = (e.clientY - r.top  - r.height / 2) * 0.35;
         btn.style.transform = `translate(${dx}px, ${dy}px)`;
       });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = 'translate(0, 0)';
-      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
   }
 </script>
