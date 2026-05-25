@@ -838,6 +838,32 @@
       border-radius: 100px;
       flex-shrink: 0;
     }
+
+    @media (max-width: 768px) {
+      /* Ubah grid agar bertumpuk */
+      .exp-item {
+     grid-template-columns: 1fr;
+     gap: 0.5rem;
+     padding: 1.5rem 0;
+     }
+
+     /* Pastikan periode tidak terlalu mencolok */
+     .exp-period {
+     font-size: 0.7rem;
+     margin-bottom: 0.25rem;
+     }
+
+     /* Sesuaikan margin role dan company */
+     .exp-role {
+     font-size: 0.95rem;
+     }
+  
+     .exp-company {
+     margin-bottom: 0.5rem;
+     }
+    }
+
+
     @media (max-width: 480px) {
      .hero-name {
      /* Turunkan ukuran jika masih terasa terlalu besar di layar kecil */
