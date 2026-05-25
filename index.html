@@ -838,13 +838,18 @@
       border-radius: 100px;
       flex-shrink: 0;
     }
+    @media (max-width: 480px) {
+     .hero-name {
+     /* Turunkan ukuran jika masih terasa terlalu besar di layar kecil */
+     font-size: 2.2rem; 
+     line-height: 1.1;
+     }
 
-    @media (max-width: 768px) {
-     .testi-body-wrap {
-      height: auto !important;
+     .hero-role {
+     font-size: 0.9rem;
+     line-height: 1.4;
      }
     }
-
 
     /* ── CONTACT ── */
     #contact { text-align: center; }
