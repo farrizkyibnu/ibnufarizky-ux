@@ -725,6 +725,9 @@
       padding: 2.5rem;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     .testi-card::before {
       content: '';
@@ -738,17 +741,21 @@
     }
     .testi-quote {
       font-family: var(--display);
-      font-size: 5rem;
-      line-height: .7;
+      font-size: 4rem;
+      line-height: 1;
       color: var(--accent);
       opacity: .35;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
+      display: block;
+      width: fit-content;
+      height: 3.5rem;
     }
     .testi-body {
       font-size: .95rem;
+      text-align: left;
       color: var(--txt-2);
-      line-height: 1.85;
-      margin-bottom: 2rem;
+      line-height: 2;
+      margin-bottom: 1rem;
     }
     .testi-author {
       display: flex;
@@ -775,18 +782,7 @@
     .testi-right { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
 
     /* client testimonial — compact variant */
-    .testi-card-client {
-      padding: 1.75rem 2rem;
-    }
-    .testi-card-client .testi-quote {
-      font-size: 3.5rem;
-      margin-bottom: .55rem;
-    }
-    .testi-card-client .testi-body {
-      font-size: .9rem;
-      margin-bottom: 1.25rem;
-    }
-    .testi-author { gap: 1rem; align-items: center; }
+    .testi-author { gap: 1rem; align-items: center; margin-top: auto; }
     .testi-author-meta { flex: 1; display: flex; flex-direction: column; gap: .18rem; }
     .testi-name-row { display: flex; align-items: center; }
     .testi-role-row { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
@@ -812,7 +808,8 @@
       font-size: .78rem;
       font-weight: 500;
       cursor: pointer;
-      padding: .35rem 0 2rem;
+      padding: .35rem 0 0rem;
+      margin-bottom: 2rem;
       letter-spacing: .1em;
       transition: opacity .2s;
     }
@@ -826,6 +823,7 @@
       background: var(--accent-dim);
       border: 1px solid rgba(201,255,71,.18);
       color: var(--accent);
+      transition: smooth;
       font-size: .6rem;
       font-weight: 500;
       letter-spacing: .09em;
@@ -834,6 +832,7 @@
       border-radius: 100px;
       flex-shrink: 0;
     }
+
 
     /* ── CONTACT ── */
     #contact { text-align: center; }
@@ -1359,8 +1358,8 @@
         </div>
       </div>
 
-      <div class="testi-card testi-card-client fi fi-d2">
-        <span class="testi-year">May 2026</span>
+      <div class="testi-card">
+        <span class="testi-year">2026</span>
         <div class="testi-quote">"</div>
         <p class="testi-body">Muhamad Ibnu Farizky is an exceptional collaborator who consistently delivers professional results. He demonstrates a remarkable ability to understand and execute ideas exactly as expected, making the entire workflow seamless and highly efficient.</p>
         <div class="testi-author">
