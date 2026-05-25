@@ -727,7 +727,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: auto;
     }
     .testi-card::before {
       content: '';
@@ -796,6 +796,12 @@
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .testi-body-wrap.expanded .testi-body {
+      display: block;
+      height: auto;
+      overflow: invisible;
     }
     .testi-readmore {
       display: inline-flex;
@@ -831,6 +837,12 @@
       padding: .18rem .6rem;
       border-radius: 100px;
       flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+     .testi-body-wrap {
+      height: auto !important;
+     }
     }
 
 
