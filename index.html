@@ -713,18 +713,28 @@
       margin: 0 auto;
       width: 100%;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 5rem;
+      flex-direction: column;
+      gap: 2.5rem;
     }
-    .testi-left { flex: 0 0 auto; max-width: 340px; }
-    .testi-right { flex: 1; }
+    .testi-left { width: 100%; }
+    .testi-right { width: 100%; }
     .testi-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--r);
       padding: 2.5rem;
       position: relative;
+      overflow: hidden;
+    }
+    .testi-card::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(201,255,71,0.38) 0%, rgba(201,255,71,0.12) 40%, transparent 68%);
+      filter: blur(48px);
+      pointer-events: none;
     }
     .testi-quote {
       font-family: var(--display);
@@ -760,6 +770,70 @@
     }
     .testi-name { font-size: .9rem; font-weight: 500; color: var(--txt); }
     .testi-role { font-size: .75rem; color: var(--txt-2); margin-top: .1rem; }
+
+    /* testi-right: 2-col grid on desktop */
+    .testi-right { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+
+    /* client testimonial — compact variant */
+    .testi-card-client {
+      padding: 1.75rem 2rem;
+    }
+    .testi-card-client .testi-quote {
+      font-size: 3.5rem;
+      margin-bottom: .55rem;
+    }
+    .testi-card-client .testi-body {
+      font-size: .9rem;
+      margin-bottom: 1.25rem;
+    }
+    .testi-author { gap: 1rem; align-items: center; }
+    .testi-author-meta { flex: 1; display: flex; flex-direction: column; gap: .18rem; }
+    .testi-name-row { display: flex; align-items: center; }
+    .testi-role-row { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+    .testi-year { position: absolute; top: 2.5rem; right: 2.5rem; font-size: .67rem; color: var(--accent); opacity: .55; letter-spacing: .07em; }
+    .testi-card-client .testi-year { top: 1.75rem; right: 2rem; }
+
+    /* read more */
+    .testi-body-wrap { position: relative; }
+    .testi-body-wrap.collapsed .testi-body {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .testi-readmore {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-family: var(--body);
+      font-size: .78rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: .35rem 0 2rem;
+      letter-spacing: .1em;
+      transition: opacity .2s;
+    }
+    .testi-readmore:hover { opacity: .7; }
+    .testi-readmore svg { transition: transform .3s; }
+    .testi-body-wrap.collapsed .testi-readmore svg { transform: rotate(0deg); }
+    .testi-body-wrap:not(.collapsed) .testi-readmore svg { transform: rotate(180deg); }
+    .testi-rel-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--accent-dim);
+      border: 1px solid rgba(201,255,71,.18);
+      color: var(--accent);
+      font-size: .6rem;
+      font-weight: 500;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      padding: .18rem .6rem;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
 
     /* ── CONTACT ── */
     #contact { text-align: center; }
@@ -902,11 +976,10 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      /* testimonial: stack vertically, */
-      .testi-layout { flex-direction: column; align-items: center; gap: 2.5rem; }
-      .testi-left { max-width: 100%; text-align: center; }
-      .testi-card { text-align: left; }
+      /* testimonial: single col on mobile */
+      .testi-right { grid-template-columns: 1fr; }
       .testi-author { justify-content: flex-start; }
+      .testi-card-client { order: -1; }
     }
 
     @media (max-width: 768px) {
@@ -1167,7 +1240,7 @@
     <h2 class="sec-title">Where I've been<br>building value.</h2>
     <div class="exp-list fi">
       <div class="exp-item">
-        <div class="exp-period">2025 — Present</div>
+        <div class="exp-period">2025 — 2026</div>
         <div>
           <div class="exp-role">Designer</div>
           <div class="exp-company">TARDS (Self-Employed / Freelance)</div>
@@ -1263,13 +1336,43 @@
     </div>
     <div class="testi-right fi fi-d1">
       <div class="testi-card">
+        <span class="testi-year">2024</span>
         <div class="testi-quote">"</div>
-        <p class="testi-body">I had the chance to work closely with Ibnu during his internship as a UI/UX intern at Tokoplas. His main role was to assist with UI design and specifically contributing to the initial phase of the company's Design System.  Ibnu approached tasks with positive attitude and calmness, even under pressure, which is a rare and admirable quality. While he was still in the learning phase during his internship, I saw his willingness to improve and adapt.  Ibnu’s ability to take feedback gracefully and his commitment to reworking designs showed his grit and dedication to growth. I wish Ibnu all the best in his career journey and look forward to seeing his future achievements!</p>
+        <div class="testi-body-wrap collapsed" id="michelleWrap">
+          <p class="testi-body">I had the chance to work closely with Ibnu during his internship as a UI/UX intern at Tokoplas. His main role was to assist with UI design and specifically contributing to the initial phase of the company's Design System. Ibnu approached tasks with positive attitude and calmness, even under pressure, which is a rare and admirable quality. While he was still in the learning phase during his internship, I saw his willingness to improve and adapt. Ibnu's ability to take feedback gracefully and his commitment to reworking designs showed his grit and dedication to growth. I wish Ibnu all the best in his career journey and look forward to seeing his future achievements!</p>
+          <button class="testi-readmore" onclick="toggleRead('michelleWrap', this)">
+            Read more
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
         <div class="testi-author">
           <div class="testi-avatar">ME</div>
-          <div>
-            <div class="testi-name">Michelle Edithya</div>
-            <div class="testi-role">Mentor · UI/UX Designer ex Tokoplas</div>
+          <div class="testi-author-meta">
+            <div class="testi-name-row">
+              <div class="testi-name">Michelle Edithya</div>
+            </div>
+            <div class="testi-role-row">
+              <div class="testi-role">UI/UX Designer ex Tokoplas</div>
+              <div class="testi-rel-badge">Internship Mentor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card testi-card-client fi fi-d2">
+        <span class="testi-year">May 2026</span>
+        <div class="testi-quote">"</div>
+        <p class="testi-body">Muhamad Ibnu Farizky is an exceptional collaborator who consistently delivers professional results. He demonstrates a remarkable ability to understand and execute ideas exactly as expected, making the entire workflow seamless and highly efficient.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AF</div>
+          <div class="testi-author-meta">
+            <div class="testi-name-row">
+              <div class="testi-name">Al Faz'ul Akbar</div>
+            </div>
+            <div class="testi-role-row">
+              <div class="testi-role">Engineer &amp; Data Analyst</div>
+              <div class="testi-rel-badge">Freelance Client</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1472,6 +1575,13 @@
       heroScroll.style.opacity = window.scrollY > 80 ? '0' : '';
       heroScroll.style.transition = 'opacity 0.4s ease';
     }, { passive: true });
+  }
+
+  /* ── READ MORE ── */
+  function toggleRead(id, btn) {
+    const wrap = document.getElementById(id);
+    const collapsed = wrap.classList.toggle('collapsed');
+    btn.childNodes[0].textContent = collapsed ? 'Read more' : 'Read less ';
   }
 
   /* ── MAGNETIC BUTTON ── */  const magnetBtns = document.querySelectorAll('.btn-p, .btn-s, .nav-cta, .hire-btn .btn-p');
