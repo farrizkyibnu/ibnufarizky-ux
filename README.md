@@ -1,11 +1,17 @@
 # ibnufarizky-ux
 
+---
+
+### <img src="https://readme-typing-svg.herokuapp.com?font=Arial&weight=800&size=30&duration=3000&pause=1000&width=450&lines=AI+EXPLORATION&color=FFD700" alt="AI Exploration" />
+
+---
+
 A personal web portfolio - Assistes by Claude.  
 Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
 
 ## Stack
 
-- HTML5 & CSS3 (no framework)
+- HTML5 & CSS3 
 - Vanilla JavaScript
 - Google Fonts — EB Garamond + Poppins
 
