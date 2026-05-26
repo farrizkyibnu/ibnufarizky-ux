@@ -13,7 +13,7 @@ Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
 
 - HTML5 & CSS3 
 - Vanilla JavaScript
-- Google Fonts — EB Garamond + Poppins
+- Google Fonts: EB Garamond + Poppins
 
 ## Features
 
