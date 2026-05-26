@@ -18,7 +18,7 @@ Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
 
 - Custom cursor with magnetic buttons
 - Hero entrance animation (staggered reveal)
-- Mouse parallax on background glow orbs
+- Parallax 
 - Scroll-triggered section animations
 - Animated stats counter
 - Responsive layout
