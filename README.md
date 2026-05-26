@@ -26,3 +26,5 @@ Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
 ## Live
 
 <a href="https://farrizkyibnu.github.io/ux/" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Website-Portfolio-blue?style=for-the-badge&logo=google-chrome" />
+</a>
