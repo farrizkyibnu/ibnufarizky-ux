@@ -2,7 +2,8 @@
 
 ---
 
-### <img src="https://readme-typing-svg.herokuapp.com?font=Arial&fontStyle=bold&size=35&duration=100&pause=200&width=700&lines=AI+WORKFLOW+EXPLORATION;AI+WORKFLOW+EXPLORATION&color=FFD700&color_2=FFFFFF&color_change=vibrate" alt="AI Workflow Exploration" />
+### <img src="https://readme-typing-svg.herokuapp.com?font=Arial&fontStyle=bold&size=35&duration=3000&pause=1000&width=700&lines=AI+WORKFLOW+EXPLORATION&color=FFD700" alt="AI Workflow Exploration" />
+
 
 A personal web portfolio - Assistes by Claude.  
 Built with **HTML5**, **CSS3**, and **Vanilla JavaScript**.
