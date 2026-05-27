@@ -736,34 +736,116 @@
 
     /* ── EXPERIENCE ── */
     #experience { background: var(--surface); }
-    .exp-list { margin-top: 3.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .exp-list {
+      margin-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
     .exp-item {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 1.75rem;
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 0;
       position: relative;
       overflow: hidden;
+      cursor: default;
       transition: border-color .35s;
     }
+    /* tint gradient on hover */
     .exp-item::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(201,255,71,0.07) 0%, rgba(201,255,71,0.02) 40%, transparent 70%);
-      border-radius: inherit;
+      background: linear-gradient(105deg, rgba(201,255,71,0.09) 0%, rgba(201,255,71,0.03) 45%, transparent 75%);
       opacity: 0;
       pointer-events: none;
-      transition: opacity .45s ease;
+      transition: opacity .4s ease;
     }
-    .exp-item:hover { border-color: rgba(201,255,71,.28); transform: translateY(-3px); }
+    /* accent left strip */
+    .exp-item::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      border-radius: 0 2px 2px 0;
+      transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     .exp-item:hover::before { opacity: 1; }
-    .exp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: .25rem; }
-    .exp-period { font-size: .7rem; color: var(--txt-2); background: var(--surface-2); border: 1px solid rgba(255,255,255,0.12); padding: .22rem .7rem; border-radius: 100px; letter-spacing: .04em; white-space: nowrap; flex-shrink: 0; margin-top: .3rem; }
-    .exp-role { font-family: var(--display); font-size: 1.3rem; font-weight: 500; color: var(--txt); line-height: 1.2; }
-    .exp-company { font-size: .83rem; color: var(--accent); font-weight: 400; margin-bottom: 1.1rem; }
-    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
-    .exp-bullets li { font-size: .83rem; color: var(--txt-2); padding-left: 1.1rem; position: relative; line-height: 1.65; }
+    .exp-item:hover::after  { transform: scaleY(1); }
+
+    .exp-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+      padding: 0 .25rem 0 1.25rem;
+    }
+    .exp-left { flex: 1; min-width: 0; }
+    .exp-role {
+      font-family: var(--display);
+      font-size: 1.22rem;
+      font-weight: 500;
+      color: var(--txt);
+      line-height: 1.2;
+      transition: color .3s;
+    }
+    .exp-company {
+      font-size: .78rem;
+      color: var(--accent);
+      font-weight: 400;
+      margin-top: .2rem;
+      letter-spacing: .01em;
+    }
+    .exp-period {
+      font-size: .7rem;
+      color: var(--txt-2);
+      background: var(--surface-2);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: .22rem .7rem;
+      border-radius: 100px;
+      letter-spacing: .04em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .exp-chevron {
+      color: var(--txt-3);
+      flex-shrink: 0;
+      transition: transform .38s cubic-bezier(0.4,0,0.2,1), color .3s;
+    }
+    .exp-item:hover .exp-chevron { transform: rotate(90deg); color: var(--accent); }
+
+    /* collapse area */
+    .exp-details {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .45s cubic-bezier(0.4, 0, 0.2, 1), opacity .35s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .exp-item:hover .exp-details {
+      max-height: 500px;
+      opacity: 1;
+    }
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .38rem;
+      padding: .85rem 1.25rem .15rem 2.5rem;
+    }
+    .exp-bullets li {
+      font-size: .8rem;
+      color: var(--txt-2);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.7;
+    }
     .exp-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--txt-3); }
 
     /* ── TESTIMONIAL ── */
@@ -1399,95 +1481,130 @@
     <div class="exp-list fi">
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">Designer (Freelance)</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">Designer | Freelance</div>
+            <div class="exp-company">TARDS</div>
+          </div>
           <span class="exp-period">2025 — Present</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">TARDS</div>
-        <ul class="exp-bullets">
-          <li>Conduct brainstorm with client to set goals</li>
-          <li>Conduct research to set product benchmark</li>
-          <li>Translate data specification product to Design</li>
-          <li>Enhancing Asset Quality with AI Tools, resulting client satisfaction and experience</li>
-          <li>Implement UX Law for gain brochure readability experience</li>
-          <li>Creating Logo, artwork and visual background for clients</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Conduct brainstorm with client to set goals</li>
+            <li>Conduct research to set product benchmark</li>
+            <li>Translate data specification product to Design</li>
+            <li>Enhancing Asset Quality with AI Tools, resulting client satisfaction and experience</li>
+            <li>Implement UX Law for gain brochure readability experience</li>
+            <li>Creating Logo, artwork and visual background for clients</li>
+          </ul>
+        </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">UX Design Facilitator</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">UX Design | Facilitator</div>
+            <div class="exp-company">Dicoding × Telkom Indonesia</div>
+          </div>
           <span class="exp-period">2024 — 2025</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">Dicoding × Telkom Indonesia</div>
-        <ul class="exp-bullets">
-          <li>Supported Telkom Indonesia employees in earning Google UX Design certification</li>
-          <li>Answered certification task questions and guided learners through the process</li>
-          <li>Achieved optimal completion rates across all facilitated cohort</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Supported Telkom Indonesia employees in earning Google UX Design certification</li>
+            <li>Answered certification task questions and guided learners through the process</li>
+            <li>Achieved optimal completion rates across all facilitated cohort</li>
+          </ul>
+        </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">UI/UX Designer Intern — Design System</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">UI/UX Designer Intern | Design System</div>
+            <div class="exp-company">Tokoplas</div>
+          </div>
           <span class="exp-period">2024</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">Tokoplas</div>
-        <ul class="exp-bullets">
-          <li>Created 30+ reusable components, cutting sprint cycles significantly</li>
-          <li>Assisted in initial design system rollout across 2 platforms for improved consistency</li>
-          <li>Conducted user feedback sessions to refine flows and overall UX quality</li>
-          <li>Collaborated closely with engineers to ensure implementation fidelity</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Created 30+ reusable components, cutting sprint cycles significantly</li>
+            <li>Assisted in initial design system rollout across 2 platforms for improved consistency</li>
+            <li>Conducted user feedback sessions to refine flows and overall UX quality</li>
+            <li>Collaborated closely with engineers to ensure implementation fidelity</li>
+          </ul>
+        </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">UI/UX Designer — Project Based Intern</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">UI/UX Designer | Project Based Intern</div>
+            <div class="exp-company">FundEx</div>
+          </div>
           <span class="exp-period">2024</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">FundEx</div>
-        <ul class="exp-bullets">
-          <li>Redesigned the company website end-to-end</li>
-          <li>Created full styleguide and design documentation</li>
-          <li>Presented final designs and rationale to mentor</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Redesigned the company website end-to-end</li>
+            <li>Created full styleguide and design documentation</li>
+            <li>Presented final designs and rationale to mentor</li>
+          </ul>
+        </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">UI/UX Designer — Freelance</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">UI/UX Designer | Freelance</div>
+            <div class="exp-company">VentureUP</div>
+          </div>
           <span class="exp-period">2023</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">VentureUP</div>
-        <ul class="exp-bullets">
-          <li>Developed full investment web design from wireframe to hi-fi</li>
-          <li>Delivered styleguide and complete design documentation</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Developed full investment web design from wireframe to hi-fi</li>
+            <li>Delivered styleguide and complete design documentation</li>
+          </ul>
+        </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">Google UX Design Certificate</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">UI/UX Research & Design | Bootcamp</div>
+            <div class="exp-company">Binar Academy</div>
+          </div>
           <span class="exp-period">2022</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">Binar Academy</div>
-        <ul class="exp-bullets">
-          <li>Completed UI/UX Research & Design course covering end-to-end design process</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Completed UI/UX Research & Design course covering end-to-end design process</li>
+          </ul>
+        </div>
       </div>
 
       <div class="exp-item">
-        <div class="exp-head">
-          <div class="exp-role">Business Owner | Creative Marketing</div>
+        <div class="exp-summary">
+          <div class="exp-left">
+            <div class="exp-role">Business Owner | Creative Marketing</div>
+            <div class="exp-company">Vespa Supply</div>
+          </div>
           <span class="exp-period">2020 — 2022</span>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
         </div>
-        <div class="exp-company">Vespa Supply</div>
-        <ul class="exp-bullets">
-          <li>Responsibility to lead team & workflow</li>
-          <li>Create design for campaign and copywriting for campaign/content</li>
-          <li>Managed B2B partnerships with distributors and automotive workshops to support campaign execution</li>
-        </ul>
+        <div class="exp-details">
+          <ul class="exp-bullets">
+            <li>Responsibility to lead team &amp; workflow</li>
+            <li>Create design for campaign and copywriting for campaign/content</li>
+            <li>Managed B2B partnerships with distributors and automotive workshops to support campaign execution</li>
+          </ul>
+        </div>
       </div>
 
     </div>
