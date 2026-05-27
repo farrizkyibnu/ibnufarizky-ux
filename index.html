@@ -649,17 +649,24 @@
       border: 1px solid var(--border);
       border-radius: var(--r);
       overflow: hidden;
-      transition: border-color .35s, transform .35s;
+      display: flex;
+      flex-direction: column;
+      transition: border-color .35s;
       cursor: pointer;
+      position: relative;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
-    .project-card:hover { border-color: rgba(201,255,71,.3); transform: translateY(-5px); }
-    .card-thumb { position: relative; overflow: hidden; }
+    .project-card:hover { border-color: rgba(201,255,71,.3); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+    .project-card:hover .card-body::before { opacity: 1; }
+    .card-thumb { position: relative; overflow: hidden; background: var(--surface); transform: translateZ(0); -webkit-transform: translateZ(0); box-shadow: 0 4px 0 var(--surface); will-change: transform; }
     .project-card:nth-child(1) .card-thumb { aspect-ratio: 21/8; }
     .project-card:nth-child(2) .card-thumb,
     .project-card:nth-child(3) .card-thumb,
     .project-card:nth-child(4) .card-thumb,
     .project-card:nth-child(5) .card-thumb { aspect-ratio: 16/9; }
-    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
     .project-card:hover .card-thumb img { transform: scale(1.05); }
     .card-hover-layer {
       position: absolute;
@@ -670,6 +677,9 @@
       padding: 1.25rem;
       opacity: 0;
       transition: opacity .3s;
+      z-index: 3;
+      font-size: 1rem;
+      line-height: normal;
     }
     .project-card:hover .card-hover-layer { opacity: 1; }
     .card-cta {
@@ -683,7 +693,16 @@
       transition: opacity .2s;
     }
     .card-cta:hover { opacity: .85; }
-    .card-body { padding: 1.1rem 1.3rem 1.35rem; }
+    .card-body { padding: 1.1rem 1.3rem 1.35rem; position: relative; overflow: hidden; }
+    .card-body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,255,71,0.08) 0%, rgba(201,255,71,0.03) 50%, transparent 75%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .45s ease;
+    }
     .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
     .card-year { font-size: .7rem; color: var(--txt-3); letter-spacing: .04em; }
     .card-tag {
@@ -725,7 +744,7 @@
       padding: 1.75rem;
       position: relative;
       overflow: hidden;
-      transition: border-color .35s, transform .35s;
+      transition: border-color .35s;
     }
     .exp-item::before {
       content: '';
@@ -1425,7 +1444,7 @@
       <div class="exp-item">
         <div class="exp-head">
           <div class="exp-role">UI/UX Designer — Project Based Intern</div>
-          <span class="exp-period">2023</span>
+          <span class="exp-period">2024</span>
         </div>
         <div class="exp-company">FundEx</div>
         <ul class="exp-bullets">
