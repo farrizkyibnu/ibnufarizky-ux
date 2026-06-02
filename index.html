@@ -318,11 +318,11 @@
       font-size: clamp(3.4rem, 6.5vw, 6.6rem);
       font-weight: 500;
       line-height: .93;
-      letter-spacing: -.01em;
+      letter-spacing: -4%;
       color: var(--txt);
       margin-bottom: .5rem;
     }
-    .hero-name em { font-style: italic; color: var(--accent); font-weight: 300; }
+    .hero-name em { font-style: italic; color: var(--accent); font-weight: 300; letter-spacing: -12.9%; }
     .hero-role {
       font-size: clamp(.95rem, 1.8vw, 1.15rem);
       color: var(--txt-2);
@@ -469,7 +469,7 @@
       position: absolute;
       inset: -14px;
       border-radius: 50%;
-      border: 1px dashed rgba(71, 246, 255, 0.25);
+      border: 1px dashed rgba(171, 247, 251, 0.25);
       animation: spin 28s linear infinite;
     }
     .photo-ring::before {
@@ -569,17 +569,15 @@
     }
     .about-text p { color: var(--txt-2); line-height: 1.85; margin-bottom: 1.25rem; font-size: .95rem; text-align: center; }
     .about-text p strong { color: var(--txt); font-weight: 500; }
-    .skills-wrap { margin-top: 0; width: 100%; }
+    .skills-wrap { margin-top: 2rem; width: 100%; }
     .skills-lbl { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 1.25rem; text-align: center; }
 
     /* ── MARQUEE ── */
     .marquee-outer {
       position: relative;
       overflow: hidden;
-      width: 100%;
-      max-width: 1200px;
+      width: 1200px;
       left: 50%;
-      margin: auto;
       transform: translateX(-50%);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
@@ -680,7 +678,7 @@
       position: absolute;
       top: 0; left: -80%;
       width: 45%; height: calc(100% - 2px);
-      background: linear-gradient(90deg, transparent, rgba(201,255,71,.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(71, 218, 255, 0.3), transparent);
       transform: skewX(-15deg);
       transition: left .5s ease;
       pointer-events: none;
@@ -1237,7 +1235,7 @@
       .hero-desc { margin-left: auto; margin-right: auto; }
       .hero-actions { justify-content: center; }
       .about-grid { gap: 2rem; }
-      .skills-wrap { margin-top: 0; }
+      .skills-wrap { margin-top: 2rem; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
       .testi-right { grid-template-columns: 1fr; }
@@ -1344,7 +1342,6 @@
   <div class="hero-glow-2"></div>
   <div class="hero-inner">
     <div class="hero-content">
-
       <h1 class="hero-name"><em>Muhamad</em><br>Ibnu Farizky</h1>
       <p class="hero-role">Product Designer <span></span> UI&thinsp;/&thinsp;UX</p>
       <p class="hero-desc">Strategic designer with a business background, crafting high-impact digital products that balance user experience with measurable business goals.</p>
@@ -1454,13 +1451,19 @@
             <span class="skill-tag">Interaction Design</span>
             <!-- duplicate -->
             <span class="skill-tag">Design System</span>
+            <span class="skill-tag">Problem Solving</span>
+            <span class="skill-tag">Design System</span>
             <span class="skill-tag">User Research</span>
-            <span class="skill-tag">UI Audit</span>
+            <span class="skill-tag">Testing</span>
+            <span class="skill-tag">end-to-end UX</span>
+            <span class="skill-tag">UI/UX Audit</span>
             <span class="skill-tag">Prototyping</span>
-            <span class="skill-tag">Auto Layout</span>
+            <span class="skill-tag">Conduct Interview</span>
             <span class="skill-tag">Vibe Coding</span>
             <span class="skill-tag">AI Tools</span>
-            <span class="skill-tag">Dev Handoff</span>
+            <span class="skill-tag">Slicing Design</span>
+            <span class="skill-tag">UX Strategy</span>
+            <span class="skill-tag">Teamwork</span>
             <span class="skill-tag">Wireframing</span>
             <span class="skill-tag">UX Writing</span>
             <span class="skill-tag">Interaction Design</span>
@@ -1486,7 +1489,10 @@
       <div class="project-card">
         <div class="card-thumb">
           <img src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
-          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
+          <div class="card-hover-layer im"><a href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener" class="card-cta">View Case Study <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+          <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
+          </svg></a>
+         </div>
         </div>
         <div class="card-body">
           <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">UI/UX Audit</span></div>
@@ -1497,7 +1503,10 @@
       <div class="project-card">
         <div class="card-thumb">
           <img src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
-          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener" class="card-cta">View Case Study <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+          <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
+          </svg></a>
+         </div>
         </div>
         <div class="card-body">
           <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">Dashboard / ERP</span></div>
@@ -1508,7 +1517,10 @@
       <div class="project-card">
         <div class="card-thumb">
           <img src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
-          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener" class="card-cta">View Case Study <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+          <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
+          </svg></a>
+         </div>
         </div>
         <div class="card-body">
           <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">Fintech Dashboard</span></div>
@@ -1519,7 +1531,10 @@
       <div class="project-card">
         <div class="card-thumb">
           <img src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
-          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener" class="card-cta">View Case Study <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+          <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
+          </svg></a>
+         </div>
         </div>
         <div class="card-body">
           <div class="card-meta"><span class="card-year">2025</span><span class="card-tag">UI/UX Audit</span></div>
@@ -1530,7 +1545,10 @@
       <div class="project-card">
         <div class="card-thumb">
           <img src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
-          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener" class="card-cta">View Case Study →</a></div>
+          <div class="card-hover-layer"><a href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener" class="card-cta">View Case Study <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+          <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
+          </svg></a>
+         </div>
         </div>
         <div class="card-body">
           <div class="card-meta"><span class="card-year">2024</span><span class="card-tag">Design System</span></div>
