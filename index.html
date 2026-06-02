@@ -576,7 +576,9 @@
     .marquee-outer {
       position: relative;
       overflow: hidden;
-      width: 1200px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
       left: 50%;
       transform: translateX(-50%);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
