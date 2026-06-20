@@ -504,10 +504,9 @@
       margin: 0 auto;
     }
     .stats-grid {
-      display: grid !important;
-      grid-template-columns: repeat(2, 1fr) !important; 
-      gap: 1.5rem 1rem !important; 
-      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
     }
     .stat-item { text-align: center; }
     .stat-num {
@@ -538,7 +537,10 @@
       .stat-item { text-align: center; }
     }
     @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr; gap: 2rem 1.25rem;  }
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 1.5rem 1rem !important;
+      width: 100%;
     }
 
 
@@ -1388,7 +1390,7 @@
         <div class="stat-title">Projects Shipped</div>
       </div>
       <div class="stat-item">
-        <span class="stat-num">3+</span>
+        <span class="stat-num">3</span>
         <div class="stat-title">Brands Served</div>
       </div>
     </div>
