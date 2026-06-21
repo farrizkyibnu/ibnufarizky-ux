@@ -1210,6 +1210,20 @@
         background: rgba(71, 200, 255, 0.139);
       }
       body.cursor-hover #cursor-dot { transform: translate(-50%, -50%) scale(0); }
+      body.cursor-view #cursor-ring {
+        width: 64px; height: 64px;
+        border-color: var(--accent);
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--body);
+        font-size: .68rem;
+        font-weight: 500;
+        letter-spacing: .04em;
+        color: var(--accent);
+      }
+      body.cursor-view #cursor-dot { transform: translate(-50%, -50%) scale(0); }
     }
 
     /* ── CARD TILT ── */
@@ -1310,7 +1324,7 @@
 
 <!-- ════════════════════ CURSOR ════════════════════ -->
 <div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
+<div id="cursor-ring"><span id="cursorLabel"></span></div>
 
 <!-- ════════════════════ NAVBAR ════════════════════ -->
 <nav id="navbar">
@@ -1379,7 +1393,7 @@
     <div class="stats-grid">
       <div class="stat-item">
         <span class="stat-num">2+</span>
-        <div class="stat-title">Years Experience</div>
+        <div class="stat-title">Years in UX</div>
       </div>
       <div class="stat-item">
         <span class="stat-num">200+</span>
@@ -1391,7 +1405,7 @@
       </div>
       <div class="stat-item">
         <span class="stat-num">3</span>
-        <div class="stat-title">Brands Served</div>
+        <div class="stat-title">Teams Worked With</div>
       </div>
     </div>
   </div>
@@ -1940,10 +1954,21 @@
       requestAnimationFrame(animateRing);
     })();
 
-    const hoverTargets = 'a, button, .skill-tag, .project-card, .testi-card';
+    const hoverTargets = 'a, button, .skill-tag, .testi-card';
     document.querySelectorAll(hoverTargets).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+    const cursorLabel = document.getElementById('cursorLabel');
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        document.body.classList.add('cursor-view');
+        if (cursorLabel) cursorLabel.textContent = 'View';
+      });
+      card.addEventListener('mouseleave', () => {
+        document.body.classList.remove('cursor-view');
+        if (cursorLabel) cursorLabel.textContent = '';
+      });
     });
     document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
     document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
