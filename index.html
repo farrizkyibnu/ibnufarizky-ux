@@ -17,6 +17,7 @@
   <meta name="description" content="Strategic UI/UX Designer with a business background, crafting high-impact digital products that align user experience with business goals." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -189,83 +190,19 @@
       position: relative;
       overflow: hidden;
     }
-    #hero-grid {
+    #tunnel {
       position: absolute;
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      overflow: hidden;
+      display: block;
     }
-    #hero-grid::before {
-      content: '';
+    .hero-vignette {
       position: absolute;
-      inset: -60px;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.042) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.042) 1px, transparent 1px);
-      background-size: 44px 44px;
-      -webkit-mask-image: radial-gradient(ellipse 90% 90% at 72% 38%, black 10%, rgba(0,0,0,0.6) 45%, transparent 75%);
-      mask-image: radial-gradient(ellipse 90% 90% at 72% 38%, black 10%, rgba(0,0,0,0.6) 45%, transparent 75%);
-    }
-    .grid-glow-a {
-      position: absolute;
-      width: 680px; height: 480px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(71, 200, 255, 0.068) 0%, rgba(71, 178, 255, 0.023) 90%, transparent 90%);
-      top: -12%; right: -4%;
-      filter: blur(40px);
-      animation: glow-a 2s ease-in-out infinite alternate;
-      --tx: 0px; --ty: 0px;
-    }
-    .grid-glow-b {
-      position: absolute;
-      width: 440px; height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(71, 252, 255, 0.123) 0%, transparent 90%);
-      bottom: 5%; right: 18%;
-      filter: blur(55px);
-      animation: glow-b 4s ease-in-out infinite alternate;
-      --tx: 0px; --ty: 0px;
-    }
-    .grid-glow-c {
-      position: absolute;
-      width: 800px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(71, 224, 255, 0.064) 0%, transparent 90%);
-      top: 20%; right: -10%;
-      filter: blur(70px);
-      animation: glow-c 7s ease-in-out infinite alternate;
-      --tx: 0px; --ty: 0px;
-    }
-    @keyframes glow-a {
-      0%   { transform: translate(calc(0px   + var(--tx,0px)), calc(0px   + var(--ty,0px))) scale(1);    opacity: 0.75; }
-      40%  { transform: translate(calc(-35px + var(--tx,0px)), calc(28px  + var(--ty,0px))) scale(1.08); opacity: 1; }
-      100% { transform: translate(calc(18px  + var(--tx,0px)), calc(-22px + var(--ty,0px))) scale(0.94); opacity: 0.55; }
-    }
-    @keyframes glow-b {
-      0%   { transform: translate(calc(0px   + var(--tx,0px)), calc(0px   + var(--ty,0px))) scale(1);    opacity: 0.5; }
-      50%  { transform: translate(calc(28px  + var(--tx,0px)), calc(-38px + var(--ty,0px))) scale(1.12); opacity: 0.85; }
-      100% { transform: translate(calc(-18px + var(--tx,0px)), calc(24px  + var(--ty,0px))) scale(0.9);  opacity: 0.35; }
-    }
-    @keyframes glow-c {
-      0%   { transform: translate(calc(0px   + var(--tx,0px)), calc(0px   + var(--ty,0px))) scale(1);    opacity: 0.6; }
-      100% { transform: translate(calc(-25px + var(--tx,0px)), calc(35px  + var(--ty,0px))) scale(1.06); opacity: 1; }
-    }
-    .hero-glow-1 {
-      position: absolute;
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(71, 234, 255, 0.027) 0%, transparent 90%);
-      top: -150px; right: -150px;
-      pointer-events: none;
+      inset: 0;
       z-index: 1;
-    }
-    .hero-glow-2 {
-      position: absolute;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(71, 194, 255, 0.041) 0%, transparent 90%);
-      bottom: 0; left: -100px;
       pointer-events: none;
-      z-index: 1;
+      background: radial-gradient(ellipse 85% 75% at 72% 42%, transparent 30%, var(--bg) 100%);
     }
     .hero-inner {
       max-width: var(--mw);
@@ -1364,13 +1301,8 @@
 
 <!-- ════════════════════ HERO ════════════════════ -->
 <section id="home">
-  <div id="hero-grid" aria-hidden="true">
-    <div class="grid-glow-a"></div>
-    <div class="grid-glow-b"></div>
-    <div class="grid-glow-c"></div>
-  </div>
-  <div class="hero-glow-1"></div>
-  <div class="hero-glow-2"></div>
+  <canvas id="tunnel" aria-hidden="true"></canvas>
+  <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-content">
       <h1 class="hero-name"><em>Muhamad</em><br>Ibnu Farizky</h1>
@@ -1913,6 +1845,172 @@
     }, { passive: true });
   }
 
+  /* ── HERO WORMHOLE TUNNEL ── */
+  (function () {
+    const canvas = document.getElementById('tunnel');
+    if (!canvas || typeof THREE === 'undefined') return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const homeSec = document.getElementById('home');
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(homeSec.clientWidth, homeSec.clientHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(70, homeSec.clientWidth / homeSec.clientHeight, 0.1, 100);
+    camera.position.set(0, 0, 4);
+
+    /* same tones already used elsewhere in this file — no new colors */
+    const PALETTE = [new THREE.Color(0xfbfeff), new THREE.Color(0x47eaff), new THREE.Color(0x0e76a8)];
+    function paletteColor(t, out) {
+      const n = PALETTE.length;
+      const f = (((t % 1) + 1) % 1) * n;
+      const i = Math.floor(f) % n;
+      const j = (i + 1) % n;
+      const frac = f - Math.floor(f);
+      return out.copy(PALETTE[i]).lerp(PALETTE[j], frac);
+    }
+
+    function glowTexture() {
+      const size = 128;
+      const c = document.createElement('canvas'); c.width = c.height = size;
+      const ctx = c.getContext('2d');
+      const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+      g.addColorStop(0, 'rgba(255,255,255,1)');
+      g.addColorStop(0.4, 'rgba(255,255,255,0.5)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, size, size);
+      return new THREE.CanvasTexture(c);
+    }
+    const glowTex = glowTexture();
+
+    const DEPTH = 60, TUBE_R = 3.4;
+    function randomPointInTunnel(zBias) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 0.6 + Math.random() * TUBE_R;
+      return { x: Math.cos(a) * r, y: Math.sin(a) * r, z: zBias !== undefined ? zBias : -Math.random() * DEPTH };
+    }
+
+    const BASE_N = 420;
+    const basePos = new Float32Array(BASE_N * 3), baseCol = new Float32Array(BASE_N * 3);
+    const basePhase = new Float32Array(BASE_N), baseSpeed = new Float32Array(BASE_N);
+    for (let i = 0; i < BASE_N; i++) {
+      const p = randomPointInTunnel();
+      basePos[i * 3] = p.x; basePos[i * 3 + 1] = p.y; basePos[i * 3 + 2] = p.z;
+      basePhase[i] = Math.random(); baseSpeed[i] = 0.5 + Math.random() * 0.5;
+      const c = paletteColor(basePhase[i], new THREE.Color());
+      baseCol[i * 3] = c.r; baseCol[i * 3 + 1] = c.g; baseCol[i * 3 + 2] = c.b;
+    }
+    const baseGeo = new THREE.BufferGeometry();
+    baseGeo.setAttribute('position', new THREE.BufferAttribute(basePos, 3));
+    baseGeo.setAttribute('color', new THREE.BufferAttribute(baseCol, 3));
+    const basePoints = new THREE.Points(baseGeo, new THREE.PointsMaterial({ size: 0.032, vertexColors: true, transparent: true, opacity: 0.7, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    scene.add(basePoints);
+
+    const GLOW_N = 48;
+    const glowPos = new Float32Array(GLOW_N * 3), glowCol = new Float32Array(GLOW_N * 3);
+    const glowPhase = new Float32Array(GLOW_N), glowSpeed = new Float32Array(GLOW_N);
+    for (let i = 0; i < GLOW_N; i++) {
+      const p = randomPointInTunnel();
+      glowPos[i * 3] = p.x; glowPos[i * 3 + 1] = p.y; glowPos[i * 3 + 2] = p.z;
+      glowPhase[i] = Math.random(); glowSpeed[i] = 0.4 + Math.random() * 0.4;
+      const c = paletteColor(glowPhase[i], new THREE.Color());
+      glowCol[i * 3] = c.r; glowCol[i * 3 + 1] = c.g; glowCol[i * 3 + 2] = c.b;
+    }
+    const glowGeo = new THREE.BufferGeometry();
+    glowGeo.setAttribute('position', new THREE.BufferAttribute(glowPos, 3));
+    glowGeo.setAttribute('color', new THREE.BufferAttribute(glowCol, 3));
+    const glowPoints = new THREE.Points(glowGeo, new THREE.PointsMaterial({ size: 0.22, map: glowTex, vertexColors: true, transparent: true, opacity: 0.5, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    scene.add(glowPoints);
+
+    const COMET_N = 8, TRAIL_LEN = 14;
+    const comets = [];
+    for (let i = 0; i < COMET_N; i++) {
+      const start = randomPointInTunnel();
+      const trail = [];
+      for (let k = 0; k < TRAIL_LEN; k++) trail.push({ x: start.x, y: start.y, z: start.z });
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(TRAIL_LEN * 3), 3));
+      lineGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(TRAIL_LEN * 3), 3));
+      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }));
+      scene.add(line);
+      const headGeo = new THREE.BufferGeometry();
+      headGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([start.x, start.y, start.z]), 3));
+      const head = new THREE.Points(headGeo, new THREE.PointsMaterial({ size: 0.3, map: glowTex, color: 0xfbfeff, transparent: true, opacity: 0.9, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+      scene.add(head);
+      comets.push({ pos: start, trail, line, head, speed: 2.2 + Math.random() * 1.3, phase: Math.random() });
+    }
+
+    let mx = 0, my = 0, tmx = 0, tmy = 0;
+    window.addEventListener('mousemove', e => {
+      tmx = (e.clientX / window.innerWidth - 0.5) * 2;
+      tmy = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    const tmpColor = new THREE.Color();
+    let t = 0;
+    function animate() {
+      if (!reduceMotion) {
+        t += 0.006;
+        const bp = baseGeo.attributes.position, bc = baseGeo.attributes.color;
+        for (let i = 0; i < BASE_N; i++) {
+          let z = bp.getZ(i) + baseSpeed[i] * 0.05;
+          if (z > camera.position.z) z -= DEPTH;
+          bp.setZ(i, z);
+          paletteColor(t * 0.05 + basePhase[i], tmpColor);
+          bc.setXYZ(i, tmpColor.r, tmpColor.g, tmpColor.b);
+        }
+        bp.needsUpdate = true; bc.needsUpdate = true;
+
+        const gp = glowGeo.attributes.position, gc = glowGeo.attributes.color;
+        for (let i = 0; i < GLOW_N; i++) {
+          let z = gp.getZ(i) + glowSpeed[i] * 0.05;
+          if (z > camera.position.z) z -= DEPTH;
+          gp.setZ(i, z);
+          paletteColor(t * 0.04 + glowPhase[i], tmpColor);
+          gc.setXYZ(i, tmpColor.r, tmpColor.g, tmpColor.b);
+        }
+        gp.needsUpdate = true; gc.needsUpdate = true;
+
+        comets.forEach(cm => {
+          cm.pos.z += cm.speed * 0.05;
+          if (cm.pos.z > camera.position.z) {
+            const np = randomPointInTunnel(-DEPTH * 0.8);
+            cm.pos.x = np.x; cm.pos.y = np.y; cm.pos.z = np.z;
+            cm.trail.forEach(pt => { pt.x = cm.pos.x; pt.y = cm.pos.y; pt.z = cm.pos.z; });
+          }
+          cm.trail.pop();
+          cm.trail.unshift({ x: cm.pos.x, y: cm.pos.y, z: cm.pos.z });
+          const lp = cm.line.geometry.attributes.position, lc = cm.line.geometry.attributes.color;
+          for (let k = 0; k < TRAIL_LEN; k++) {
+            lp.setXYZ(k, cm.trail[k].x, cm.trail[k].y, cm.trail[k].z);
+            const fade = 1 - k / TRAIL_LEN;
+            paletteColor(t * 0.05 + cm.phase, tmpColor);
+            lc.setXYZ(k, tmpColor.r * fade, tmpColor.g * fade, tmpColor.b * fade);
+          }
+          lp.needsUpdate = true; lc.needsUpdate = true;
+          const hp = cm.head.geometry.attributes.position;
+          hp.setXYZ(0, cm.pos.x, cm.pos.y, cm.pos.z);
+          hp.needsUpdate = true;
+        });
+      }
+
+      mx += (tmx - mx) * 0.04; my += (tmy - my) * 0.04;
+      camera.rotation.y = mx * 0.05;
+      camera.rotation.x = -my * 0.035;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = homeSec.clientWidth / homeSec.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(homeSec.clientWidth, homeSec.clientHeight);
+    });
+  })();
+
   /* ── READ MORE TOGGLE ── */
   function toggleRead(id, btn) {
     const wrap = document.getElementById(id);
@@ -1958,35 +2056,6 @@
     });
     document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
     document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
-
-    /* ── GLOW PARALLAX ── */
-    const glowA = document.querySelector('.grid-glow-a');
-    const glowB = document.querySelector('.grid-glow-b');
-    const glowC = document.querySelector('.grid-glow-c');
-    if (glowA) {
-      let tAx = 0, tAy = 0, tBx = 0, tBy = 0, tCx = 0, tCy = 0;
-      let cAx = 0, cAy = 0, cBx = 0, cBy = 0, cCx = 0, cCy = 0;
-      window.addEventListener('mousemove', e => {
-        const dx = (e.clientX - window.innerWidth  / 2) / (window.innerWidth  / 2);
-        const dy = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
-        tAx = dx * -22; tAy = dy * -14;
-        tBx = dx *  14; tBy = dy *  18;
-        tCx = dx * -10; tCy = dy * -24;
-      }, { passive: true });
-      (function lerpGlows() {
-        const e = 0.06;
-        cAx += (tAx - cAx) * e; cAy += (tAy - cAy) * e;
-        cBx += (tBx - cBx) * e; cBy += (tBy - cBy) * e;
-        cCx += (tCx - cCx) * e; cCy += (tCy - cCy) * e;
-        glowA.style.setProperty('--tx', cAx.toFixed(2) + 'px');
-        glowA.style.setProperty('--ty', cAy.toFixed(2) + 'px');
-        glowB.style.setProperty('--tx', cBx.toFixed(2) + 'px');
-        glowB.style.setProperty('--ty', cBy.toFixed(2) + 'px');
-        glowC.style.setProperty('--tx', cCx.toFixed(2) + 'px');
-        glowC.style.setProperty('--ty', cCy.toFixed(2) + 'px');
-        requestAnimationFrame(lerpGlows);
-      })();
-    }
 
     /* ── CARD TILT PARALLAX (desktop only) ── */
     if (window.innerWidth > 960) {
