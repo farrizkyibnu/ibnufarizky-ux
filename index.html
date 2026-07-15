@@ -14,7 +14,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="html-logo.svg" />
   <title>Muhamad Ibnu Farizky // Product Designer</title>
-  <meta name="description" content="Strategic UI/UX Designer with a business background, crafting high-impact digital products that align user experience with business goals." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1193,11 +1192,20 @@
     .testi-right .testi-card:last-child::after { animation-delay: 3.5s; }
 
     /* ── FADE IN ── */
-    .fi { opacity: 0; transform: translateY(22px); transition: opacity .75s ease, transform .75s ease; }
-    .fi.in { opacity: 1; transform: translateY(0); }
+    .fi {
+      opacity: 0;
+      transform: translateY(46px) scale(.78);
+      transition: opacity 1s cubic-bezier(.19,1,.22,1), transform 1s cubic-bezier(.19,1,.22,1), border-color .35s;
+      will-change: transform, opacity;
+    }
+    .fi.in { opacity: 1; transform: translateY(0) scale(1); }
+    .fi.out-up { opacity: 0; transform: translateY(-90px) scale(.7); }
     .fi-d1 { transition-delay: .1s; }
     .fi-d2 { transition-delay: .2s; }
     .fi-d3 { transition-delay: .3s; }
+    @media (prefers-reduced-motion: reduce) {
+      .fi { transition: opacity .3s ease; transform: none !important; }
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
@@ -1307,7 +1315,6 @@
     <div class="hero-content">
       <h1 class="hero-name"><em>Muhamad</em><br>Ibnu Farizky</h1>
       <p class="hero-role">Product Designer <span></span> UI&thinsp;/&thinsp;UX</p>
-      <p class="hero-desc">Strategic designer with a business background, crafting high-impact digital products that balance user experience with measurable business goals.</p>
       <div class="hero-actions">
         <a href="#work" class="btn-p"><span>View Work</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;">
     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z" clip-rule="evenodd" />
@@ -1455,8 +1462,8 @@
           <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
           </svg></a>
     </div>
-    <div class="projects-grid fi">
-      <a class="project-card" href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener">
+    <div class="projects-grid">
+      <a class="project-card fi" href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
         </div>
@@ -1466,7 +1473,7 @@
           <div class="card-desc">A comprehensive UI/UX audit to improve user retention and financial awareness through redesigned flows and interaction patterns.</div>
         </div>
       </a>
-      <a class="project-card" href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener">
+      <a class="project-card fi" href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
         </div>
@@ -1476,7 +1483,7 @@
           <div class="card-desc">End-to-end internal ERP dashboard covering stock management, analytics, and business operations.</div>
         </div>
       </a>
-      <a class="project-card" href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener">
+      <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
         </div>
@@ -1486,7 +1493,7 @@
           <div class="card-desc">Financial management software with real-time analytics, cash flow tracking, and budget planning.</div>
         </div>
       </a>
-      <a class="project-card" href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener">
+      <a class="project-card fi" href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
         </div>
@@ -1496,7 +1503,7 @@
           <div class="card-desc">Optimizing flow, gamification, and reducing decision fatigue to meaningfully boost user retention.</div>
         </div>
       </a>
-      <a class="project-card" href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener">
+      <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
         </div>
@@ -1528,7 +1535,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">Designer | Freelance</div>
+            <div class="exp-role">Designer - Freelance</div>
             <div class="exp-company">TARDS</div>
           </div>
           <span class="exp-period">2025 — Present</span>
@@ -1549,7 +1556,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">UX Design | Facilitator</div>
+            <div class="exp-role">UX Design - Facilitator</div>
             <div class="exp-company">Dicoding × Telkom Indonesia</div>
           </div>
           <span class="exp-period">2024 — 2025</span>
@@ -1567,7 +1574,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">UI/UX Designer Intern | Design System</div>
+            <div class="exp-role">UI/UX Designer Intern - Design System</div>
             <div class="exp-company">Tokoplas</div>
           </div>
           <span class="exp-period">2024</span>
@@ -1586,7 +1593,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">UI/UX Designer | Project Based Intern</div>
+            <div class="exp-role">UI/UX Designer - Project Based Intern</div>
             <div class="exp-company">FundEx</div>
           </div>
           <span class="exp-period">2024</span>
@@ -1604,7 +1611,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">UI/UX Designer | Freelance</div>
+            <div class="exp-role">UI/UX Designer - Freelance</div>
             <div class="exp-company">VentureUP</div>
           </div>
           <span class="exp-period">2023</span>
@@ -1621,7 +1628,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">UI/UX Research & Design | Bootcamp</div>
+            <div class="exp-role">UI/UX Research & Design - Bootcamp</div>
             <div class="exp-company">Binar Academy</div>
           </div>
           <span class="exp-period">2022</span>
@@ -1637,7 +1644,7 @@
       <div class="exp-item">
         <div class="exp-summary">
           <div class="exp-left">
-            <div class="exp-role">Business Owner | Creative Marketing</div>
+            <div class="exp-role">Business Owner - Creative Marketing</div>
             <div class="exp-company">Vespa Supply</div>
           </div>
           <span class="exp-period">2020 — 2022</span>
@@ -1789,12 +1796,21 @@
     mobileMenu.classList.remove('open');
   }
 
-  /* ── FADE IN ON SCROLL ── */
+  /* ── FLUID SCALE ON SCROLL (magnifying-glass illusion, Lusion-style) ── */
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      const el = e.target;
+      if (e.isIntersecting) {
+        el.classList.remove('out-up');
+        el.classList.add('in');
+      } else {
+        el.classList.remove('in');
+        // scrolled past upward → shrink while rising. still below viewport → reset to entry state.
+        const goingUp = e.boundingClientRect.top < 0;
+        el.classList.toggle('out-up', goingUp);
+      }
     });
-  }, { threshold: 0.08 });
+  }, { threshold: 0.08, rootMargin: '-8% 0px -8% 0px' });
   document.querySelectorAll('.fi').forEach(el => io.observe(el));
 
   /* ── STAT COUNTER ── */
