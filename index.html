@@ -686,7 +686,14 @@
     .project-card:nth-child(3) .card-thumb,
     .project-card:nth-child(4) .card-thumb,
     .project-card:nth-child(5) .card-thumb { aspect-ratio: 16/9; }
-    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+    .card-thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .4s ease, filter .35s cubic-bezier(.16,1,.3,1), opacity .35s cubic-bezier(.16,1,.3,1);
+      filter: blur(16px);
+      opacity: 0;
+      will-change: filter;
+    }
+    .card-thumb img.img-loaded { filter: blur(0); opacity: 1; }
     .project-card:hover .card-thumb img { transform: scale(1.05); }
 
     /* glass badge — sits on top of the image, top-right */
@@ -1290,7 +1297,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      transition: opacity 1.15s cubic-bezier(.16,1,.3,1), transform 1.15s cubic-bezier(.16,1,.3,1), filter 1.15s cubic-bezier(.16,1,.3,1);
+      transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1), filter .55s cubic-bezier(.16,1,.3,1);
     }
     #preloader.pl-exit {
       opacity: 0;
@@ -1309,10 +1316,10 @@
       mix-blend-mode: screen;
       pointer-events: none;
     }
-    .pl-flash.pl-flash-active { animation: pl-flash-kf 1.3s cubic-bezier(.16,1,.3,1) forwards; }
+    .pl-flash.pl-flash-active { animation: pl-flash-kf .75s cubic-bezier(.16,1,.3,1) forwards; }
     @keyframes pl-flash-kf {
       0%   { opacity: 0; }
-      14%  { opacity: .8; }
+      18%  { opacity: .8; }
       100% { opacity: 0; }
     }
 
@@ -1325,7 +1332,7 @@
       pointer-events: none;
       box-shadow: 0 0 20px rgba(200,225,255,.35);
     }
-    .pl-shockwave.go { animation: pl-shockwave-kf 1.3s cubic-bezier(.16,1,.3,1) forwards; }
+    .pl-shockwave.go { animation: pl-shockwave-kf .75s cubic-bezier(.16,1,.3,1) forwards; }
     @keyframes pl-shockwave-kf {
       0%   { transform: translate(-50%, -50%) scale(0); opacity: .8; border-width: 2px; }
       100% { transform: translate(-50%, -50%) scale(50); opacity: 0; border-width: 0px; }
@@ -1397,6 +1404,25 @@
     .pl-role.active { opacity: 1; transform: translateY(0); }
     .pl-role.exit-up { opacity: 0; transform: translateY(-120%); }
 
+    .pl-role-name {
+      font-size: clamp(1rem, 3.6vw, 1.7rem);
+      letter-spacing: .03em;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .pl-cursor {
+      display: inline-block;
+      margin-left: .1em;
+      color: var(--accent);
+      opacity: 0;
+      font-weight: 400;
+    }
+    .pl-cursor.on { animation: pl-cursor-blink 1s steps(1, end) infinite; }
+    @keyframes pl-cursor-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @media (max-width: 640px) {
+      .pl-role-name { letter-spacing: .01em; }
+    }
+
     .pl-bottom {
       position: absolute; bottom: 9vh; left: 50%; transform: translateX(-50%);
       width: min(320px, 68vw);
@@ -1458,6 +1484,7 @@
     @media (prefers-reduced-motion: reduce) {
       #preloader { transition: opacity .3s ease; }
       #preloader.pl-exit { transform: none; filter: none; }
+      .pl-cursor.on { animation: none; opacity: 1; }
     }
   </style>
 </head>
@@ -1492,6 +1519,7 @@
         <span class="pl-role">UI/UX Designer</span>
         <span class="pl-role">Researcher</span>
         <span class="pl-role">UX Strategist</span>
+        <span class="pl-role pl-role-name" id="plNameRole"><span id="plNameText"></span><span class="pl-cursor" id="plCursor">|</span></span>
       </div>
     </div>
 
@@ -1712,7 +1740,7 @@
     <div class="projects-grid">
       <a class="project-card fi" href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="eager" fetchpriority="high" decoding="async" width="1600" height="610" src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
+          <img loading="eager" fetchpriority="high" decoding="async" width="2400" height="1011" src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
           <span class="card-badge">UI/UX Audit</span>
         </div>
         <div class="card-content">
@@ -1722,7 +1750,7 @@
       </a>
       <a class="project-card fi" href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
           <span class="card-badge">Dashboard / ERP</span>
         </div>
         <div class="card-content">
@@ -1732,7 +1760,7 @@
       </a>
       <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
           <span class="card-badge">Fintech Dashboard</span>
         </div>
         <div class="card-content">
@@ -1742,7 +1770,7 @@
       </a>
       <a class="project-card fi" href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
           <span class="card-badge">UI/UX Audit</span>
         </div>
         <div class="card-content">
@@ -1752,7 +1780,7 @@
       </a>
       <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
           <span class="card-badge">Design System</span>
         </div>
         <div class="card-content">
@@ -2094,21 +2122,83 @@
       drawFrame();
     }
 
-    /* role cycler — overlapping vertical swap, fast */
-    const roles = pre.querySelectorAll('.pl-role');
-    let roleIdx = 0, roleTimer;
+    /* role cycler — overlapping vertical swap, fast. Plays through once (no repeat),
+       then hands off to a scramble-text reveal of the name instead of looping back. */
+    const roles = pre.querySelectorAll('.pl-role:not(.pl-role-name)');
+    const nameRole = document.getElementById('plNameRole');
+    const nameTextEl = document.getElementById('plNameText');
+    const cursorEl = document.getElementById('plCursor');
+    const FULL_NAME = 'Muhamad Ibnu Farizky';
+    const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let roleIdx = 0, roleTimer, scrambleFrameId;
+
+    function randomChar() { return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]; }
+
+    /* progressively locks characters left-to-right, random letters flickering until each lands */
+    function scrambleReveal(el, text, onDone) {
+      if (reduceMotion) { el.textContent = text; onDone(); return; }
+      const chars = text.split('');
+      const total = 46;
+      const lockStart = chars.map((_, i) => Math.floor((i / chars.length) * total * 0.55));
+      let frame = 0;
+      (function step() {
+        let out = '', doneCount = 0;
+        for (let i = 0; i < chars.length; i++) {
+          const ch = chars[i];
+          if (ch === ' ') { out += ' '; doneCount++; continue; }
+          if (frame >= lockStart[i] + 14) { out += ch; doneCount++; }
+          else if (frame >= lockStart[i]) { out += randomChar(); }
+          else { out += '\u00A0'; }
+        }
+        el.textContent = out;
+        frame++;
+        if (doneCount < chars.length) {
+          scrambleFrameId = requestAnimationFrame(step);
+        } else {
+          el.textContent = text;
+          onDone();
+        }
+      })();
+    }
+
+    let sequenceDone = false;
+    function revealName() {
+      if (nameRole) {
+        nameRole.classList.remove('exit-up');
+        void nameRole.offsetWidth;
+        nameRole.classList.add('active');
+      }
+      scrambleReveal(nameTextEl, FULL_NAME, () => {
+        if (cursorEl) cursorEl.classList.add('on');
+        setTimeout(() => {
+          sequenceDone = true;
+          tryFinish();
+        }, reduceMotion ? 250 : 750);
+      });
+    }
+
     if (roles.length) {
       roles[0].classList.add('active');
       roleTimer = setInterval(() => {
         const prevIdx = roleIdx;
         roles[prevIdx].classList.remove('active');
         roles[prevIdx].classList.add('exit-up');
-        roleIdx = (roleIdx + 1) % roles.length;
+        roleIdx++;
+        if (roleIdx >= roles.length) {
+          clearInterval(roleTimer);
+          setTimeout(() => {
+            roles[prevIdx].classList.remove('exit-up');
+            revealName();
+          }, 360);
+          return;
+        }
         roles[roleIdx].classList.remove('exit-up');
         void roles[roleIdx].offsetWidth;
         roles[roleIdx].classList.add('active');
         setTimeout(() => roles[prevIdx].classList.remove('exit-up'), 360);
       }, 650);
+    } else {
+      revealName();
     }
 
     /* progress + HUD readouts */
@@ -2129,9 +2219,13 @@
       return s;
     }
 
-    const DURATION = reduceMotion ? 500 : 3400;
+    const DURATION = reduceMotion ? 500 : 4400;
     const startT = performance.now();
     let skipped = false;
+    let progressDone = false;
+    function tryFinish() {
+      if (progressDone && sequenceDone && !skipped) finishLoading();
+    }
     function tick(now) {
       if (skipped) return;
       const t = Math.min((now - startT) / DURATION, 1);
@@ -2146,8 +2240,12 @@
       if (velEl) velEl.textContent = (900 + Math.round(eased * 27100)).toLocaleString('en-US') + ' km/h';
       warpT = eased;
       warpSpeed = 0.4 + eased * 4.2;
-      if (t < 1) requestAnimationFrame(tick);
-      else finishLoading();
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        progressDone = true;
+        tryFinish();
+      }
     }
     requestAnimationFrame(tick);
 
@@ -2158,6 +2256,7 @@
       skipBtn.addEventListener('click', () => {
         if (skipped) return;
         skipped = true;
+        if (scrambleFrameId) cancelAnimationFrame(scrambleFrameId);
         if (pctEl) pctEl.textContent = 100;
         if (barEl) barEl.style.width = '100%';
         if (statusEl) statusEl.textContent = statusFor(100);
@@ -2166,7 +2265,10 @@
       });
     }
 
+    let finished = false;
     function finishLoading() {
+      if (finished) return;
+      finished = true;
       clearInterval(roleTimer);
       warpSpeed = 16; /* brief acceleration as streaks widen into the light */
       try { sessionStorage.setItem('i8knew_intro_seen', '1'); } catch (e) {}
@@ -2181,18 +2283,27 @@
       setTimeout(() => {
         document.body.classList.remove('pl-locked');
         document.body.classList.add('hero-ready');
-      }, 170);
+      }, 110);
 
-      /* preloader dissolves away slowly afterward, so it fades over a hero that's already mid-entrance */
+      /* preloader dissolves away quickly right after, fading over a hero that's already mid-entrance */
       setTimeout(() => {
         pre.classList.add('pl-exit');
         setTimeout(() => {
           pre.classList.add('pl-done');
           cancelAnimationFrame(rafId);
-        }, 1200);
-      }, 300);
+        }, 600);
+      }, 150);
     }
   })();
+
+  /* ── PORTFOLIO IMAGE REVEAL — blur to sharp, fast, no layout shift ── */
+  document.querySelectorAll('.card-thumb img').forEach(img => {
+    if (img.complete && img.naturalWidth > 0) {
+      requestAnimationFrame(() => img.classList.add('img-loaded'));
+    } else {
+      img.addEventListener('load', () => img.classList.add('img-loaded'), { once: true });
+    }
+  });
 
   /* ── NAVBAR + SCROLL TOP ── */
   const nav = document.getElementById('navbar');
