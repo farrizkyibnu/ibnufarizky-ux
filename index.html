@@ -142,7 +142,7 @@
       font-weight: 500 !important;
       transition: opacity .2s, transform .2s !important;
     }
-    .nav-cta:hover { opacity: .85 !important; transform: translateY(-1px); }
+    .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
 
     .hamburger {
       display: none;
@@ -647,7 +647,7 @@
     }
     .behance-link:hover { border-color: var(--accent); gap: .65rem; }
     .behance-link:hover::after { left: 160%; }
-    .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.1rem; }
+    .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3rem 1.25rem; }
     .project-card:nth-child(1) { grid-column: span 12; }
     .project-card:nth-child(2) { grid-column: span 6; }
     .project-card:nth-child(3) { grid-column: span 6; }
@@ -655,11 +655,12 @@
     .project-card:nth-child(5) { grid-column: span 6; }
     .project-card {
       background: transparent;
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      overflow: hidden;
-      display: block;
-      transition: border-color .35s;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      transition: transform .35s;
       cursor: pointer;
       position: relative;
       will-change: transform;
@@ -672,9 +673,8 @@
     .project-card * { text-decoration: none; }
     .project-card:visited,
     .project-card:visited * { color: inherit; }
-    .project-card:hover { border-color: none; }
-    .project-card:hover .card-body::before { opacity: 1; }
-    .card-thumb { position: relative; overflow: hidden; background: var(--surface); transform: translateZ(0); -webkit-transform: translateZ(0); will-change: transform; }
+    .project-card:hover { transform: translateY(-3px); }
+    .card-thumb { position: relative; overflow: hidden; border-radius: var(--r); background: var(--surface); transform: translateZ(0); -webkit-transform: translateZ(0); will-change: transform; }
     .project-card:nth-child(1) .card-thumb { aspect-ratio: 21/8; }
     .project-card:nth-child(2) .card-thumb,
     .project-card:nth-child(3) .card-thumb,
@@ -682,92 +682,47 @@
     .project-card:nth-child(5) .card-thumb { aspect-ratio: 16/9; }
     .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
     .project-card:hover .card-thumb img { transform: scale(1.05); }
-    .card-hover-layer {
+
+    /* glass badge — sits inside the image, top-right corner */
+    .card-badge-glass {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(8,8,8,.92) 0%, rgba(8,8,8,.3) 50%, transparent 100%);
-      display: flex;
-      align-items: flex-end;
-      padding: 1.25rem;
-      opacity: 0;
-      transition: opacity .3s;
+      top: .85rem;
+      right: .85rem;
       z-index: 3;
-      font-size: 1rem;
-      line-height: normal;
-    }
-    .project-card:hover .card-hover-layer { opacity: 1; }
-    .card-cta {
-      background: var(--accent);
-      color: #080808;
-      font-size: .78rem;
+      font-size: .66rem;
       font-weight: 500;
-      padding: .45rem 1.1rem;
+      color: var(--txt);
+      letter-spacing: .04em;
+      padding: .34rem .9rem;
       border-radius: 100px;
-      text-decoration: none;
-      transition: opacity .2s;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(14px) saturate(1.5);
+      -webkit-backdrop-filter: blur(14px) saturate(1.5);
+      transition: background .3s ease, border-color .3s ease, transform .3s ease;
     }
-    .card-cta:hover { opacity: .85; }
-    .card-body {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
+    .project-card:hover .card-badge-glass {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.32);
+    }
+
+    /* ghost info block — lives below the image, no stroke */
+    .card-info {
+      padding: 1.15rem .1rem 0;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.1rem 1.3rem 1.35rem;
-      overflow: hidden;
-      background: linear-gradient(to top, rgba(6,6,6,.95) 0%, rgba(6,6,6,.62) 42%, transparent 88%);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .4s ease;
     }
-    .project-card:hover .card-body { opacity: 1; }
-    .card-body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(71, 246, 255, 0.167) 0%, rgba(71, 184, 255, 0.03) 50%, transparent 75%);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .45s ease;
+    .card-info-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: .75rem;
+      margin-bottom: .5rem;
     }
-    .card-meta, .card-title, .card-desc {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity .35s ease, transform .35s ease;
-    }
-    .project-card:hover .card-meta,
-    .project-card:hover .card-title,
-    .project-card:hover .card-desc { opacity: 1; transform: translateY(0); }
-    .project-card:hover .card-title { transition-delay: .05s; }
-    .project-card:hover .card-desc { transition-delay: .1s; }
-    .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .9rem; }
-    .card-year { font-size: .7rem; color: var(--txt-3); letter-spacing: .04em; }
-    .card-tag {
-      font-size: .68rem;
-      color: var(--accent);
-      background: var(--accent-dim);
-      border: 1px solid rgba(71, 200, 255, 0.025);
-      padding: .18rem .6rem;
-      border-radius: 100px;
-      letter-spacing: .04em;
-    }
-    .card-title { font-family: var(--display); font-size: 1.3rem; font-weight: 500; color: var(--txt); line-height: 1.25; margin-bottom: .35rem; }
-    .card-desc { font-size: .78rem; color: var(--txt-2); line-height: 1.65; }
-
-    /* touch devices have no :hover — keep the caption permanently visible instead of hidden forever */
-    @media (hover: none), (pointer: coarse), (max-width: 900px) {
-      .card-body { opacity: 1; }
-      .card-body::before { opacity: 0; }
-      .card-meta, .card-title, .card-desc { opacity: 1; transform: none; }
-      .card-thumb img { transform: none; }
-      .card-desc {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-    }
+    .card-title { font-family: var(--display); font-size: 1.24rem; font-weight: 500; color: var(--txt); line-height: 1.3; transition: color .3s ease; }
+    .project-card:hover .card-title { color: var(--accent); }
+    .card-year { font-size: .68rem; color: var(--txt-3); letter-spacing: .04em; flex-shrink: 0; white-space: nowrap; }
+    .card-desc { font-size: .82rem; color: var(--txt-2); line-height: 1.75; }
     .behance-cta-wrap { display: flex; justify-content: center; margin-top: 3rem; }
     .behance-cta-btn {
       display: inline-flex;
@@ -1288,7 +1243,7 @@
       .project-card:nth-child(5) { grid-column: span 12; }
       .project-card:nth-child(1) .card-thumb { aspect-ratio: 16/9; }
       .work-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .card-meta { margin-bottom: 1rem; }
+      .card-info-top { margin-bottom: .75rem; }
       .foot-in { flex-direction: column; align-items: center; text-align: center; }
 
       /* track record cards — tighten on mobile */
@@ -1751,51 +1706,66 @@
       <a class="project-card fi" href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img loading="lazy" decoding="async" src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
+          <span class="card-badge-glass">UI/UX Audit</span>
         </div>
-        <div class="card-body">
-          <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">UI/UX Audit</span></div>
-          <div class="card-title">GoPay - Increase Retention</div>
-          <div class="card-desc">A comprehensive UI/UX audit to improve user retention and financial awareness through redesigned flows and interaction patterns.</div>
+        <div class="card-info">
+          <div class="card-info-top">
+            <h3 class="card-title">GoPay - Increase Retention</h3>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-desc">A comprehensive UI/UX audit to improve user retention and financial awareness through redesigned flows and interaction patterns.</p>
         </div>
       </a>
       <a class="project-card fi" href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img loading="lazy" decoding="async" src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
+          <span class="card-badge-glass">Dashboard / ERP</span>
         </div>
-        <div class="card-body">
-          <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">Dashboard / ERP</span></div>
-          <div class="card-title">Ravelware - ERP System</div>
-          <div class="card-desc">End-to-end internal ERP dashboard covering stock management, analytics, and business operations.</div>
+        <div class="card-info">
+          <div class="card-info-top">
+            <h3 class="card-title">Ravelware - ERP System</h3>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-desc">End-to-end internal ERP dashboard covering stock management, analytics, and business operations.</p>
         </div>
       </a>
       <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img loading="lazy" decoding="async" src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
+          <span class="card-badge-glass">Fintech Dashboard</span>
         </div>
-        <div class="card-body">
-          <div class="card-meta"><span class="card-year">2026</span><span class="card-tag">Fintech Dashboard</span></div>
-          <div class="card-title">Trenfix - Fintech Dashboard</div>
-          <div class="card-desc">Financial management software with real-time analytics, cash flow tracking, and budget planning.</div>
+        <div class="card-info">
+          <div class="card-info-top">
+            <h3 class="card-title">Trenfix - Fintech Dashboard</h3>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-desc">Financial management software with real-time analytics, cash flow tracking, and budget planning.</p>
         </div>
       </a>
       <a class="project-card fi" href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img loading="lazy" decoding="async" src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
+          <span class="card-badge-glass">UI/UX Audit</span>
         </div>
-        <div class="card-body">
-          <div class="card-meta"><span class="card-year">2025</span><span class="card-tag">UI/UX Audit</span></div>
-          <div class="card-title">GoFood - Boost Retention</div>
-          <div class="card-desc">Optimizing flow, gamification, and reducing decision fatigue to meaningfully boost user retention.</div>
+        <div class="card-info">
+          <div class="card-info-top">
+            <h3 class="card-title">GoFood - Boost Retention</h3>
+            <span class="card-year">2025</span>
+          </div>
+          <p class="card-desc">Optimizing flow, gamification, and reducing decision fatigue to meaningfully boost user retention.</p>
         </div>
       </a>
       <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener">
         <div class="card-thumb">
           <img loading="lazy" decoding="async" src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
+          <span class="card-badge-glass">Design System</span>
         </div>
-        <div class="card-body">
-          <div class="card-meta"><span class="card-year">2024</span><span class="card-tag">Design System</span></div>
-          <div class="card-title">Tokoplas - Catalyst Design System</div>
-          <div class="card-desc">Built 30+ reusable components across 2 platforms, cutting sprint time and ensuring cross-team consistency.</div>
+        <div class="card-info">
+          <div class="card-info-top">
+            <h3 class="card-title">Tokoplas - Catalyst Design System</h3>
+            <span class="card-year">2024</span>
+          </div>
+          <p class="card-desc">Built 30+ reusable components across 2 platforms, cutting sprint time and ensuring cross-team consistency.</p>
         </div>
       </a>
     </div>
@@ -2464,108 +2434,4 @@
             lp.setXYZ(k, cm.trail[k].x, cm.trail[k].y, cm.trail[k].z);
             const fade = 1 - k / TRAIL_LEN;
             paletteColor(t * 0.05 + cm.phase, tmpColor);
-            lc.setXYZ(k, tmpColor.r * fade, tmpColor.g * fade, tmpColor.b * fade);
-          }
-          lp.needsUpdate = true; lc.needsUpdate = true;
-          const hp = cm.head.geometry.attributes.position;
-          hp.setXYZ(0, cm.pos.x, cm.pos.y, cm.pos.z);
-          hp.needsUpdate = true;
-        });
-      }
-
-      mx += (tmx - mx) * 0.04; my += (tmy - my) * 0.04;
-      camera.rotation.y = mx * 0.05;
-      camera.rotation.x = -my * 0.035;
-
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = homeSec.clientWidth / homeSec.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(homeSec.clientWidth, homeSec.clientHeight);
-    });
-  })();
-
-  /* ── READ MORE TOGGLE ── */
-  function toggleRead(id, btn) {
-    const wrap = document.getElementById(id);
-    const collapsed = wrap.classList.toggle('collapsed');
-    btn.childNodes[0].textContent = collapsed ? 'Read more' : 'Read less ';
-  }
-
-  if (window.matchMedia('(hover: hover)').matches) {
-    /* ── CUSTOM CURSOR ── */
-    const dot  = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top  = mouseY + 'px';
-    }, { passive: true });
-
-    (function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.left = ringX + 'px';
-      ring.style.top  = ringY + 'px';
-      requestAnimationFrame(animateRing);
-    })();
-
-    const hoverTargets = 'a, button, .skill-tag, .testi-card';
-    document.querySelectorAll(hoverTargets).forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-    const cursorLabel = document.getElementById('cursorLabel');
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        document.body.classList.add('cursor-view');
-        if (cursorLabel) cursorLabel.textContent = 'View';
-      });
-      card.addEventListener('mouseleave', () => {
-        document.body.classList.remove('cursor-view');
-        if (cursorLabel) cursorLabel.textContent = '';
-      });
-    });
-    document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-    document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
-
-    /* ── CARD TILT PARALLAX (desktop only) ── */
-    if (window.innerWidth > 960) {
-      document.querySelectorAll('.testi-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          card.style.transition = 'transform .1s ease, border-color .35s';
-        });
-        card.addEventListener('mousemove', e => {
-          const r  = card.getBoundingClientRect();
-          const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
-          const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
-          card.style.transform = `perspective(700px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 4).toFixed(2)}deg) translateY(-4px)`;
-        });
-        card.addEventListener('mouseleave', () => {
-          card.style.transition = 'transform .55s ease, border-color .35s';
-          card.style.transform  = '';
-        });
-      });
-    }
-
-    /* ── MAGNETIC BUTTONS ── */
-    document.querySelectorAll('.btn-p, .btn-s, .nav-cta').forEach(btn => {
-      btn.addEventListener('mousemove', e => {
-        const r = btn.getBoundingClientRect();
-        const dx = (e.clientX - r.left - r.width  / 2) * 0.35;
-        const dy = (e.clientY - r.top  - r.height / 2) * 0.35;
-        btn.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
-      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-    });
-  }
-</script>
-
-</body>
-</html>
+            lc.setXYZ(k, tmpColor.r * fade, tmpColor.g * fade, 
