@@ -1284,6 +1284,25 @@
       .testi-rel-badge { font-size: .56rem; }
       .testi-year { top: 1.25rem; right: 1.25rem; }
       .testi-author { gap: .75rem; }
+      
+      .projects-grid {
+       display: flex !important;
+       overflow-x: auto !important;
+       scroll-snap-type: x mandatory;
+       gap: 1.25rem;
+       padding: 0 1.5rem 1.5rem;
+       margin: 0 -1.5rem;
+       scrollbar-width: none; /* Hilangkan scrollbar */
+      }
+      .projects-grid::-webkit-scrollbar { display: none; }
+  
+      .project-card {
+       flex: 0 0 82% !important; /* Kartu sisa 18% space kosong di kanan */
+       scroll-snap-align: start;
+     }
+      .project-card .card-thumb { aspect-ratio: 4/3 !important; }
+      .card-desc { max-width: 100% !important; }
+      
     }
     /* ══════════════ PRELOADER — EARTH SKY TO SPACE ══════════════ */
     body.pl-locked { overflow: hidden; height: 100%; }
