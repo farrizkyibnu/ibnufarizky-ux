@@ -15,6 +15,16 @@
   <link rel="icon" type="image/png" href="html-logo.svg" />
   <title>Muhamad Ibnu Farizky // Product Designer</title>
   <meta name="description" content="Strategic UI/UX Designer with a business background, crafting high-impact digital products that align user experience with business goals." />
+
+  <!-- Open Graph / social share preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Muhamad Ibnu Farizky // Product Designer" />
+  <meta property="og:description" content="Strategic UI/UX Designer with a business background, crafting high-impact digital products that align user experience with business goals." />
+  <meta property="og:image" content="ibnu.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Muhamad Ibnu Farizky // Product Designer" />
+  <meta name="twitter:description" content="Strategic UI/UX Designer with a business background, crafting high-impact digital products that align user experience with business goals." />
+  <meta name="twitter:image" content="ibnu.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -645,12 +655,11 @@
     .project-card:nth-child(4) { grid-column: span 6; }
     .project-card:nth-child(5) { grid-column: span 6; }
     .project-card {
-      background: var(--surface);
+      background: transparent;
       border: 1px solid var(--border);
       border-radius: var(--r);
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      display: block;
       transition: border-color .35s;
       cursor: pointer;
       position: relative;
@@ -666,7 +675,7 @@
     .project-card:visited * { color: inherit; }
     .project-card:hover { border-color: none; }
     .project-card:hover .card-body::before { opacity: 1; }
-    .card-thumb { position: relative; overflow: hidden; background: var(--surface); transform: translateZ(0); -webkit-transform: translateZ(0); box-shadow: 0 4px 0 var(--surface); will-change: transform; }
+    .card-thumb { position: relative; overflow: hidden; background: var(--surface); transform: translateZ(0); -webkit-transform: translateZ(0); will-change: transform; }
     .project-card:nth-child(1) .card-thumb { aspect-ratio: 21/8; }
     .project-card:nth-child(2) .card-thumb,
     .project-card:nth-child(3) .card-thumb,
@@ -699,7 +708,21 @@
       transition: opacity .2s;
     }
     .card-cta:hover { opacity: .85; }
-    .card-body { padding: 1.1rem 1.3rem 1.35rem; position: relative; overflow: hidden; }
+    .card-body {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.1rem 1.3rem 1.35rem;
+      overflow: hidden;
+      background: linear-gradient(to top, rgba(6,6,6,.95) 0%, rgba(6,6,6,.62) 42%, transparent 88%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+    }
+    .project-card:hover .card-body { opacity: 1; }
     .card-body::before {
       content: '';
       position: absolute;
@@ -709,7 +732,17 @@
       pointer-events: none;
       transition: opacity .45s ease;
     }
-    .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .card-meta, .card-title, .card-desc {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .project-card:hover .card-meta,
+    .project-card:hover .card-title,
+    .project-card:hover .card-desc { opacity: 1; transform: translateY(0); }
+    .project-card:hover .card-title { transition-delay: .05s; }
+    .project-card:hover .card-desc { transition-delay: .1s; }
+    .card-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: .9rem; }
     .card-year { font-size: .7rem; color: var(--txt-3); letter-spacing: .04em; }
     .card-tag {
       font-size: .68rem;
@@ -722,6 +755,20 @@
     }
     .card-title { font-family: var(--display); font-size: 1.3rem; font-weight: 500; color: var(--txt); line-height: 1.25; margin-bottom: .35rem; }
     .card-desc { font-size: .78rem; color: var(--txt-2); line-height: 1.65; }
+
+    /* touch devices have no :hover — keep the caption permanently visible instead of hidden forever */
+    @media (hover: none), (pointer: coarse), (max-width: 900px) {
+      .card-body { opacity: 1; }
+      .card-body::before { opacity: 0; }
+      .card-meta, .card-title, .card-desc { opacity: 1; transform: none; }
+      .card-thumb img { transform: none; }
+      .card-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
     .behance-cta-wrap { display: flex; justify-content: center; margin-top: 3rem; }
     .behance-cta-btn {
       display: inline-flex;
@@ -1282,64 +1329,45 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      transition: opacity .55s ease, transform .95s cubic-bezier(.7,0,.84,0), filter .95s ease;
+      transition: opacity 1.15s cubic-bezier(.16,1,.3,1), transform 1.15s cubic-bezier(.16,1,.3,1), filter 1.15s cubic-bezier(.16,1,.3,1);
     }
     #preloader.pl-exit {
       opacity: 0;
-      transform: scale(1.7);
-      filter: brightness(2.4);
+      transform: scale(1.1);
+      filter: brightness(1.35);
       pointer-events: none;
     }
     #preloader.pl-done { display: none; }
 
     .pl-inner { position: absolute; inset: 0; }
-    .pl-inner.pl-shake { animation: pl-shake-kf .6s cubic-bezier(.36,.07,.19,.97) both; }
-    @keyframes pl-shake-kf {
-      10%, 90% { transform: translate3d(-2px, 1px, 0) rotate(-.3deg); }
-      20%, 80% { transform: translate3d(4px, -2px, 0) rotate(.4deg); }
-      30%, 50%, 70% { transform: translate3d(-8px, 3px, 0) rotate(-.6deg); }
-      40%, 60% { transform: translate3d(8px, -3px, 0) rotate(.6deg); }
-      100% { transform: translate3d(0, 0, 0) rotate(0); }
-    }
 
     .pl-flash {
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at center, #fff 0%, rgba(255,225,180,.9) 22%, rgba(255,170,90,.5) 45%, transparent 75%);
+      background: radial-gradient(ellipse at center, #fff 0%, rgba(225,240,255,.85) 30%, rgba(71,225,255,.25) 55%, transparent 78%);
       opacity: 0;
       mix-blend-mode: screen;
       pointer-events: none;
     }
-    .pl-flash.pl-flash-active { animation: pl-flash-kf .7s cubic-bezier(.16,.84,.44,1) forwards; }
+    .pl-flash.pl-flash-active { animation: pl-flash-kf 1.3s cubic-bezier(.16,1,.3,1) forwards; }
     @keyframes pl-flash-kf {
       0%   { opacity: 0; }
-      8%   { opacity: 1; }
-      22%  { opacity: .55; }
-      32%  { opacity: .85; }
+      14%  { opacity: .8; }
       100% { opacity: 0; }
     }
 
     .pl-shockwave {
       position: absolute; top: 50%; left: 50%; width: 10px; height: 10px;
       border-radius: 50%;
-      border: 2px solid rgba(200,225,255,.85);
+      border: 1.5px solid rgba(225,240,255,.7);
       transform: translate(-50%, -50%) scale(0);
       opacity: 0;
       pointer-events: none;
-      box-shadow: 0 0 24px rgba(200,225,255,.4);
+      box-shadow: 0 0 20px rgba(200,225,255,.35);
     }
-    .pl-shockwave.go { animation: pl-shockwave-kf 1.05s cubic-bezier(.16,.84,.44,1) forwards; }
+    .pl-shockwave.go { animation: pl-shockwave-kf 1.3s cubic-bezier(.16,1,.3,1) forwards; }
     @keyframes pl-shockwave-kf {
-      0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; border-width: 6px; }
-      100% { transform: translate(-50%, -50%) scale(55); opacity: 0; border-width: 0px; }
-    }
-    .pl-shockwave-core {
-      border-color: rgba(255,205,140,.95);
-      box-shadow: 0 0 30px rgba(255,180,110,.55);
-    }
-    .pl-shockwave-core.go { animation: pl-shockwave-core-kf .7s cubic-bezier(.16,.84,.44,1) forwards; }
-    @keyframes pl-shockwave-core-kf {
-      0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; border-width: 10px; }
-      100% { transform: translate(-50%, -50%) scale(26); opacity: 0; border-width: 0px; }
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: .8; border-width: 2px; }
+      100% { transform: translate(-50%, -50%) scale(50); opacity: 0; border-width: 0px; }
     }
 
     #warpCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -1382,22 +1410,25 @@
     .pl-hud-lbl { display: block; font-size: .62rem; letter-spacing: .18em; color: var(--txt-3); text-transform: uppercase; }
     .pl-hud-val { display: block; font-size: .78rem; letter-spacing: .04em; color: rgba(71,225,255,.9); font-variant-numeric: tabular-nums; }
 
-    .pl-center { position: relative; z-index: 2; text-align: center; padding: 0 1.5rem; }
-    .pl-logo {
-      font-family: var(--display);
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      font-weight: 600;
-      color: var(--txt);
-      letter-spacing: -.01em;
-      text-shadow: 0 0 44px rgba(71,225,255,.28);
+    .pl-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+      padding: 0 1.5rem;
+      width: 100%;
     }
-    .pl-logo em { font-style: italic; color: var(--accent); font-weight: 300; }
-    .pl-roles { position: relative; height: 1.5rem; margin-top: .7rem; overflow: hidden; }
+    .pl-roles { position: relative; height: 2.2rem; overflow: hidden; }
     .pl-role {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: .78rem; letter-spacing: .24em; text-transform: uppercase;
-      color: var(--txt-2);
+      font-family: var(--display);
+      font-size: clamp(1.3rem, 3.4vw, 2rem);
+      font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--txt);
+      text-shadow: 0 0 40px rgba(71,225,255,.25);
       opacity: 0;
       transform: translateY(120%);
       transition: transform .34s cubic-bezier(.65,0,.35,1), opacity .28s ease;
@@ -1409,17 +1440,44 @@
       position: absolute; bottom: 9vh; left: 50%; transform: translateX(-50%);
       width: min(320px, 68vw);
       display: flex; flex-direction: column; align-items: center; gap: .65rem;
+      z-index: 6;
     }
     .pl-bar-track { width: 100%; height: 2px; background: rgba(255,255,255,.08); overflow: hidden; }
     .pl-bar-fill {
       height: 100%; width: 0%;
       background: linear-gradient(90deg, rgba(71,225,255,.45), var(--accent));
       box-shadow: 0 0 14px rgba(71,225,255,.65);
-      transition: width .15s linear;
     }
     .pl-pct-row { display: flex; align-items: baseline; gap: 2px; font-variant-numeric: tabular-nums; }
     .pl-pct { font-size: 1.35rem; font-weight: 500; color: var(--txt); }
     .pl-pct-sign { font-size: .82rem; color: var(--txt-2); }
+
+    .pl-skip {
+      position: relative;
+      z-index: 6;
+      margin-top: .3rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.18);
+      color: var(--txt-2);
+      font-family: var(--body);
+      font-size: .66rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: .5rem 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: auto;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: opacity .45s ease, transform .45s ease, border-color .3s ease, color .3s ease;
+    }
+    .pl-skip.show { opacity: 1; transform: translateY(0); }
+    .pl-skip:hover { border-color: rgba(71,225,255,.55); color: var(--txt); }
+    @media (max-width: 640px) {
+      .pl-skip { font-size: .68rem; padding: .68rem 1.3rem; margin-top: .5rem; }
+    }
 
     body:not(.hero-ready) .hero-badge,
     body:not(.hero-ready) .hero-name,
@@ -1439,7 +1497,6 @@
     @media (prefers-reduced-motion: reduce) {
       #preloader { transition: opacity .3s ease; }
       #preloader.pl-exit { transform: none; filter: none; }
-      .pl-inner.pl-shake { animation: none; }
     }
   </style>
 </head>
@@ -1469,12 +1526,10 @@
     </div>
 
     <div class="pl-center">
-      <div class="pl-logo">I8'<em>K</em>new</div>
       <div class="pl-roles" id="plRoles">
         <span class="pl-role">Product Designer</span>
         <span class="pl-role">UI/UX Designer</span>
         <span class="pl-role">Researcher</span>
-        <span class="pl-role">Vibe Coder</span>
         <span class="pl-role">UX Strategist</span>
       </div>
     </div>
@@ -1482,13 +1537,26 @@
     <div class="pl-bottom">
       <div class="pl-bar-track"><div class="pl-bar-fill" id="plBarFill"></div></div>
       <div class="pl-pct-row"><span class="pl-pct" id="plPct">0</span><span class="pl-pct-sign">%</span></div>
+      <button type="button" class="pl-skip" id="plSkip">Skip Intro</button>
     </div>
 
-    <div class="pl-shockwave pl-shockwave-core" id="plShockwaveCore"></div>
     <div class="pl-shockwave" id="plShockwave"></div>
     <div class="pl-flash" id="plFlash"></div>
   </div>
 </div>
+<script>
+  /* runs immediately on parse — hides the intro instantly if already seen this session, no flash */
+  (function () {
+    try {
+      if (sessionStorage.getItem('i8knew_intro_seen')) {
+        var pre = document.getElementById('preloader');
+        if (pre) pre.style.display = 'none';
+        document.body.classList.remove('pl-locked');
+        document.body.classList.add('hero-ready');
+      }
+    } catch (e) {}
+  })();
+</script>
 
 
 <!-- ════════════════════ CURSOR ════════════════════ -->
@@ -1998,6 +2066,10 @@
   (function () {
     const pre = document.getElementById('preloader');
     if (!pre) return;
+    let alreadySeen = false;
+    try { alreadySeen = !!sessionStorage.getItem('i8knew_intro_seen'); } catch (e) {}
+    if (alreadySeen) return; /* early inline script already revealed the hero */
+
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = document.getElementById('warpCanvas');
     const ctx = canvas.getContext('2d');
@@ -2053,42 +2125,6 @@
       ctx.restore();
     }
 
-    /* explosion sparks — realistic radial debris burst */
-    let sparks = [];
-    function spawnBurst() {
-      if (reduceMotion) return;
-      const N = 110;
-      for (let i = 0; i < N; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 3 + Math.random() * 16;
-        const warm = Math.random() < 0.55;
-        sparks.push({
-          x: cx, y: cy,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 1,
-          decay: 0.012 + Math.random() * 0.022,
-          size: 0.8 + Math.random() * 2.4,
-          hue: warm ? [255, 210 + Math.random()*30, 150 + Math.random()*60] : [180 + Math.random()*40, 210, 255]
-        });
-      }
-    }
-    function drawSparks() {
-      if (!sparks.length) return;
-      sparks.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        p.vx *= 0.985; p.vy *= 0.985;
-        p.life -= p.decay;
-      });
-      sparks = sparks.filter(p => p.life > 0);
-      sparks.forEach(p => {
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${p.hue[0]|0},${p.hue[1]|0},${p.hue[2]|0},${Math.max(0, p.life)})`;
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-    }
-
     function drawFrame() {
       /* ambient tint fades from atmosphere blue to deep-space black */
       const tintR = lerp(18, 4, warpT), tintG = lerp(48, 5, warpT), tintB = lerp(90, 9, warpT);
@@ -2118,7 +2154,6 @@
         ctx.stroke();
       });
 
-      drawSparks();
       rafId = requestAnimationFrame(drawFrame);
     }
     if (!reduceMotion) {
@@ -2164,43 +2199,65 @@
 
     const DURATION = reduceMotion ? 500 : 3400;
     const startT = performance.now();
+    let skipped = false;
     function tick(now) {
+      if (skipped) return;
       const t = Math.min((now - startT) / DURATION, 1);
-      const eased = 1 - Math.pow(1 - t, 3);
+      /* ease-in-out cubic — even, deliberate scan pace instead of a rushed-then-crawling fill */
+      const eased = t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
       const pct = Math.round(eased * 100);
       if (pctEl) pctEl.textContent = pct;
       if (barEl) barEl.style.width = pct + '%';
       if (statusEl) statusEl.textContent = statusFor(pct);
       if (velEl) velEl.textContent = (900 + Math.round(eased * 27100)).toLocaleString('en-US') + ' km/h';
       warpT = eased;
-      warpSpeed = 0.4 + eased * eased * 6;
+      warpSpeed = 0.4 + eased * 4.2;
       if (t < 1) requestAnimationFrame(tick);
       else finishLoading();
     }
     requestAnimationFrame(tick);
 
+    /* skip button — jump straight to the explosive arrival */
+    const skipBtn = document.getElementById('plSkip');
+    if (skipBtn) {
+      setTimeout(() => skipBtn.classList.add('show'), 500);
+      skipBtn.addEventListener('click', () => {
+        if (skipped) return;
+        skipped = true;
+        if (pctEl) pctEl.textContent = 100;
+        if (barEl) barEl.style.width = '100%';
+        if (statusEl) statusEl.textContent = statusFor(100);
+        warpT = 1;
+        finishLoading();
+      });
+    }
+
     function finishLoading() {
       clearInterval(roleTimer);
-      warpSpeed = 16; /* hyperspace burst */
-      spawnBurst();
+      warpSpeed = 16; /* brief acceleration as streaks widen into the light */
+      try { sessionStorage.setItem('i8knew_intro_seen', '1'); } catch (e) {}
 
-      const inner = document.getElementById('plInner');
       const flash = document.getElementById('plFlash');
       const shock = document.getElementById('plShockwave');
-      const shockCore = document.getElementById('plShockwaveCore');
-      if (inner) inner.classList.add('pl-shake');
+      if (skipBtn) skipBtn.classList.remove('show');
       if (flash) flash.classList.add('pl-flash-active');
       if (shock) shock.classList.add('go');
-      if (shockCore) shockCore.classList.add('go');
 
+      /* reveal the hero right as the flash whites out the screen — the cut is masked by the light */
       setTimeout(() => {
-        pre.classList.add('pl-exit');
         document.body.classList.remove('pl-locked');
         document.body.classList.add('hero-ready');
+      }, 170);
+
+      /* preloader dissolves away slowly afterward, so it fades over a hero that's already mid-entrance */
+      setTimeout(() => {
+        pre.classList.add('pl-exit');
         setTimeout(() => {
           pre.classList.add('pl-done');
           cancelAnimationFrame(rafId);
-        }, 950);
+        }, 1200);
       }, 300);
     }
   })();
