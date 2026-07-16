@@ -1284,24 +1284,26 @@
       .testi-rel-badge { font-size: .56rem; }
       .testi-year { top: 1.25rem; right: 1.25rem; }
       .testi-author { gap: .75rem; }
-      
+
       .projects-grid {
        display: flex !important;
-       overflow-x: auto !important;
-       scroll-snap-type: x mandatory;
-       gap: 1.25rem;
-       padding: 0 1.5rem 1.5rem;
-       margin: 0 -1.5rem;
-       scrollbar-width: none; /* Hilangkan scrollbar */
-      }
-      .projects-grid::-webkit-scrollbar { display: none; }
-  
+       flex-direction: column !important; /* Paksa berjejer ke bawah */
+       gap: 2rem; /* Jarak antar project card */
+       padding: 0 1.5rem; /* Jarak aman kanan-kiri biar gak mentok layar */
+       margin: 0;
+       }
+
       .project-card {
-       flex: 0 0 82% !important; /* Kartu sisa 18% space kosong di kanan */
-       scroll-snap-align: start;
-     }
-      .project-card .card-thumb { aspect-ratio: 4/3 !important; }
-      .card-desc { max-width: 100% !important; }
+       width: 100% !important; /* Biar lebarnya pas memenuhi layar */
+       flex: none !important; /* Hapus flex-grow/shrink yang bikin aneh */
+       }
+
+      .project-card .card-thumb {
+       width: 100% !important;
+       height: auto !important; /* Biar gambar proporsional dan GAK kepotong */
+       aspect-ratio: 16/9 !important; /* Ganti ke 16/9 biar pas kayak landscape asli */
+       object-fit: cover !important; 
+       }
       
     }
     /* ══════════════ PRELOADER — EARTH SKY TO SPACE ══════════════ */
