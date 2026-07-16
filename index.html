@@ -1285,24 +1285,25 @@
       .testi-year { top: 1.25rem; right: 1.25rem; }
       .testi-author { gap: .75rem; }
 
-      .projects-grid {
+      ..projects-grid {
        display: flex !important;
-       flex-direction: column !important; /* Paksa berjejer ke bawah */
-       gap: 2rem; /* Jarak antar project card */
-       padding: 0 1.5rem; /* Jarak aman kanan-kiri biar gak mentok layar */
-       margin: 0;
+       flex-direction: column !important;
+       gap: 2.5rem; 
+       padding: 0 !important; 
+       margin: 0 !important;
+       width: 100% !important;
        }
 
       .project-card {
-       width: 100% !important; /* Biar lebarnya pas memenuhi layar */
-       flex: none !important; /* Hapus flex-grow/shrink yang bikin aneh */
+       width: 100% !important; 
+       flex: none !important;
        }
 
       .project-card .card-thumb {
        width: 100% !important;
-       height: auto !important; /* Biar gambar proporsional dan GAK kepotong */
-       aspect-ratio: 16/9 !important; /* Ganti ke 16/9 biar pas kayak landscape asli */
-       object-fit: cover !important; 
+       height: auto !important;
+       aspect-ratio: 16/10 !important; 
+       object-fit: cover !important;
        }
       
     }
