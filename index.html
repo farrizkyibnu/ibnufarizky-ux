@@ -2097,41 +2097,11 @@
     let warpT = 0; /* 0 = low atmosphere (earth sky), 1 = deep space near hero */
     const lerp = (a, b, t) => a + (b - a) * t;
 
-    /* earth horizon — glowing curved limb that recedes below frame as we climb into space */
-    function drawHorizon() {
-      const fade = Math.max(0, 1 - warpT / 0.62);
-      if (fade <= 0.02) return;
-      const arcY = h * (0.82 + warpT * 0.95);
-      const rx = w * 0.9, ry = h * 0.55;
-      ctx.save();
-      ctx.globalAlpha = fade;
-      const earthGrad = ctx.createRadialGradient(cx, arcY, 10, cx, arcY, rx);
-      earthGrad.addColorStop(0, 'rgba(14,32,58,.92)');
-      earthGrad.addColorStop(1, 'rgba(5,10,20,.96)');
-      ctx.fillStyle = earthGrad;
-      ctx.beginPath();
-      ctx.ellipse(cx, arcY, rx, ry, 0, Math.PI, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(120,185,255,.5)';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.ellipse(cx, arcY, rx, ry, 0, Math.PI, Math.PI * 2);
-      ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,200,150,.55)';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.ellipse(cx, arcY - 2, rx, ry, 0, Math.PI, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    }
-
     function drawFrame() {
       /* ambient tint fades from atmosphere blue to deep-space black */
       const tintR = lerp(18, 4, warpT), tintG = lerp(48, 5, warpT), tintB = lerp(90, 9, warpT);
       ctx.fillStyle = `rgba(${tintR | 0},${tintG | 0},${tintB | 0},.30)`;
       ctx.fillRect(0, 0, w, h);
-
-      if (!reduceMotion) drawHorizon();
 
       const maxR = Math.hypot(w, h) / 2 + 60;
       const baseR = lerp(200, 210, warpT);
