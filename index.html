@@ -677,6 +677,8 @@
       -webkit-transform: translateZ(0);
       will-change: transform;
       transition: border-color .35s;
+      content-visibility: auto;
+      contain-intrinsic-size: 800px 450px;
     }
     .project-card:hover .card-thumb { border-color: rgba(255,255,255,0.16); }
     .project-card:nth-child(1) .card-thumb { aspect-ratio: 21/8; }
@@ -1710,7 +1712,7 @@
     <div class="projects-grid">
       <a class="project-card fi" href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" decoding="async" src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
+          <img loading="eager" fetchpriority="high" decoding="async" width="1600" height="610" src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
           <span class="card-badge">UI/UX Audit</span>
         </div>
         <div class="card-content">
@@ -1720,7 +1722,7 @@
       </a>
       <a class="project-card fi" href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" decoding="async" src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
           <span class="card-badge">Dashboard / ERP</span>
         </div>
         <div class="card-content">
@@ -1730,7 +1732,7 @@
       </a>
       <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" decoding="async" src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
           <span class="card-badge">Fintech Dashboard</span>
         </div>
         <div class="card-content">
@@ -1740,7 +1742,7 @@
       </a>
       <a class="project-card fi" href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" decoding="async" src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
           <span class="card-badge">UI/UX Audit</span>
         </div>
         <div class="card-content">
@@ -1750,7 +1752,7 @@
       </a>
       <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener">
         <div class="card-thumb">
-          <img loading="lazy" decoding="async" src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
+          <img loading="lazy" fetchpriority="low" decoding="async" width="1280" height="720" src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
           <span class="card-badge">Design System</span>
         </div>
         <div class="card-content">
