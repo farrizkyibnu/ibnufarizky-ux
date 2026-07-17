@@ -277,7 +277,7 @@
       letter-spacing: .08em;
       margin-bottom: 1.75rem;
     }
-    .hero-role span {
+    .hero-role .role-dot {
       display: inline-block;
       width: 4px; height: 4px;
       background: var(--txt-3);
@@ -1410,6 +1410,74 @@
     .pl-hud-r { right: calc(5vw + 42px); text-align: right; }
     .pl-hud-lbl { display: block; font-size: .62rem; letter-spacing: .18em; color: var(--txt-3); text-transform: uppercase; }
     .pl-hud-val { display: block; font-size: .78rem; letter-spacing: .04em; color: rgba(71,225,255,.9); font-variant-numeric: tabular-nums; }
+    .pl-hud-lbl.pl-hud-lbl-2 { margin-top: .4rem; }
+
+    /* ── SCAN LINE SWEEP — radar-style pass over the whole preloader on start ── */
+    .pl-scanline {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      top: -2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(71,225,255,.9) 15%, rgba(255,255,255,.95) 50%, rgba(71,225,255,.9) 85%, transparent 100%);
+      box-shadow: 0 0 16px rgba(71,225,255,.75), 0 0 44px rgba(71,225,255,.35);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .pl-scanline.sweep { animation: pl-scanline-kf 1.15s cubic-bezier(.65,0,.35,1) 1 forwards; }
+    @keyframes pl-scanline-kf {
+      0%   { top: -2px; opacity: 0; }
+      6%   { opacity: .9; }
+      90%  { opacity: .9; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* ── MICROGRAPHIC — per-character lock-in ping ── */
+    .pl-micro-line .char-lock { display: inline-block; color: inherit; }
+    .pl-micro-line .char-lock.ping { animation: pl-char-ping .5s ease-out 1; }
+    @keyframes pl-char-ping {
+      0%   { color: #fff; text-shadow: 0 0 10px rgba(71,225,255,1), 0 0 20px rgba(71,225,255,.8); }
+      100% { color: var(--txt-3); text-shadow: none; }
+    }
+
+    /* ── HERO NAME / ROLE — decode reveal on first paint, same lock-in language ── */
+    .char-lock { display: inline-block; color: inherit; }
+    .hero-name .char-lock.ping {
+      animation: hero-name-ping .55s ease-out 1;
+    }
+    @keyframes hero-name-ping {
+      0%   { color: var(--accent); text-shadow: 0 0 16px rgba(71,225,255,.85), 0 0 34px rgba(71,225,255,.4); }
+      100% { color: inherit; text-shadow: none; }
+    }
+    .hero-role .char-lock.ping {
+      animation: hero-role-ping .45s ease-out 1;
+    }
+    @keyframes hero-role-ping {
+      0%   { color: var(--accent); }
+      100% { color: inherit; }
+    }
+
+    /* ── MICROGRAPHIC — typewriter variant (line 3) ── */
+    .pl-micro-line.typewriter::after {
+      content: '';
+      display: inline-block;
+      width: 6px; height: .85em;
+      background: rgba(71,225,255,.85);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: pl-cursor-blink .9s steps(1,end) infinite;
+    }
+    @keyframes pl-cursor-blink { 50% { opacity: 0; } }
+
+    /* ── NAME LOCK — brief RGB split right as the reticle locks on ── */
+    #plNameText.glitch { animation: pl-rgb-split .35s steps(2, end) 1; }
+    @keyframes pl-rgb-split {
+      0%   { text-shadow: -2px 0 rgba(255,60,60,.8), 2px 0 rgba(71,225,255,.8); transform: translateX(0); }
+      25%  { text-shadow: 2px 0 rgba(255,60,60,.8), -2px 0 rgba(71,225,255,.8); transform: translateX(-1px); }
+      50%  { text-shadow: -1px 0 rgba(255,60,60,.55), 1px 0 rgba(71,225,255,.55); transform: translateX(1px); }
+      75%  { text-shadow: 1px 0 rgba(255,60,60,.35), -1px 0 rgba(71,225,255,.35); transform: translateX(0); }
+      100% { text-shadow: none; transform: translateX(0); }
+    }
 
     /* micrographic — spec-plate tag, same corner offset language as the HUD above */
     .pl-micro {
@@ -1421,6 +1489,7 @@
       font-family: 'SFMono-Regular', 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
     }
     .pl-micro-line { font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; color: var(--txt-3); }
+    .pl-micro-r { left: auto; right: calc(5vw + 42px); align-items: flex-end; text-align: right; }
 
     .pl-center {
       position: absolute;
@@ -1565,8 +1634,11 @@
     @media (prefers-reduced-motion: reduce) {
       #preloader { transition: opacity .3s ease; }
       #preloader.pl-exit { transform: none; filter: none; }
-      #plNameText.blink-in { animation: none; opacity: 1; }
+      #plNameText.blink-in, #plNameText.glitch { animation: none; opacity: 1; text-shadow: none; transform: none; }
       .pl-aim { display: none; }
+      .pl-scanline { display: none; }
+      .pl-micro-line .char-lock.ping { animation: none; }
+      .pl-micro-line.typewriter::after { display: none; }
     }
   </style>
 </head>
@@ -1578,6 +1650,7 @@
     <canvas id="warpCanvas"></canvas>
     <div class="pl-vignette"></div>
     <div class="pl-grid"></div>
+    <div class="pl-scanline" id="plScanline"></div>
 
     <span class="pl-corner pl-tl"></span>
     <span class="pl-corner pl-tr"></span>
@@ -1593,12 +1666,19 @@
     <div class="pl-hud pl-hud-r">
       <span class="pl-hud-lbl">Velocity</span>
       <span class="pl-hud-val" id="plVelocity">0,000 km/h</span>
+      <span class="pl-hud-lbl pl-hud-lbl-2">Signal Lock</span>
+      <span class="pl-hud-val" id="plLock">— — — —</span>
     </div>
 
     <div class="pl-micro" aria-hidden="true">
-      <span class="pl-micro-line">Mission NA·05 — Talent Scan</span>
-      <span class="pl-micro-line">Subject: M. Ibnu Farizky</span>
-      <span class="pl-micro-line">Origin ID / Class Product Designer</span>
+      <span class="pl-micro-line" id="microLine1"></span>
+      <span class="pl-micro-line" id="microLine2"></span>
+      <span class="pl-micro-line" id="microLine3"></span>
+    </div>
+
+    <div class="pl-micro pl-micro-r" aria-hidden="true">
+      <span class="pl-micro-line" id="microLine4"></span>
+      <span class="pl-micro-line" id="microLine5"></span>
     </div>
 
     <div class="pl-center">
@@ -1676,8 +1756,8 @@
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-content">
-      <h1 class="hero-name"><em>Muhamad</em><br>Ibnu Farizky</h1>
-      <p class="hero-role">Product Designer <span></span> UI&thinsp;/&thinsp;UX</p>
+      <h1 class="hero-name"><em id="heroNameFirst">Muhamad</em><br><span id="heroNameLast">Ibnu Farizky</span></h1>
+      <p class="hero-role"><span id="heroRoleText">Product Designer</span> <span class="role-dot"></span> <span id="heroRoleTech">UI&thinsp;/&thinsp;UX</span></p>
       <div class="hero-actions">
         <a href="#work" class="btn-p"><span>View Work</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;">
     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z" clip-rule="evenodd" />
@@ -2140,6 +2220,100 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+  /* ══════════════ SHARED TEXT-DECODE HELPERS ══════════════
+     Used by the preloader HUD and also reused for the hero name/role reveal. */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const MICRO_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*/·—';
+  const HEX_CHARS = '0123456789ABCDEF';
+
+  /* characters cycle through a random charset, then lock in left-to-right until
+     the final string settles, like a terminal decrypting a value. Each char is
+     its own span so a freshly-locked char can flash (ping) before settling. */
+  function scrambleReveal(el, finalText, duration, startDelay, pingClass) {
+    if (!el) return;
+    if (prefersReducedMotion) { el.textContent = finalText; return; }
+    const len = finalText.length;
+    el.innerHTML = '';
+    const spans = [];
+    for (let i = 0; i < len; i++) {
+      const s = document.createElement('span');
+      s.className = pingClass || 'char-lock';
+      s.textContent = finalText[i] === ' ' ? '\u00A0' : MICRO_CHARS[Math.floor(Math.random() * MICRO_CHARS.length)];
+      el.appendChild(s);
+      spans.push(s);
+    }
+    setTimeout(() => {
+      const start = performance.now();
+      let lastRevealCount = 0;
+      function frame(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const revealCount = Math.floor(t * len);
+        for (let i = 0; i < len; i++) {
+          const ch = finalText[i];
+          if (ch === ' ') { spans[i].textContent = '\u00A0'; continue; }
+          spans[i].textContent = i < revealCount ? ch : MICRO_CHARS[Math.floor(Math.random() * MICRO_CHARS.length)];
+        }
+        if (revealCount > lastRevealCount) {
+          for (let i = lastRevealCount; i < revealCount; i++) {
+            spans[i].classList.remove('ping');
+            void spans[i].offsetWidth;
+            spans[i].classList.add('ping');
+          }
+          lastRevealCount = revealCount;
+        }
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          for (let i = 0; i < len; i++) spans[i].textContent = finalText[i] === ' ' ? '\u00A0' : finalText[i];
+        }
+      }
+      requestAnimationFrame(frame);
+    }, startDelay);
+  }
+
+  function typewriterReveal(el, finalText, charDelay, startDelay) {
+    if (!el) return;
+    if (prefersReducedMotion) { el.textContent = finalText; return; }
+    el.textContent = '';
+    setTimeout(() => {
+      el.classList.add('typewriter');
+      let i = 0;
+      function step() {
+        i++;
+        el.textContent = finalText.slice(0, i);
+        if (i < finalText.length) {
+          setTimeout(step, charDelay);
+        } else {
+          setTimeout(() => el.classList.remove('typewriter'), 450);
+        }
+      }
+      step();
+    }, startDelay);
+  }
+
+  function scrambleHex(el, finalText, duration, startDelay) {
+    if (!el) return;
+    if (prefersReducedMotion) { el.textContent = finalText; return; }
+    setTimeout(() => {
+      const len = finalText.length;
+      const start = performance.now();
+      function frame(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const revealCount = Math.floor(t * len);
+        let out = '';
+        for (let i = 0; i < len; i++) {
+          const ch = finalText[i];
+          if (ch === ' ' || ch === '-' || ch === 'x') { out += ch; continue; }
+          out += i < revealCount ? ch : HEX_CHARS[Math.floor(Math.random() * HEX_CHARS.length)];
+        }
+        el.textContent = out;
+        if (t < 1) requestAnimationFrame(frame);
+        else el.textContent = finalText;
+      }
+      requestAnimationFrame(frame);
+    }, startDelay);
+  }
+
   /* ══════════════ PRELOADER — EARTH SKY TO SPACE ══════════════ */
   (function () {
     const pre = document.getElementById('preloader');
@@ -2210,6 +2384,17 @@
       drawFrame();
     }
 
+    /* ── SCAN LINE SWEEP — one radar-style pass over the HUD right as it boots ── */
+    const scanline = document.getElementById('plScanline');
+    if (scanline && !reduceMotion) setTimeout(() => scanline.classList.add('sweep'), 150);
+
+    scrambleReveal(document.getElementById('microLine1'), 'Mission NA·05 — Talent Scan', 900, 350);
+    scrambleReveal(document.getElementById('microLine2'), 'Subject: M. Ibnu Farizky', 900, 550);
+    typewriterReveal(document.getElementById('microLine3'), 'Origin ID / Class Product Designer', 26, 900);
+    scrambleReveal(document.getElementById('microLine4'), 'Scan Integrity — 100%', 850, 1050);
+    scrambleReveal(document.getElementById('microLine5'), 'Clearance — Level 5', 850, 1250);
+    scrambleHex(document.getElementById('plLock'), '0x2A6C-19F3', 1200, 2600);
+
     /* role cycler — overlapping vertical swap, fast. Plays through once (no repeat),
        then hands off to a scramble-text reveal of the name instead of looping back. */
     const roles = pre.querySelectorAll('.pl-role:not(.pl-role-name)');
@@ -2232,6 +2417,12 @@
         void aimEl.offsetWidth;
         aimEl.classList.add('seeking');
       }
+      /* right as the reticle locks on (~82% into the blink), snap the name
+         through a quick chromatic split before it settles with a steady glow */
+      setTimeout(() => {
+        el.classList.add('glitch');
+        setTimeout(() => el.classList.remove('glitch'), 380);
+      }, 700);
       setTimeout(onDone, 850);
     }
 
@@ -2365,6 +2556,29 @@
           cancelAnimationFrame(rafId);
         }, 600);
       }, 150);
+    }
+  })();
+
+  /* ══════════════ HERO NAME / ROLE — decode reveal ══════════════
+     Fires once the hero becomes visible, whether that's right after the
+     preloader finishes or immediately (session already saw the intro). */
+  (function () {
+    function revealHero() {
+      scrambleReveal(document.getElementById('heroNameFirst'), 'Muhamad', 500, 260);
+      scrambleReveal(document.getElementById('heroNameLast'), 'Ibnu Farizky', 650, 400);
+      scrambleReveal(document.getElementById('heroRoleText'), 'Product Designer', 550, 550);
+      scrambleReveal(document.getElementById('heroRoleTech'), 'UI\u2009/\u2009UX', 400, 700);
+    }
+    if (document.body.classList.contains('hero-ready')) {
+      revealHero();
+    } else {
+      const mo = new MutationObserver(() => {
+        if (document.body.classList.contains('hero-ready')) {
+          revealHero();
+          mo.disconnect();
+        }
+      });
+      mo.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
   })();
 
