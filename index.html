@@ -49,7 +49,7 @@
       --accent-dim: rgba(71, 234, 255, 0.1);
       --txt:        #F0F0F0;
       --txt-2:      #888;
-      --txt-3:      #444;
+      --txt-3:      #6e6e6e;
       --display:    'EB Garamond', serif;
       --body:       'Poppins', sans-serif;
       --pl-display: 'Geist Pixel Square', 'JetBrains Mono', monospace;
@@ -143,17 +143,126 @@
     .nav-links a:not(.nav-cta):hover { color: var(--accent); }
     .nav-links a:not(.nav-cta):hover::after { width: 100%; }
     .nav-cta {
+      display: inline-flex !important;
+      align-items: center;
+      gap: .6rem;
       background: var(--accent) !important;
       color: #080808 !important;
       padding-left: 16px !important;
       padding-right: 12px !important;
-      padding-bottom: 12px !important;
-      padding-top: 12px !important;
+      padding-bottom: 8px !important;
+      padding-top: 8px !important;
       border-radius: 100px;
       font-weight: 500 !important;
-      transition: opacity .2s, transform .2s !important;
+      transition: opacity .2s, transform .2s, gap .3s ease !important;
     }
-    .nav-cta:hover { opacity: .85 !important; transform: translateY(-1px); }
+    .nav-cta:hover { opacity: .85 !important; transform: translateY(-1px); gap: .85rem; }
+
+    /* ── ARROW BADGE — the badge's own layout box is FIXED at icon size,
+       forever (nothing here ever changes width/height), so hovering it can
+       never push or shake anything next to it. The circle and ripple are
+       absolutely-positioned overlays, sized larger than that box and
+       centered on it, that scale in purely visually — out of flow, so
+       they never affect layout no matter how big they grow. ── */
+    .arrow-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: inherit;
+    }
+    .arrow-badge svg {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      color: inherit;
+      transition: color .3s ease;
+    }
+    .arrow-badge::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: var(--badge-size, 28px);
+      height: var(--badge-size, 28px);
+      border-radius: 50%;
+      background: linear-gradient(115deg, var(--badge-fill) 42%, var(--badge-shine, rgba(255,255,255,.5)) 50%, var(--badge-fill) 58%);
+      background-size: 240% 240%;
+      background-position: 0% 50%;
+      transform: translate(-50%,-50%) scale(0);
+      transition: transform .45s cubic-bezier(.34,1.56,.64,1);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .arrow-badge::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: var(--badge-size, 28px);
+      height: var(--badge-size, 28px);
+      border-radius: 50%;
+      border: 1.5px solid var(--badge-fill, currentColor);
+      transform: translate(-50%,-50%) scale(1);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes badge-ripple {
+      0%   { transform: translate(-50%,-50%) scale(1);    opacity: .5; }
+      100% { transform: translate(-50%,-50%) scale(1.3);  opacity: 0; }
+    }
+    @keyframes badge-shine-sweep {
+      0%   { background-position: 130% 50%; }
+      100% { background-position: -30% 50%; }
+    }
+    /* two ghost copies of the icon drift apart and back, reading as
+       overlapping duplicates — used on the light/white-fill buttons
+       instead of the shine sweep */
+    @keyframes icon-overlap-loop {
+      0%, 100% { filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent); }
+      50%      { filter: drop-shadow(3px -3px 0 rgba(8,8,8,.32)) drop-shadow(-3px 3px 0 rgba(8,8,8,.16)); }
+    }
+    /* light button (accent bg, dark text) → circle fills dark, icon flips light on hover */
+    .nav-cta .arrow-badge,
+    .mobile-cta .arrow-badge { width: 14px; height: 14px; --badge-fill: #080808; --badge-shine: rgba(255,255,255,.55); --badge-size: 28px; }
+    .nav-cta .arrow-badge svg,
+    .mobile-cta .arrow-badge svg { width: 14px; height: 14px; }
+    .btn-p .arrow-badge { width: 16px; height: 16px; --badge-fill: #080808; --badge-shine: rgba(255,255,255,.55); --badge-size: 30px; }
+    .btn-p .arrow-badge svg { width: 16px; height: 16px; }
+    /* dark-bg buttons/links (accent-colored text) → circle fills light, icon flips dark on hover */
+    .behance-link .arrow-badge,
+    .behance-cta-btn .arrow-badge { width: 12px; height: 12px; --badge-fill: var(--accent); --badge-size: 24px; margin-left: .1rem; }
+    .behance-link .arrow-badge svg,
+    .behance-cta-btn .arrow-badge svg { width: 12px; height: 12px; }
+
+    .nav-cta:hover .arrow-badge::before,
+    .mobile-cta:hover .arrow-badge::before,
+    .btn-p:hover .arrow-badge::before {
+      transform: translate(-50%,-50%) scale(1);
+      animation: badge-scale-in .45s cubic-bezier(.34,1.56,.64,1), badge-shine-sweep 1.6s linear .45s infinite;
+    }
+    .behance-link:hover .arrow-badge::before,
+    .behance-cta-btn:hover .arrow-badge::before { transform: translate(-50%,-50%) scale(1); }
+    .behance-link:hover .arrow-badge svg,
+    .behance-cta-btn:hover .arrow-badge svg { animation: icon-overlap-loop 1.3s ease-in-out .2s infinite; }
+    @keyframes badge-scale-in { from { transform: translate(-50%,-50%) scale(0); } }
+
+    .nav-cta:hover .arrow-badge svg,
+    .mobile-cta:hover .arrow-badge svg,
+    .btn-p:hover .arrow-badge svg { color: var(--accent); }
+    .behance-link:hover .arrow-badge svg,
+    .behance-cta-btn:hover .arrow-badge svg { color: #080808; }
+
+    .nav-cta:hover .arrow-badge::after,
+    .mobile-cta:hover .arrow-badge::after,
+    .behance-cta-btn:hover .arrow-badge::after {
+      animation: badge-ripple 1.3s ease-out .2s infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .arrow-badge::before { transition: none; animation: none !important; }
+      .arrow-badge::after { animation: none !important; }
+      .arrow-badge svg { animation: none !important; }
+    }
 
     .hamburger {
       display: none;
@@ -200,6 +309,21 @@
     }
     .mobile-menu a:last-child { border-bottom: none; color: var(--accent); }
     .mobile-menu a:hover { color: var(--txt); }
+    .mobile-menu a.mobile-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      align-self: flex-start;
+      background: var(--accent);
+      color: #080808;
+      border: none;
+      border-radius: 100px;
+      padding: 8px 12px 8px 16px;
+      margin-top: .25rem;
+      font-weight: 500;
+      transition: gap .3s ease;
+    }
+    .mobile-menu a.mobile-cta:hover { color: #080808; gap: .85rem; }
 
     /* ── HERO ── */
     #home {
@@ -297,7 +421,10 @@
       background: var(--accent);
       color: #080808;
       border: none;
-      padding: .72rem 1.6rem;
+      padding-left: 16px;
+      padding-right: 12px;
+      padding-top: 8px;
+      padding-bottom: 8px;
       border-radius: 100px;
       font-family: var(--body);
       font-size: .85rem;
@@ -306,8 +433,8 @@
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: .45rem;
-      transition: opacity .2s, transform .2s;
+      gap: .6rem;
+      transition: opacity .2s, transform .2s, gap .3s ease;
       position: relative;
       overflow: hidden;
     }
@@ -321,9 +448,10 @@
       transition: left .55s ease;
       pointer-events: none;
     }
-    .btn-p:hover { opacity: .88; transform: translateY(-2px); }
+    .btn-p:hover { opacity: .88; transform: translateY(-2px); gap: .85rem; }
     .btn-p:hover::after { left: 160%; }
     .btn-s {
+      position: relative;
       background: transparent;
       color: var(--txt);
       border: 1px solid var(--border);
@@ -337,7 +465,7 @@
       display: inline-flex;
       align-items: center;
       gap: .45rem;
-      transition: border-color .2s, background .2s, transform .2s;
+      transition: border-color .3s, background .3s, transform .35s cubic-bezier(.22,1,.36,1);
     }
     .btn-s:hover { border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.04); transform: translateY(-2px); }
 
@@ -634,13 +762,13 @@
     .behance-link {
       display: inline-flex;
       align-items: center;
-      gap: .4rem;
+      gap: .55rem;
       color: var(--accent);
       text-decoration: none;
       font-size: .83rem;
       font-weight: 400;
       flex-shrink: 0;
-      padding-bottom: 2px;
+      padding: 7px 8px 7px 0;
       border-bottom: 1px solid transparent;
       transition: border-color .2s, gap .25s;
       position: relative;
@@ -656,7 +784,7 @@
       transition: left .5s ease;
       pointer-events: none;
     }
-    .behance-link:hover { border-color: var(--accent); gap: .65rem; }
+    .behance-link:hover { border-color: var(--accent); gap: .8rem; }
     .behance-link:hover::after { left: 160%; }
     .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2.75rem 1.75rem; }
     .project-card:nth-child(1) { grid-column: span 12; }
@@ -676,6 +804,7 @@
     }
     .project-card,
     .project-card * { text-decoration: none; }
+    .project-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--r); }
     .project-card:visited,
     .project-card:visited * { color: inherit; }
     .card-thumb {
@@ -749,19 +878,67 @@
     .behance-cta-btn {
       display: inline-flex;
       align-items: center;
-      gap: .55rem;
+      gap: .6rem;
       background: transparent;
       border: 1px solid var(--accent);
       color: var(--accent);
       text-decoration: none;
       font-size: .85rem;
       font-weight: 500;
-      padding: .72rem 1.8rem;
+      padding-left: 16px;
+      padding-right: 12px;
+      padding-top: 8px;
+      padding-bottom: 8px;
       border-radius: 100px;
       letter-spacing: .02em;
       transition: background .25s, border-color .25s, gap .25s, transform .25s;
     }
-    .behance-cta-btn:hover { background: var(--accent-dim); border-color: var(--accent); gap: .75rem; transform: translateY(-2px); }
+    .behance-cta-btn:hover { background: var(--accent-dim); border-color: var(--accent); gap: .85rem; transform: translateY(-2px); }
+
+    /* ── CASE STUDY QUICK VIEW MODAL ── */
+    .case-modal {
+      position: fixed; inset: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem 1.25rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .case-modal.open { opacity: 1; pointer-events: auto; }
+    .case-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(8,8,8,.82);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .case-modal-panel {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 640px; max-height: 88vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      transform: translateY(18px);
+      transition: transform .32s cubic-bezier(.16,1,.3,1);
+    }
+    .case-modal.open .case-modal-panel { transform: translateY(0); }
+    .case-modal-thumb { position: relative; }
+    .case-modal-thumb img { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--r) var(--r) 0 0; }
+    .case-modal-body { padding: 1.5rem 1.75rem 1.85rem; }
+    .case-modal-close {
+      position: absolute; top: .85rem; right: .85rem; z-index: 2;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: rgba(8,8,8,.65);
+      border: 1px solid var(--border);
+      color: var(--txt);
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .case-modal-close:hover { background: rgba(8,8,8,.9); transform: rotate(90deg); }
+    #caseModalDesc { margin: .6rem 0 1.4rem; }
+    @media (max-width: 640px) {
+      .case-modal-body { padding: 1.25rem 1.25rem 1.5rem; }
+    }
 
     /* ── EXPERIENCE ── */
     #experience { background: var(--surface); }
@@ -1190,6 +1367,8 @@
         color: var(--accent);
       }
       body.cursor-view #cursor-dot { transform: translate(-50%, -50%) scale(0); }
+      body.cursor-fade #cursor-ring,
+      body.cursor-fade #cursor-dot { opacity: 0; }
     }
 
     /* ── CARD TILT ── */
@@ -1472,10 +1651,10 @@
     /* ── NAME LOCK — brief RGB split right as the reticle locks on ── */
     #plNameText.glitch { animation: pl-rgb-split .35s steps(2, end) 1; }
     @keyframes pl-rgb-split {
-      0%   { text-shadow: -2px 0 rgba(255,60,60,.8), 2px 0 rgba(71,225,255,.8); transform: translateX(0); }
-      25%  { text-shadow: 2px 0 rgba(255,60,60,.8), -2px 0 rgba(71,225,255,.8); transform: translateX(-1px); }
-      50%  { text-shadow: -1px 0 rgba(255,60,60,.55), 1px 0 rgba(71,225,255,.55); transform: translateX(1px); }
-      75%  { text-shadow: 1px 0 rgba(255,60,60,.35), -1px 0 rgba(71,225,255,.35); transform: translateX(0); }
+      0%   { text-shadow: -1px 0 rgba(255,60,60,.45), 1px 0 rgba(71,225,255,.45); transform: translateX(0); }
+      25%  { text-shadow: 1px 0 rgba(255,60,60,.45), -1px 0 rgba(71,225,255,.45); transform: translateX(0); }
+      50%  { text-shadow: -1px 0 rgba(255,60,60,.3), 1px 0 rgba(71,225,255,.3); transform: translateX(0); }
+      75%  { text-shadow: 1px 0 rgba(255,60,60,.18), -1px 0 rgba(71,225,255,.18); transform: translateX(0); }
       100% { text-shadow: none; transform: translateX(0); }
     }
 
@@ -1509,7 +1688,7 @@
       font-weight: 400;
       letter-spacing: .12em; text-transform: uppercase;
       color: var(--txt);
-      text-shadow: 0 0 40px rgba(71,225,255,.25);
+      text-shadow: 0 0 24px rgba(71,225,255,.15);
       opacity: 0;
       transform: translateY(120%);
       transition: transform .34s cubic-bezier(.65,0,.35,1), opacity .28s ease;
@@ -1641,6 +1820,22 @@
       .pl-micro-line.typewriter::after { display: none; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Muhamad Ibnu Farizky",
+    "jobTitle": "Product Designer",
+    "description": "Strategic UI/UX Designer with a business background, crafting high-impact digital products that align user experience with business goals.",
+    "email": "mailto:farizky.ibnu@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Jakarta", "addressCountry": "ID" },
+    "sameAs": [
+      "https://www.linkedin.com/in/muhamad-ibnu-farizky-1b7860193/",
+      "https://www.behance.net/ibnufarizky",
+      "https://github.com/farrizkyibnu"
+    ]
+  }
+  </script>
 </head>
 <body class="pl-locked">
 
@@ -1666,7 +1861,7 @@
     <div class="pl-hud pl-hud-r">
       <span class="pl-hud-lbl">Velocity</span>
       <span class="pl-hud-val" id="plVelocity">0,000 km/h</span>
-      <span class="pl-hud-lbl pl-hud-lbl-2">Signal Lock</span>
+      <span class="pl-hud-lbl pl-hud-lbl-2">Build Ref</span>
       <span class="pl-hud-val" id="plLock">— — — —</span>
     </div>
 
@@ -1730,9 +1925,9 @@
       <li><a href="#work">Work</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="https://drive.google.com/file/d/1sGP1ihuEMl8EwHd00n4WguDbNTI5MtSd/view?usp=sharing" target="_blank" rel="noopener">See CV</a></li>
-      <li><a href="https://wa.me/6282297154100" class="nav-cta" target="_blank" rel="noopener">Let's Talk <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+      <li><a href="https://wa.me/6282297154100" class="nav-cta" target="_blank" rel="noopener">Let's Talk<span class="arrow-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
-          </svg></a></li>
+          </svg></span></a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -1746,7 +1941,9 @@
   <a href="#work"       onclick="closeMenu()">Work</a>
   <a href="#experience" onclick="closeMenu()">Experience</a>
   <a href="https://drive.google.com/file/d/1sGP1ihuEMl8EwHd00n4WguDbNTI5MtSd/view?usp=sharing" target="_blank" onclick="closeMenu()">See CV</a>
-  <a href="https://wa.me/6282297154100" target="_blank" onclick="closeMenu()">Let's Talk ↗</a>
+  <a href="https://wa.me/6282297154100" target="_blank" onclick="closeMenu()" class="mobile-cta">Let's Talk<span class="arrow-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
+      </svg></span></a>
 </div>
 
 
@@ -1759,9 +1956,9 @@
       <h1 class="hero-name"><em id="heroNameFirst">Muhamad</em><br><span id="heroNameLast">Ibnu Farizky</span></h1>
       <p class="hero-role"><span id="heroRoleText">Product Designer</span> <span class="role-dot"></span> <span id="heroRoleTech">UI&thinsp;/&thinsp;UX</span></p>
       <div class="hero-actions">
-        <a href="#work" class="btn-p"><span>View Work</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;">
-    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-.53 14.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V8.25a.75.75 0 0 0-1.5 0v5.69l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z" clip-rule="evenodd" />
-  </svg></a>
+        <a href="#work" class="btn-p">View Work<span class="arrow-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 4.5v14M6 12.5l6 6 6-6"/>
+  </svg></span></a>
         <a href="https://www.linkedin.com/in/muhamad-ibnu-farizky-1b7860193/" target="_blank" rel="noopener" class="btn-s">Get in Touch</a>
       </div>
     </div>
@@ -1859,7 +2056,7 @@
             <span class="skill-tag">UI/UX Audit</span>
             <span class="skill-tag">Prototyping</span>
             <span class="skill-tag">Conduct Interview</span>
-            <span class="skill-tag">Vibe Coding</span>
+            <span class="skill-tag">AI-Assisted Design</span>
             <span class="skill-tag">AI Tools</span>
             <span class="skill-tag">Slicing Design</span>
             <span class="skill-tag">UX Strategy</span>
@@ -1877,7 +2074,7 @@
             <span class="skill-tag">UI/UX Audit</span>
             <span class="skill-tag">Prototyping</span>
             <span class="skill-tag">Conduct Interview</span>
-            <span class="skill-tag">Vibe Coding</span>
+            <span class="skill-tag">AI-Assisted Design</span>
             <span class="skill-tag">AI Tools</span>
             <span class="skill-tag">Slicing Design</span>
             <span class="skill-tag">UX Strategy</span>
@@ -1901,12 +2098,12 @@
         <div class="sec-lbl">Selected Work</div>
         <h2 class="sec-title">Latest Projects.</h2>
       </div>
-      <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-link">View all on Behance <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;">
+      <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-link">View all on Behance<span class="arrow-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M5.22 14.78a.75.75 0 0 0 1.06 0l7.22-7.22v5.69a.75.75 0 0 0 1.5 0v-7.5a.75.75 0 0 0-.75-.75h-7.5a.75.75 0 0 0 0 1.5h5.69l-7.22 7.22a.75.75 0 0 0 0 1.06Z" clip-rule="evenodd" />
-          </svg></a>
+          </svg></span></a>
     </div>
     <div class="projects-grid">
-      <a class="project-card fi" href="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" target="_blank" rel="noopener">
+      <div class="project-card fi" role="button" tabindex="0" data-behance="https://www.behance.net/gallery/248177565/UIUX-Audit-Case-Study-Gopay-%28Fintech-app%29" data-title="GoPay - Increase Retention" data-year="2026" data-badge="UI/UX Audit" data-desc="A comprehensive UI/UX audit to improve user retention and financial awareness through redesigned flows and interaction patterns." data-img="gopay-web-large.webp">
         <div class="card-thumb">
           <img loading="eager" fetchpriority="high" decoding="async" width="2400" height="1011" src="gopay-web-large.webp" alt="GoPay - UI/UX Audit Case Study, Increase Retention" />
           <span class="card-badge">UI/UX Audit</span>
@@ -1915,8 +2112,8 @@
           <div class="card-title-row"><div class="card-title">GoPay - Increase Retention</div><span class="card-year">2026</span></div>
           <div class="card-desc">A comprehensive UI/UX audit to improve user retention and financial awareness through redesigned flows and interaction patterns.</div>
         </div>
-      </a>
-      <a class="project-card fi" href="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" target="_blank" rel="noopener">
+      </div>
+      <div class="project-card fi" role="button" tabindex="0" data-behance="https://www.behance.net/gallery/242756759/Warehouse-Management-Dashboard" data-title="Ravelware - ERP System" data-year="2026" data-badge="Dashboard / ERP" data-desc="End-to-end internal ERP dashboard covering stock management, analytics, and business operations." data-img="ravelware-cover.webp">
         <div class="card-thumb">
           <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="ravelware-cover.webp" alt="Ravelware - ERP Internal System Dashboard" />
           <span class="card-badge">Dashboard / ERP</span>
@@ -1925,8 +2122,8 @@
           <div class="card-title-row"><div class="card-title">Ravelware - ERP System</div><span class="card-year">2026</span></div>
           <div class="card-desc">End-to-end internal ERP dashboard covering stock management, analytics, and business operations.</div>
         </div>
-      </a>
-      <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" target="_blank" rel="noopener">
+      </div>
+      <div class="project-card fi fi-d1" role="button" tabindex="0" data-behance="https://www.behance.net/gallery/249265669/Fintech-Dashboard-%28Money-Management%29" data-title="Trenfix - Fintech Dashboard" data-year="2026" data-badge="Fintech Dashboard" data-desc="Financial management software with real-time analytics, cash flow tracking, and budget planning." data-img="trenfix.webp">
         <div class="card-thumb">
           <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="trenfix.webp" alt="Trenfix - Fintech Dashboard Software" />
           <span class="card-badge">Fintech Dashboard</span>
@@ -1935,8 +2132,8 @@
           <div class="card-title-row"><div class="card-title">Trenfix - Fintech Dashboard</div><span class="card-year">2026</span></div>
           <div class="card-desc">Financial management software with real-time analytics, cash flow tracking, and budget planning.</div>
         </div>
-      </a>
-      <a class="project-card fi" href="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" target="_blank" rel="noopener">
+      </div>
+      <div class="project-card fi" role="button" tabindex="0" data-behance="https://www.behance.net/gallery/237497279/UIUX-Case-Study-GoFood-Audit-%28Discovery%29-Indonesia" data-title="GoFood - Boost Retention" data-year="2025" data-badge="UI/UX Audit" data-desc="Optimizing flow, gamification, and reducing decision fatigue to meaningfully boost user retention." data-img="gofod.webp">
         <div class="card-thumb">
           <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="gofod.webp" alt="GoFood - UI/UX Audit Case Study, Boost Retention" />
           <span class="card-badge">UI/UX Audit</span>
@@ -1945,8 +2142,8 @@
           <div class="card-title-row"><div class="card-title">GoFood - Boost Retention</div><span class="card-year">2025</span></div>
           <div class="card-desc">Optimizing flow, gamification, and reducing decision fatigue to meaningfully boost user retention.</div>
         </div>
-      </a>
-      <a class="project-card fi fi-d1" href="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" target="_blank" rel="noopener">
+      </div>
+      <div class="project-card fi fi-d1" role="button" tabindex="0" data-behance="https://www.behance.net/gallery/206127057/Design-System-Intern-Tokoplas-E-commerce-%28B2B%29" data-title="Tokoplas - Catalyst Design System" data-year="2024" data-badge="Design System" data-desc="Built 30+ reusable components across 2 platforms, cutting sprint time and ensuring cross-team consistency." data-img="tokoplass.webp">
         <div class="card-thumb">
           <img loading="lazy" fetchpriority="low" decoding="async" width="1600" height="899" src="tokoplass.webp" alt="Tokoplas - Catalyst Design System v1.0" />
           <span class="card-badge">Design System</span>
@@ -1955,13 +2152,13 @@
           <div class="card-title-row"><div class="card-title">Tokoplas - Catalyst Design System</div><span class="card-year">2024</span></div>
           <div class="card-desc">Built 30+ reusable components across 2 platforms, cutting sprint time and ensuring cross-team consistency.</div>
         </div>
-      </a>
+      </div>
     </div>
     <div class="behance-cta-wrap fi fi-d2">
       <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-cta-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z"/></svg>
         More on Behance
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        <span class="arrow-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
       </a>
     </div>
   </div>
@@ -2213,6 +2410,29 @@
 
 
 <!-- ════════════════════ SCROLL TO TOP ════════════════════ -->
+<!-- ════════════════════ CASE STUDY QUICK VIEW ════════════════════ -->
+<div class="case-modal" id="caseModal" aria-hidden="true">
+  <div class="case-modal-backdrop" data-close></div>
+  <div class="case-modal-panel" role="dialog" aria-modal="true" aria-labelledby="caseModalTitle">
+    <button class="case-modal-close" data-close aria-label="Close quick view">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="case-modal-thumb">
+      <img id="caseModalImg" src="" alt="" />
+      <span class="card-badge" id="caseModalBadge"></span>
+    </div>
+    <div class="case-modal-body">
+      <div class="card-title-row"><h3 class="card-title" id="caseModalTitle"></h3><span class="card-year" id="caseModalYear"></span></div>
+      <p class="card-desc" id="caseModalDesc"></p>
+      <a id="caseModalLink" href="#" target="_blank" rel="noopener" class="behance-cta-btn">
+        View full case study on Behance
+        <span class="arrow-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
 <button id="scrollTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
@@ -2388,11 +2608,11 @@
     const scanline = document.getElementById('plScanline');
     if (scanline && !reduceMotion) setTimeout(() => scanline.classList.add('sweep'), 150);
 
-    scrambleReveal(document.getElementById('microLine1'), 'Mission NA·05 — Talent Scan', 900, 350);
-    scrambleReveal(document.getElementById('microLine2'), 'Subject: M. Ibnu Farizky', 900, 550);
-    typewriterReveal(document.getElementById('microLine3'), 'Origin ID / Class Product Designer', 26, 900);
-    scrambleReveal(document.getElementById('microLine4'), 'Scan Integrity — 100%', 850, 1050);
-    scrambleReveal(document.getElementById('microLine5'), 'Clearance — Level 5', 850, 1250);
+    scrambleReveal(document.getElementById('microLine1'), 'Portfolio — 2026 Edition', 900, 350);
+    scrambleReveal(document.getElementById('microLine2'), 'M. Ibnu Farizky', 900, 550);
+    typewriterReveal(document.getElementById('microLine3'), 'Product Designer / Jakarta, ID', 26, 900);
+    scrambleReveal(document.getElementById('microLine4'), 'Case Studies — Loaded', 850, 1050);
+    scrambleReveal(document.getElementById('microLine5'), 'Status — Ready', 850, 1250);
     scrambleHex(document.getElementById('plLock'), '0x2A6C-19F3', 1200, 2600);
 
     /* role cycler — overlapping vertical swap, fast. Plays through once (no repeat),
@@ -2754,7 +2974,7 @@
     const glowPoints = new THREE.Points(glowGeo, new THREE.PointsMaterial({ size: 0.22, map: glowTex, vertexColors: true, transparent: true, opacity: 0.5, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     scene.add(glowPoints);
 
-    const COMET_N = 8, TRAIL_LEN = 14;
+    const COMET_N = 4, TRAIL_LEN = 10;
     const comets = [];
     for (let i = 0; i < COMET_N; i++) {
       const start = randomPointInTunnel();
@@ -2763,11 +2983,11 @@
       const lineGeo = new THREE.BufferGeometry();
       lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(TRAIL_LEN * 3), 3));
       lineGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(TRAIL_LEN * 3), 3));
-      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }));
+      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false }));
       scene.add(line);
       const headGeo = new THREE.BufferGeometry();
       headGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([start.x, start.y, start.z]), 3));
-      const head = new THREE.Points(headGeo, new THREE.PointsMaterial({ size: 0.3, map: glowTex, color: 0xfbfeff, transparent: true, opacity: 0.9, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+      const head = new THREE.Points(headGeo, new THREE.PointsMaterial({ size: 0.3, map: glowTex, color: 0xfbfeff, transparent: true, opacity: 0.65, sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false }));
       scene.add(head);
       comets.push({ pos: start, trail, line, head, speed: 2.2 + Math.random() * 1.3, phase: Math.random() });
     }
@@ -2855,6 +3075,55 @@
     btn.childNodes[0].textContent = collapsed ? 'Read more' : 'Read less ';
   }
 
+  /* ── CASE STUDY QUICK VIEW ── */
+  (function () {
+    const modal = document.getElementById('caseModal');
+    if (!modal) return;
+    const panel = modal.querySelector('.case-modal-panel');
+    const imgEl = document.getElementById('caseModalImg');
+    const badgeEl = document.getElementById('caseModalBadge');
+    const titleEl = document.getElementById('caseModalTitle');
+    const yearEl = document.getElementById('caseModalYear');
+    const descEl = document.getElementById('caseModalDesc');
+    const linkEl = document.getElementById('caseModalLink');
+    let lastFocused = null;
+
+    function openModal(card) {
+      const d = card.dataset;
+      imgEl.src = d.img || '';
+      imgEl.alt = d.title || '';
+      badgeEl.textContent = d.badge || '';
+      titleEl.textContent = d.title || '';
+      yearEl.textContent = d.year || '';
+      descEl.textContent = d.desc || '';
+      linkEl.href = d.behance || '#';
+      lastFocused = document.activeElement;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      modal.querySelector('.case-modal-close').focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', () => openModal(card));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card); }
+      });
+    });
+
+    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+  })();
+
   if (window.matchMedia('(hover: hover)').matches) {
     /* ── CUSTOM CURSOR ── */
     const dot  = document.getElementById('cursor-dot');
@@ -2875,10 +3144,16 @@
       requestAnimationFrame(animateRing);
     })();
 
-    const hoverTargets = 'a, button, .skill-tag, .testi-card';
+    const hoverTargets = 'a:not(.nav-cta):not(.btn-p):not(.btn-s):not(.behance-link):not(.behance-cta-btn), button:not(#scrollTop), .skill-tag, .testi-card';
     document.querySelectorAll(hoverTargets).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+    /* Buttons that carry their own icon/badge get their own hover feedback — fade the
+       custom cursor out on top of them instead of growing the ring over it. */
+    document.querySelectorAll('.nav-cta, .btn-p, .btn-s, .behance-link, .behance-cta-btn, #scrollTop').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-fade'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-fade'));
     });
     const cursorLabel = document.getElementById('cursorLabel');
     document.querySelectorAll('.project-card').forEach(card => {
@@ -2904,7 +3179,7 @@
           const r  = card.getBoundingClientRect();
           const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
           const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
-          card.style.transform = `perspective(700px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 4).toFixed(2)}deg) translateY(-4px)`;
+          card.style.transform = `perspective(900px) rotateX(${(-dy * 1.5).toFixed(2)}deg) rotateY(${(dx * 1.5).toFixed(2)}deg) translateY(-2px)`;
         });
         card.addEventListener('mouseleave', () => {
           card.style.transition = 'transform .55s ease, border-color .35s';
@@ -2912,17 +3187,6 @@
         });
       });
     }
-
-    /* ── MAGNETIC BUTTONS ── */
-    document.querySelectorAll('.btn-p, .btn-s, .nav-cta').forEach(btn => {
-      btn.addEventListener('mousemove', e => {
-        const r = btn.getBoundingClientRect();
-        const dx = (e.clientX - r.left - r.width  / 2) * 0.35;
-        const dy = (e.clientY - r.top  - r.height / 2) * 0.35;
-        btn.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
-      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-    });
   }
 </script>
 
