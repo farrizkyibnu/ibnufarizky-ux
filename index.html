@@ -186,9 +186,7 @@
       width: var(--badge-size, 28px);
       height: var(--badge-size, 28px);
       border-radius: 50%;
-      background: linear-gradient(115deg, var(--badge-fill) 42%, var(--badge-shine, rgba(255,255,255,.5)) 50%, var(--badge-fill) 58%);
-      background-size: 240% 240%;
-      background-position: 0% 50%;
+      background: var(--badge-fill);
       transform: translate(-50%,-50%) scale(0);
       transition: transform .45s cubic-bezier(.34,1.56,.64,1);
       z-index: 1;
@@ -211,25 +209,25 @@
       0%   { transform: translate(-50%,-50%) scale(1);    opacity: .5; }
       100% { transform: translate(-50%,-50%) scale(1.3);  opacity: 0; }
     }
-    @keyframes badge-shine-sweep {
-      0%   { background-position: 130% 50%; }
-      100% { background-position: -30% 50%; }
+    /* the icon itself nudges toward the direction it points, glowing a
+       little brighter at the peak of each nudge — loops the whole time
+       it's hovered, no ghost duplicates involved */
+    @keyframes icon-run-diag {
+      0%, 100% { transform: translate(0,0);        filter: drop-shadow(0 0 1px var(--icon-glow, rgba(120,220,255,.7))); }
+      50%      { transform: translate(2.5px,-2.5px); filter: drop-shadow(0 0 4px var(--icon-glow, rgba(120,220,255,.95))); }
     }
-    /* two ghost copies of the icon drift apart and back, reading as
-       overlapping duplicates — used on the light/white-fill buttons
-       instead of the shine sweep */
-    @keyframes icon-overlap-loop {
-      0%, 100% { filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent); }
-      50%      { filter: drop-shadow(3px -3px 0 rgba(8,8,8,.32)) drop-shadow(-3px 3px 0 rgba(8,8,8,.16)); }
+    @keyframes icon-run-down {
+      0%, 100% { transform: translateY(0);   filter: drop-shadow(0 0 1px var(--icon-glow, rgba(120,220,255,.7))); }
+      50%      { transform: translateY(3px); filter: drop-shadow(0 0 4px var(--icon-glow, rgba(120,220,255,.95))); }
     }
     /* light button (accent bg, dark text) → circle fills dark, icon flips light on hover */
     .nav-cta .arrow-badge,
-    .mobile-cta .arrow-badge { width: 14px; height: 14px; --badge-fill: #080808; --badge-shine: rgba(255,255,255,.55); --badge-size: 28px; }
+    .mobile-cta .arrow-badge { width: 14px; height: 14px; --badge-fill: #080808; --badge-size: 28px; }
     .nav-cta .arrow-badge svg,
     .mobile-cta .arrow-badge svg { width: 14px; height: 14px; }
     .btn-p .arrow-badge {
       width: 0; height: 20px;
-      --badge-fill: #080808; --badge-shine: rgba(255,255,255,.55); --badge-size: 34px;
+      --badge-fill: #080808; --badge-size: 34px;
       opacity: 0;
       overflow: visible;
       transition: width .35s cubic-bezier(.16,1,.3,1), opacity .3s ease .05s;
@@ -244,14 +242,21 @@
 
     .nav-cta:hover .arrow-badge::before,
     .mobile-cta:hover .arrow-badge::before,
-    .btn-p:hover .arrow-badge::before {
-      transform: translate(-50%,-50%) scale(1);
-      animation: badge-scale-in .45s cubic-bezier(.34,1.56,.64,1), badge-shine-sweep 1.6s linear .45s infinite;
-    }
+    .btn-p:hover .arrow-badge::before,
     .behance-link:hover .arrow-badge::before,
-    .behance-cta-btn:hover .arrow-badge::before { transform: translate(-50%,-50%) scale(1); }
+    .behance-cta-btn:hover .arrow-badge::before {
+      transform: translate(-50%,-50%) scale(1);
+      animation: badge-scale-in .45s cubic-bezier(.34,1.56,.64,1);
+    }
+    .nav-cta:hover .arrow-badge svg,
+    .mobile-cta:hover .arrow-badge svg,
     .behance-link:hover .arrow-badge svg,
-    .behance-cta-btn:hover .arrow-badge svg { animation: icon-overlap-loop 1.3s ease-in-out .2s infinite; }
+    .behance-cta-btn:hover .arrow-badge svg {
+      animation: icon-run-diag 1.1s ease-in-out .2s infinite;
+    }
+    .btn-p:hover .arrow-badge svg {
+      animation: icon-run-down 1.1s ease-in-out .2s infinite;
+    }
     @keyframes badge-scale-in { from { transform: translate(-50%,-50%) scale(0); } }
 
     .nav-cta:hover .arrow-badge svg,
