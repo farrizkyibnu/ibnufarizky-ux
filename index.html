@@ -1188,6 +1188,15 @@
     /* ── CONTACT ── */
     #contact { text-align: center; }
     .contact-inner { max-width: 640px; margin: 0 auto; }
+    #contact { position: relative; overflow: hidden; }
+    #contactCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #contact .sec-in { position: relative; z-index: 1; }
     .contact-email-wrap { margin-top: 2rem; }
     .contact-email {
       font-family: var(--display);
@@ -2404,6 +2413,7 @@
 
 <!-- ════════════════════ CONTACT ════════════════════ -->
 <section id="contact">
+  <canvas id="contactCanvas" aria-hidden="true"></canvas>
   <div class="sec-in">
     <div class="contact-inner">
       <div class="sec-lbl" style="text-align:center;">Contact</div>
@@ -3194,6 +3204,229 @@
       renderer.setSize(homeSec.clientWidth, homeSec.clientHeight);
     });
   })();
+
+  /* ── CONTACT SECTION — SHOOTING STARS ──
+     Several looping comets falling from top-right to bottom-left at one consistent
+     angle — only their size/speed/opacity vary, tied to a single "depth" factor per
+     comet, so bigger/faster reads as "closer" and smaller/slower reads as "farther"
+     rather than looking like random inconsistent trajectories. Blue-only palette,
+     matching the hero's starfield exactly. Plus a comet trail that follows the
+     cursor directly for the interactive touch. */
+  (function () {
+    const canvas = document.getElementById('contactCanvas');
+    const contactSec = document.getElementById('contact');
+    if (!canvas || !contactSec) return;
+    const ctx = canvas.getContext('2d');
+    const hasHover = window.matchMedia('(hover: hover)').matches;
+
+    const WHITE = '251,254,255';
+    const PALETTE = ['251,254,255', '71,234,255', '14,118,168']; // same trio as the hero starfield
+    const FALL_ANGLE = 24 * (Math.PI / 180); // one shared angle for every comet
+
+    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let px = -9999, py = -9999;
+    let stars = [];
+    let comets = [];
+    let cursorTrail = [];
+
+    function seeded(n) {
+      const x = Math.sin(n * 12.9898) * 43758.5453;
+      return x - Math.floor(x);
+    }
+    function rand(min, max) { return min + Math.random() * (max - min); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function buildStars() {
+      stars = [];
+      for (let i = 0; i < 60; i++) {
+        stars.push({ x: seeded(i * 3.1) * w, y: seeded(i * 7.7) * h, r: 0.5 + seeded(i * 5.3) * 0.9 });
+      }
+    }
+
+    function spawnComet(c, immediate) {
+      // depth 0 = far (small, slow, dim) · depth 1 = near (big, fast, bright)
+      const depth = rand(0, 1);
+      const speed = lerp(1.6, 4.4, depth);
+      c.vx = -Math.cos(FALL_ANGLE) * speed; // top-right → bottom-left
+      c.vy = Math.sin(FALL_ANGLE) * speed;
+      c.tailLen = lerp(70, 250, depth);
+      c.headR = lerp(1.5, 4, depth);
+      c.depthAlpha = lerp(0.5, 1, depth);
+      c.color = PALETTE[Math.floor(rand(0, PALETTE.length))];
+      c.delay = immediate ? 0 : rand(0, 240); // stagger respawns so they don't sync up
+      // start off-screen top-right, at a random height band
+      c.x = w + c.tailLen + rand(0, w * 0.3);
+      c.y = rand(-h * 0.1, h * 0.55);
+    }
+
+    function buildComets() {
+      const COUNT = 5;
+      comets = [];
+      for (let i = 0; i < COUNT; i++) {
+        const c = {};
+        spawnComet(c, true);
+        c.x = rand(w * 0.1, w * 1.3);
+        c.y = rand(-h * 0.1, h * 0.55);
+        c.delay = rand(0, 300);
+        comets.push(c);
+      }
+    }
+
+    function resizeCanvas() {
+      const rect = contactSec.getBoundingClientRect();
+      w = rect.width; h = rect.height;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildStars();
+      buildComets();
+    }
+    resizeCanvas();
+    window.addEventListener('load', resizeCanvas);
+
+    contactSec.addEventListener('mousemove', (e) => {
+      const rect = contactSec.getBoundingClientRect();
+      px = e.clientX - rect.left;
+      py = e.clientY - rect.top;
+    }, { passive: true });
+    contactSec.addEventListener('mouseleave', () => { px = -9999; py = -9999; }, { passive: true });
+
+    function drawStars() {
+      ctx.save();
+      ctx.fillStyle = `rgba(${WHITE},0.4)`;
+      stars.forEach((s) => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
+    }
+
+    function drawStreak(x, y, vx, vy, tailLen, headR, color, alpha) {
+      const len = Math.hypot(vx, vy) || 1;
+      const ux = vx / len, uy = vy / len;
+      const tx = x - ux * tailLen, ty = y - uy * tailLen;
+
+      ctx.save();
+      const grad = ctx.createLinearGradient(tx, ty, x, y);
+      grad.addColorStop(0, `rgba(${color},0)`);
+      grad.addColorStop(1, `rgba(${color},${0.85 * alpha})`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = headR * 0.9;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = `rgba(${color},${0.9 * alpha})`;
+      ctx.fillStyle = `rgba(${WHITE},${0.95 * alpha})`;
+      ctx.beginPath();
+      ctx.arc(x, y, headR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawComets() {
+      comets.forEach((c) => {
+        if (c.delay > 0) { c.delay -= 1; return; }
+        if (!prefersReducedMotion) { c.x += c.vx; c.y += c.vy; }
+
+        // fade in as it enters from the right, fade out as it nears the left exit edge
+        const inX = Math.min(1, (w - c.x) / (w * 0.2 || 1));
+        const outX = Math.min(1, (c.x + c.tailLen) / (w * 0.25 || 1));
+        const alpha = Math.max(0, Math.min(1, inX, outX)) * c.depthAlpha;
+
+        drawStreak(c.x, c.y, c.vx, c.vy, c.tailLen, c.headR, c.color, alpha);
+
+        if (c.x + c.tailLen < -40 || c.y - c.tailLen > h + 40) {
+          spawnComet(c, false);
+        }
+      });
+    }
+
+    function drawCursorTrail() {
+      if (!hasHover) return;
+      if (px > -1000) cursorTrail.push({ x: px, y: py });
+      if (cursorTrail.length > 16) cursorTrail.shift();
+      if (px <= -1000 && cursorTrail.length) cursorTrail.shift(); // decay away once the cursor leaves
+      if (cursorTrail.length < 2) return;
+
+      for (let i = 1; i < cursorTrail.length; i++) {
+        const a = cursorTrail[i - 1], b = cursorTrail[i];
+        const t = i / cursorTrail.length;
+        ctx.save();
+        ctx.strokeStyle = `rgba(71,234,255,${0.5 * t})`;
+        ctx.lineWidth = 2 * t;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = `rgba(71,234,255,0.7)`;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+      const head = cursorTrail[cursorTrail.length - 1];
+      ctx.save();
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = 'rgba(251,254,255,0.9)';
+      ctx.fillStyle = 'rgba(251,254,255,0.95)';
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, 2.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      drawStars();
+      drawComets();
+      drawCursorTrail();
+
+      // readability scrim
+      const scrim = ctx.createRadialGradient(w * 0.5, h * 0.5, h * 0.1, w * 0.5, h * 0.5, h * 0.65);
+      scrim.addColorStop(0, 'rgba(8,8,8,0.42)');
+      scrim.addColorStop(1, 'rgba(8,8,8,0)');
+      ctx.fillStyle = scrim;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    let contactRafId = null;
+    function frame() { draw(); contactRafId = requestAnimationFrame(frame); }
+    function startContact() { if (contactRafId === null) contactRafId = requestAnimationFrame(frame); }
+    function stopContact() { if (contactRafId !== null) { cancelAnimationFrame(contactRafId); contactRafId = null; } }
+
+    if (!prefersReducedMotion) {
+      const contactVisibility = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !document.hidden) startContact();
+          else stopContact();
+        });
+      }, { threshold: 0 });
+      contactVisibility.observe(contactSec);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopContact();
+        else {
+          const r = contactSec.getBoundingClientRect();
+          if (r.top < window.innerHeight && r.bottom > 0) startContact();
+        }
+      });
+    } else {
+      draw(); // static single frame — no animation loop under reduced-motion
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 150);
+    });
+  })();
+
 
   /* ── READ MORE TOGGLE ── */
   function toggleRead(id, btn) {
