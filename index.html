@@ -58,7 +58,7 @@
       --nh:         72px;
     }
 
-    html { scroll-behavior: smooth;}
+    html:not(.lenis) { scroll-behavior: smooth;}
 
     body {
       background: var(--bg);
@@ -88,13 +88,11 @@
       top: 0; left: 0; right: 0;
       height: var(--nh);
       z-index: 200;
-      transition: background .4s, backdrop-filter .4s, border-color .4s;
+      transition: background .4s, border-color .4s;
       border-bottom: 1px solid transparent;
     }
     nav.scrolled {
-      background: rgba(8,8,8,.88);
-      backdrop-filter: blur(24px) saturate(1.5);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(8,8,8,.97);
       border-color: var(--border);
     }
     .nav-inner {
@@ -1410,16 +1408,17 @@
     .fi {
       opacity: 0;
       transform: translateY(46px) scale(.78);
-      transition: opacity 1s cubic-bezier(.19,1,.22,1), transform 1s cubic-bezier(.19,1,.22,1), border-color .35s;
-      will-change: transform, opacity;
+      filter: blur(7px);
+      transition: opacity 1s cubic-bezier(.19,1,.22,1), transform 1s cubic-bezier(.19,1,.22,1), filter 1s cubic-bezier(.19,1,.22,1), border-color .35s;
+      will-change: transform, opacity, filter;
     }
-    .fi.in { opacity: 1; transform: translateY(0) scale(1); }
-    .fi.out-up { opacity: 0; transform: translateY(-90px) scale(.7); }
+    .fi.in { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    .fi.out-up { opacity: 0; transform: translateY(-90px) scale(.7); filter: blur(7px); }
     .fi-d1 { transition-delay: .1s; }
     .fi-d2 { transition-delay: .2s; }
     .fi-d3 { transition-delay: .3s; }
     @media (prefers-reduced-motion: reduce) {
-      .fi { transition: opacity .3s ease; transform: none !important; }
+      .fi { transition: opacity .3s ease; transform: none !important; filter: none !important; }
     }
 
     /* ── RESPONSIVE ── */
@@ -2484,6 +2483,9 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
   /* ══════════════ SHARED TEXT-DECODE HELPERS ══════════════
      Used by the preloader HUD and also reused for the hero name/role reveal. */
@@ -2811,6 +2813,13 @@
       setTimeout(() => {
         document.body.classList.remove('pl-locked');
         document.body.classList.add('hero-ready');
+        /* Lenis/ScrollTrigger measured the page while pl-locked (overflow:hidden, height:100%)
+           was still on <body>, so their cached scroll bounds are wrong — nothing moves (or moves
+           wrong) until they're told to remeasure now that the real layout is unlocked. */
+        requestAnimationFrame(() => {
+          if (lenis) { lenis.resize(); lenis.scrollTo(0, { immediate: true }); }
+          if (window.ScrollTrigger) ScrollTrigger.refresh();
+        });
       }, 110);
 
       /* preloader dissolves away over the same span as the particle burst,
@@ -2878,22 +2887,72 @@
     mobileMenu.classList.remove('open');
   }
 
-  /* ── FLUID SCALE ON SCROLL (magnifying-glass illusion, Lusion-style) ── */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      const el = e.target;
-      if (e.isIntersecting) {
-        el.classList.remove('out-up');
-        el.classList.add('in');
-      } else {
-        el.classList.remove('in');
-        // scrolled past upward → shrink while rising. still below viewport → reset to entry state.
-        const goingUp = e.boundingClientRect.top < 0;
-        el.classList.toggle('out-up', goingUp);
-      }
+  /* ── LENIS SMOOTH SCROLL, synced to GSAP's ticker so ScrollTrigger stays frame-accurate ──
+     Skipped entirely under prefers-reduced-motion so the OS setting is respected. */
+  if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+  let lenis = null;
+  if (!prefersReducedMotion && window.Lenis) {
+    lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => 1 - Math.pow(1 - t, 3), // cubic ease-out — matches the .fi reveal feel
+      smoothWheel: true,
+      autoRaf: false, // we step it manually via gsap.ticker below — don't let it also run its own loop
     });
-  }, { threshold: 0.08, rootMargin: '-8% 0px -8% 0px' });
-  document.querySelectorAll('.fi').forEach(el => io.observe(el));
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // hijack in-page anchor links (nav, footer, hero CTA) to route through Lenis
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const target = id.length > 1 ? document.querySelector(id) : null;
+        if (target) {
+          e.preventDefault();
+          lenis.scrollTo(target, { offset: -72, duration: 1.4 });
+        }
+      });
+    });
+  }
+
+  /* ── FLUID SCALE ON SCROLL (magnifying-glass illusion, Lusion-style) ──
+     Ported from a manual IntersectionObserver to GSAP ScrollTrigger: same 'in' / 'out-up'
+     classes the CSS already handles, just driven by a smoother, scroll-velocity-aware engine. */
+  if (window.gsap && window.ScrollTrigger) {
+    document.querySelectorAll('.fi').forEach((el) => {
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 92%',
+        end: 'bottom 8%',
+        onEnter: () => el.classList.remove('out-up') || el.classList.add('in'),
+        onEnterBack: () => el.classList.remove('out-up') || el.classList.add('in'),
+        onLeave: () => { el.classList.remove('in'); el.classList.add('out-up'); },
+        onLeaveBack: () => { el.classList.remove('in', 'out-up'); },
+      });
+    });
+    // late-loading images/fonts (and the preloader unlock above) can shift section
+    // positions after ScrollTrigger's first measurement — resync once everything settles.
+    window.addEventListener('load', () => {
+      if (lenis) lenis.resize();
+      ScrollTrigger.refresh();
+    });
+  } else {
+    // fallback if the CDN libs fail to load — original IntersectionObserver behavior
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        const el = e.target;
+        if (e.isIntersecting) {
+          el.classList.remove('out-up');
+          el.classList.add('in');
+        } else {
+          el.classList.remove('in');
+          const goingUp = e.boundingClientRect.top < 0;
+          el.classList.toggle('out-up', goingUp);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '-8% 0px -8% 0px' });
+    document.querySelectorAll('.fi').forEach(el => io.observe(el));
+  }
 
   /* ── STAT COUNTER ── */
   function animateCounter(el, target, suffix, delay) {
@@ -3104,9 +3163,30 @@
       camera.rotation.x = -my * 0.035;
 
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      heroRafId = requestAnimationFrame(animate);
     }
-    animate();
+
+    /* This render loop was running full-tilt (60fps WebGL render + 420-point buffer
+       updates + comet trails) forever, even after the hero was scrolled far out of
+       view — that's the main source of the heaviness. Only run it while #home is
+       actually on screen and the tab is in the foreground. */
+    let heroRafId = null;
+    function startHero() { if (heroRafId === null) heroRafId = requestAnimationFrame(animate); }
+    function stopHero() { if (heroRafId !== null) { cancelAnimationFrame(heroRafId); heroRafId = null; } }
+    startHero();
+
+    const heroVisibility = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !document.hidden) startHero();
+        else stopHero();
+      });
+    }, { threshold: 0 });
+    heroVisibility.observe(homeSec);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopHero();
+      else if (homeSec.getBoundingClientRect().top < window.innerHeight && homeSec.getBoundingClientRect().bottom > 0) startHero();
+    });
 
     window.addEventListener('resize', () => {
       camera.aspect = homeSec.clientWidth / homeSec.clientHeight;
