@@ -1202,22 +1202,22 @@
       font-family: 'EB Garamond', serif;
       font-style: normal;
       font-weight: 500;
-      font-size: clamp(2.25rem, 8vw, 4rem);
+      font-size: clamp(1.75rem, calc(8.2vw - 2px), 4rem);
+      letter-spacing: -0.01em;
       line-height: 1.25;
       text-align: center;
       color: #FFFFFF;
     }
     .contact-title em { font-style: italic; }
-    @media (max-width: 560px) {
-      .contact-title { font-size: 1.9rem; }
-    }
-    @media (max-width: 400px) {
-      .contact-title { font-size: 1.65rem; }
-    }
-    @media (max-width: 350px) {
-      .contact-title { font-size: 1.5rem; }
+    @media (max-width: 340px) {
+      .contact-title { font-size: 1.55rem; }
     }
     .contact-sub { margin-top: 1.5rem; }
+    .contact-sub-short { display: none; white-space: nowrap; }
+    @media (max-width: 768px) {
+      .contact-sub-full { display: none; }
+      .contact-sub-short { display: inline; }
+    }
     .contact-btn-wrap { margin-top: 3.5rem; }
     .contact-btn {
       position: relative;
@@ -2441,7 +2441,7 @@
   <div class="sec-in">
     <div class="contact-inner">
       <h2 class="contact-title"><em>A</em>chieve Business Goals<br>With Design &amp; Research</h2>
-      <p class="sec-sub contact-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Open to full-time roles, freelance projects, and design collaborations.</p>
+      <p class="sec-sub contact-sub" style="text-align:center; margin-left:auto; margin-right:auto;"><span class="contact-sub-full">Open to full-time roles, freelance projects, and design collaborations.</span><span class="contact-sub-short">Open to full-time & freelance work.</span></p>
       <div class="contact-btn-wrap">
         <a href="mailto:farizky.ibnu@gmail.com" class="contact-btn">Contact</a>
       </div>
