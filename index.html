@@ -1187,8 +1187,8 @@
 
     /* ── CONTACT ── */
     #contact { text-align: center; }
-    .contact-inner { max-width: 640px; margin: 0 auto; }
-    #contact { position: relative; overflow: hidden; }
+    .contact-inner { max-width: 900px; margin: 0 auto; }
+    #contact { position: relative; overflow: hidden; padding-top: 8rem; padding-bottom: 8rem; }
     #contactCanvas {
       position: absolute;
       inset: 0;
@@ -1211,12 +1211,53 @@
       border-bottom: 1px solid transparent;
     }
     .contact-email:hover { color: var(--accent); border-color: var(--accent); }
+    .contact-title {
+      font-family: 'EB Garamond', serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: clamp(2.25rem, 8vw, 4rem);
+      line-height: 1.25;
+      text-align: center;
+      color: #FFFFFF;
+    }
+    .contact-title em { font-style: italic; }
+    .contact-sub { margin-top: 1.5rem; }
+    .contact-btn-wrap { margin-top: 3.5rem; }
+    .contact-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .95rem 2.6rem;
+      border: 1px solid #FFFFFF;
+      border-radius: 100px;
+      font-family: var(--body);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: #FFFFFF;
+      text-decoration: none;
+      background: transparent;
+      overflow: hidden;
+      z-index: 1;
+      transition: color .45s cubic-bezier(.22,1,.36,1);
+    }
+    .contact-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+      clip-path: circle(0% at 50% 100%);
+      transition: clip-path .5s cubic-bezier(.22,1,.36,1);
+      z-index: -1;
+    }
+    .contact-btn:hover { color: #0F0F0F; }
+    .contact-btn:hover::before { clip-path: circle(150% at 50% 100%); }
     .contact-links {
       display: flex;
-      gap: .75rem;
+      gap: 1.1rem;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 1rem;
+      margin-top: 4.5rem;
     }
     .c-link {
       background: var(--surface);
@@ -1457,6 +1498,7 @@
       .hero-photo { width: 160px; height: 160px; }
       .hero-scroll { display: none; }
       #cursor-dot, #cursor-ring { display: none !important; }
+      .contact-sub { font-size: .85rem; }
       .project-card:nth-child(1),
       .project-card:nth-child(2),
       .project-card:nth-child(3),
@@ -1484,6 +1526,7 @@
     }
 
     @media (max-width: 480px) {
+      .contact-sub { font-size: .8rem; }
       /* track record — single col, more compact on small phones */
       .testi-right { grid-template-columns: 1fr; gap: 1rem; }
       .testi-card { padding: 1.25rem; }
@@ -2416,11 +2459,10 @@
   <canvas id="contactCanvas" aria-hidden="true"></canvas>
   <div class="sec-in">
     <div class="contact-inner">
-      <div class="sec-lbl" style="text-align:center;">Contact</div>
-      <h2 class="sec-title" style="text-align:center;">Let's create<br>something great.</h2>
-      <p class="sec-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Open to full-time roles, freelance projects, and design collaborations.</p>
-      <div class="contact-email-wrap">
-        <a href="mailto:farizky.ibnu@gmail.com" class="contact-email">farizky.ibnu@gmail.com</a>
+      <h2 class="contact-title"><em>A</em>chieve Business Goals<br>With Design &amp; Research</h2>
+      <p class="sec-sub contact-sub" style="text-align:center; margin-left:auto; margin-right:auto;">Open to full-time roles, freelance projects, and design collaborations.</p>
+      <div class="contact-btn-wrap">
+        <a href="mailto:farizky.ibnu@gmail.com" class="contact-btn">Contact</a>
       </div>
       <div class="contact-links">
         <a href="https://wa.me/6282297154100" target="_blank" rel="noopener" class="c-link">
@@ -2903,7 +2945,7 @@
   let lenis = null;
   if (!prefersReducedMotion && window.Lenis) {
     lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.75,
       easing: (t) => 1 - Math.pow(1 - t, 3), // cubic ease-out — matches the .fi reveal feel
       smoothWheel: true,
       autoRaf: false, // we step it manually via gsap.ticker below — don't let it also run its own loop
@@ -2919,7 +2961,7 @@
         const target = id.length > 1 ? document.querySelector(id) : null;
         if (target) {
           e.preventDefault();
-          lenis.scrollTo(target, { offset: -72, duration: 1.4 });
+          lenis.scrollTo(target, { offset: -72, duration: 0.9 });
         }
       });
     });
@@ -3496,22 +3538,29 @@
       dot.style.top  = mouseY + 'px';
     }, { passive: true });
 
-    (function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
+    /* Frame-rate independent smoothing so the ring's trail feels the same
+       on a 60Hz screen as a 120/144Hz one, instead of snapping faster on
+       high-refresh displays. */
+    let lastRingTime = performance.now();
+    (function animateRing(now) {
+      const dt = Math.min((now - lastRingTime) / 1000, 0.1); // clamp for tab-switch/pause gaps
+      lastRingTime = now;
+      const smoothing = 1 - Math.pow(0.002, dt); // slightly softer than the old fixed 0.12/frame, time-correct
+      ringX += (mouseX - ringX) * smoothing;
+      ringY += (mouseY - ringY) * smoothing;
       ring.style.left = ringX + 'px';
       ring.style.top  = ringY + 'px';
       requestAnimationFrame(animateRing);
-    })();
+    })(lastRingTime);
 
-    const hoverTargets = 'a:not(.nav-cta):not(.btn-p):not(.btn-s):not(.behance-link):not(.behance-cta-btn), button:not(#scrollTop), .skill-tag, .testi-card';
+    const hoverTargets = 'a:not(.nav-cta):not(.btn-p):not(.btn-s):not(.behance-link):not(.behance-cta-btn):not(.contact-btn), button:not(#scrollTop), .skill-tag, .testi-card';
     document.querySelectorAll(hoverTargets).forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
     });
     /* Buttons that carry their own icon/badge get their own hover feedback — fade the
        custom cursor out on top of them instead of growing the ring over it. */
-    document.querySelectorAll('.nav-cta, .btn-p, .btn-s, .behance-link, .behance-cta-btn, #scrollTop').forEach(el => {
+    document.querySelectorAll('.nav-cta, .btn-p, .btn-s, .behance-link, .behance-cta-btn, .contact-btn, #scrollTop').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-fade'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-fade'));
     });
