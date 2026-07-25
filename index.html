@@ -977,20 +977,7 @@
       pointer-events: none;
       transition: opacity .4s ease;
     }
-    /* accent left strip */
-    .exp-item::after {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 2px;
-      background: #c8edf9;
-      transform: scaleY(0);
-      transform-origin: top;
-      border-radius: 0 2px 2px 0;
-      transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
     .exp-item:hover::before { opacity: 1; }
-    .exp-item:hover::after  { transform: scaleY(1); }
 
     .exp-summary {
       display: flex;
@@ -2052,8 +2039,8 @@
       <h1 class="hero-name"><em id="heroNameFirst">Muhamad</em><br><span id="heroNameLast">Ibnu Farizky</span></h1>
       <p class="hero-role"><span id="heroRoleText">Product Designer</span> <span class="role-dot"></span> <span id="heroRoleTech">UI&thinsp;/&thinsp;UX</span></p>
       <div class="hero-actions">
-        <a href="#work" class="btn-p">View Work<span class="arrow-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 4.5v14M6 12.5l6 6 6-6"/>
+        <a href="#work" class="btn-p">View Work<span class="arrow-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 4.5v14M6 12.5l6 6 6-6" vector-effect="non-scaling-stroke"/>
   </svg></span></a>
         <a href="https://www.linkedin.com/in/muhamad-ibnu-farizky-1b7860193/" target="_blank" rel="noopener" class="btn-s">Get in Touch</a>
       </div>
@@ -2254,7 +2241,7 @@
       <a href="https://www.behance.net/ibnufarizky" target="_blank" rel="noopener" class="behance-cta-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z"/></svg>
         More on Behance
-        <span class="arrow-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+        <span class="arrow-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10" vector-effect="non-scaling-stroke"/></svg></span>
       </a>
     </div>
   </div>
@@ -2275,7 +2262,7 @@
             <div class="exp-company">TARDS</div>
           </div>
           <span class="exp-period">2025 — Present</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2296,7 +2283,7 @@
             <div class="exp-company">Dicoding × Telkom Indonesia</div>
           </div>
           <span class="exp-period">2024 — 2025</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2314,7 +2301,7 @@
             <div class="exp-company">Tokoplas</div>
           </div>
           <span class="exp-period">2024</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2333,7 +2320,7 @@
             <div class="exp-company">FundEx</div>
           </div>
           <span class="exp-period">2024</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2351,7 +2338,7 @@
             <div class="exp-company">VentureUP</div>
           </div>
           <span class="exp-period">2023</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2368,7 +2355,7 @@
             <div class="exp-company">Binar Academy</div>
           </div>
           <span class="exp-period">2022</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2384,7 +2371,7 @@
             <div class="exp-company">Vespa Supply</div>
           </div>
           <span class="exp-period">2020 — 2022</span>
-          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <svg class="exp-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" vector-effect="non-scaling-stroke"/></svg>
         </div>
         <div class="exp-details">
           <ul class="exp-bullets">
@@ -2415,7 +2402,7 @@
           <p class="testi-body">I had the chance to work closely with Ibnu during his internship as a UI/UX intern at Tokoplas. His main role was to assist with UI design and specifically contributing to the initial phase of the company's Design System. Ibnu approached tasks with positive attitude and calmness, even under pressure, which is a rare and admirable quality. While he was still in the learning phase during his internship, I saw his willingness to improve and adapt. Ibnu's ability to take feedback gracefully and his commitment to reworking designs showed his grit and dedication to growth. I wish Ibnu all the best in his career journey and look forward to seeing his future achievements!</p>
           <button class="testi-readmore" onclick="toggleRead('michelleWrap', this)">
             Read more
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" vector-effect="non-scaling-stroke"/></svg>
           </button>
         </div>
         <div class="testi-author">
@@ -2522,7 +2509,7 @@
       <p class="card-desc" id="caseModalDesc"></p>
       <a id="caseModalLink" href="#" target="_blank" rel="noopener" class="behance-cta-btn">
         View full case study on Behance
-        <span class="arrow-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+        <span class="arrow-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10" vector-effect="non-scaling-stroke"/></svg></span>
       </a>
     </div>
   </div>
@@ -2530,7 +2517,7 @@
 
 
 <button id="scrollTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7" vector-effect="non-scaling-stroke"/></svg>
 </button>
 
 
@@ -2709,7 +2696,7 @@
 
     scrambleReveal(document.getElementById('microLine1'), 'Portfolio — 2026 Edition', 900, 350);
     scrambleReveal(document.getElementById('microLine2'), 'M. Ibnu Farizky', 900, 550);
-    typewriterReveal(document.getElementById('microLine3'), 'Product Designer / Jakarta, ID', 26, 900);
+    typewriterReveal(document.getElementById('microLine3'), 'Product Designer / Depok, ID', 26, 900);
     scrambleReveal(document.getElementById('microLine4'), 'Case Studies — Loaded', 850, 1050);
     scrambleReveal(document.getElementById('microLine5'), 'Status — Ready', 850, 1250);
     scrambleHex(document.getElementById('plLock'), '0x2A6C-19F3', 1200, 2600);
